@@ -1,0 +1,20 @@
+Erster Testlauf mit einer ungünstigen HashMap-Implementierung:
+Stoppe Zeit für      100 Elemente:    0.006s	PASS
+Stoppe Zeit für     1000 Elemente:    0.021s	PASS
+Stoppe Zeit für    10000 Elemente:    0.106s	PASS
+Stoppe Zeit für   100000 Elemente:    7.379s	PASS
+Stoppe Zeit für  1000000 Elemente: 1438.579s	PASS
+Stoppe Zeit für 10000000 Elemente: abgebrochen, da dies wahrscheinlich 3 Tage dauern könnte.
+
+Mein Ansatz mit der Map (siehe SomeFormats.java) ist hier möglicherweise sehr ineffizient (wegen der notwendigen while-Schleife zum Inkrementieren der keys),
+da es keine Doppelungen geben darf. Daher wird die betroffene Zahl um 1 erhöht (hier ist der Fehler, dass die Range von 0-1000 nicht mehr eingehalten wird).
+Sinnvoller wäre vielleicht eine eigene Zahlen-Klasse, deren Instanzen dann alle in einer ArrayList gespeichert werden. Dann wären doppelte Einträge möglich
+bei Erhalt der Information über die zugewiesenen Nachkommastellen.
+
+Habe im zweiten Schritt die oben genannte Idee umgesetzt, wodurch der Algorithmus wesentlich effizienter wird:
+Stoppe Zeit für      100 Elemente:     0.007s	PASS
+Stoppe Zeit für     1000 Elemente:     0.022s	PASS
+Stoppe Zeit für    10000 Elemente:     0.039s	PASS
+Stoppe Zeit für   100000 Elemente:     0.242s	PASS
+Stoppe Zeit für  1000000 Elemente:     0.694s	PASS
+Stoppe Zeit für 10000000 Elemente:     5.833s	PASS
