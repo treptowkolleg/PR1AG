@@ -1,7 +1,7 @@
 # Programmierung 1
 
 ## Hilfsklassen verwenden
-### AbstractApplication
+### Setup
 
 Um bequem auf nützliche Helfer zugreifen zu können, erben wir von AbstractApplication.
 
