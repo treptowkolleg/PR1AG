@@ -129,5 +129,67 @@ public void run() {
 }
 ````
 
+### File Reader
+
+Wie beim Schreiben von Dateien können wir auch beim Einlesen verschiedene Möglichkeiten nutzen.
+Sollte eine Datei nicht existieren, wird ein kurzer Fehler ausgegeben und die Anweisungen zum
+Abarbeiten des Dateiinhalts werden übersprungen.
+
+````java
+import pr1.a03.Aufgabe03IO;
+
+// ...
+
+public void run() {
+    // liest die Datei ./data/a04/demo.txt
+    withFileScanner(scanner -> {
+        // Dateiinhalt abarbeiten
+    });
+    // liest die Datei ./data/a04/my_file.html
+    withFileScanner("my_file.html", scanner -> {
+        // Dateiinhalt abarbeiten
+    });
+    // liest die Datei ./data/a03/test.txt
+    withFileScanner(Aufgabe03IO.class, "test.txt", scanner -> {
+        // Dateiinhalt abarbeiten
+    });
+}
+````
+
+#### Beispiel
+
+Wir haben folgenden Dateiinhalt:
+
+````
+40, 20, 50 43 4.23, 7.0
+````
+
+````java
+import pr1.helper.core.Delimiter;
+
+public void run() {
+    // liest die Datei ./data/a04/demo.txt
+    withFileScanner(scanner -> {
+        // Als Token-Trenner Leerzeichen und Komma erlauben
+        scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern());
+        while (scanner.hasNext()) {
+            if (scanner.hasNextInt()) {
+                // auf der Konsole ausgeben (oder mit printfToFile() in Datei schreiben)
+                printf("Zahl %d gefunden.%n", scanner.nextInt());
+            } else {
+                scanner.next();
+            }
+        }
+    });
+}
+
+/* ergibt die Ausgabe
+Zahl 40 gefunden.
+Zahl 20 gefunden.
+Zahl 50 gefunden.
+Zahl 43 gefunden.
+ */
+````
+
 
 ## Übungsaufgaben
