@@ -5,7 +5,7 @@
 
 Um bequem auf nützliche Helfer zugreifen zu können, erben wir von ``AbstractApplication``.
 
-````php
+````java
 package pr1.a04;
 
 import pr1.helper.core.AbstractApplication;
@@ -21,7 +21,7 @@ public class Demo extends AbstractApplication {
 In der IDE werden wir zunächst einen Fehler angezeigt bekommen, denn die Oberklasse ``AbstractApplication`` verlangt,
 dass wir die Methode ``public void run()`` implementieren. Das tun wir also:
 
-````php
+````java
 package pr1.a04;
 
 import pr1.helper.core.AbstractApplication;
@@ -49,7 +49,7 @@ Wir können nun auf hilfreiche Methoden der Oberklasse zugreifen.
 Wir haben direkt Zugriff auf einen KonsolenPrinter. Das macht unseren **Client Code** wesentlich übersichtlicher.
 Mit Ende des Programms wird übrigens automatisch ``flush()`` bzw. ``close()`` aufgerufen.
 
-````php
+````java
 public void run() {
     // erzeugt neuen PrintWriter an System.out
     createConsoleWriter();
@@ -63,7 +63,7 @@ Die Methode ``createConsoleWriter()`` ist zudem optional, da mit jeder Ausgabe g
 eine PrintWriter-Instanz haben oder nicht. Wenn nicht, wird automatisch eine Instanz erzeugt. Daher können
 wir auch schreiben:
 
-````php
+````java
 public void run() {
     println("Hallo Welt");
 }
@@ -71,18 +71,20 @@ public void run() {
 
 Für Überschriften und ähnliches haben wir ebenfalls eine nützliche Klasse. Den sogenannten ``PrintDecorator``.
 
-````php
+````java
 public void run() {
     getConsolePrintDecorator().printHeadline("Meine Überschrift");
     println("Mein Inhalt");
 }
 
-// Ausgabe
+/* erzeugte Ausgabe:
 #####################
 # Meine Überschrift #
 #####################
 
 Mein Inhalt
+ */
+
 ````
 
 ### File Printer
