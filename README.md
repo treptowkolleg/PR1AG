@@ -164,8 +164,9 @@ Wir haben folgenden Dateiinhalt:
 40, 20, 50 43 4.23, 7.0
 ````
 
-````java
+```java
 import pr1.helper.core.Delimiter;
+import pr1.helper.core.MatchPattern;
 
 public void run() {
     // liest die Datei ./data/a04/demo.txt
@@ -181,6 +182,15 @@ public void run() {
             }
         }
     });
+
+    // oder alternativ:
+    withFileScanner(scanner -> {
+        scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern());
+        // Token filtern, die gültige Integer sind und als Integer parsen.
+        scanner.tokens().filter(t -> t.matches(MatchPattern.INTEGER.getRegex())).mapToInt(Integer.parseInt)
+                // für jedes gültige Token printf() ausführen.
+                .forEach(element -> printf("Zahl %d gefunden.%n", element));
+    });
 }
 
 /* ergibt die Ausgabe
@@ -189,4 +199,4 @@ Zahl 20 gefunden.
 Zahl 50 gefunden.
 Zahl 43 gefunden.
  */
-````
+```
