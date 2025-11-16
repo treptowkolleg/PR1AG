@@ -190,6 +190,3 @@ Zahl 50 gefunden.
 Zahl 43 gefunden.
  */
 ````
-
-
-## Übungsaufgaben
