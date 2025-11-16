@@ -10,7 +10,7 @@ package pr1.a04;
 
 import pr1.helper.core.AbstractApplication;
 
-public Class Demo extends AbstractApplication {
+public class Demo extends AbstractApplication {
     public static void main(String[] args) {
         // neue Instanz dieser Klasse erzeugen.
         new Demo();
