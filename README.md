@@ -124,17 +124,9 @@ public void run() {
     createFileWriter();
     // erzeugt die Datei ./data/a04/my_file.html
     createFileWriter("my_file.html");
-    // erzeugt die Datei 'my_file.txt' im Benutzerordner (je nach Betriebssystem)
+    // erzeugt die Datei './a04/my_file.txt' im Benutzerordner (je nach Betriebssystem)
     createFileWriter(FileTarget.USER_DIR, "my_file.txt");
 }
-
-/* erzeugte Ausgabe:
-#####################
-# Meine Überschrift #
-#####################
-
-Mein Datei-Inhalt
- */
 ````
 
 
