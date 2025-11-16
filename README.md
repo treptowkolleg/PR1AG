@@ -185,12 +185,17 @@ public void run() {
 
     // oder alternativ:
     withFileScanner(scanner -> {
-        scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern());
-        // Token filtern, die gültige Integer sind und als Integer parsen.
-        scanner.tokens().filter(t -> t.matches(MatchPattern.INTEGER.getRegex())).mapToInt(Integer.parseInt)
-                // für jedes gültige Token printf() ausführen.
-                .forEach(element -> printf("Zahl %d gefunden.%n", element));
+        Stream<String> stream = scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens();
+        Stream<String> filteredStream = stream.filter(s -> s.matches(MatchPattern.INTEGER.getRegex()));
+        IntStream intStream = filteredStream.mapToInt(Integer::parseInt);
+        intStream.forEach(i -> this.printfToFile("Zahl %d gefunden.%n", i));
     });
+    
+    // und kürzer:
+    withFileScanner(scanner -> scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens()
+            .filter(s -> s.matches(MatchPattern.INTEGER.getRegex())).mapToInt(Integer::parseInt).forEach(
+                    element -> this.printfToFile("Zahl %d gefunden.%n", element))
+    );
 }
 
 /* ergibt die Ausgabe

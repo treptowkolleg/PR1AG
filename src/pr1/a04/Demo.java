@@ -4,6 +4,9 @@ import pr1.helper.core.AbstractApplication;
 import pr1.helper.core.Delimiter;
 import pr1.helper.core.MatchPattern;
 
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 public class Demo extends AbstractApplication {
 	public static void main(String[] args) {
 		new Demo();
@@ -24,9 +27,10 @@ public class Demo extends AbstractApplication {
 
 		// benutzt Ordnerstruktur dieser Klasse.
 		withFileScanner("test.txt", s -> {
-			s.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens()
-					.filter(token -> token.matches(MatchPattern.INTEGER.getRegex())).mapToInt(Integer::parseInt)
-					.forEach(i -> this.printfToFile("Zahl %d gefunden.%n", i));
+			Stream<String> stream = s.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens();
+            Stream<String> filteredStream = stream.filter(str -> str.matches(MatchPattern.INTEGER.getRegex()));
+            IntStream intStream = filteredStream.mapToInt(Integer::parseInt);
+            intStream.forEach(i -> this.printfToFile("Zahl %d gefunden.%n", i));
 		});
 	}
 }
