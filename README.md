@@ -210,3 +210,7 @@ Zahl 50 gefunden.
 Zahl 43 gefunden.
  */
 ```
+
+## Beispiele
+
+[Übungsaufgabe 04](./src/pr1/a04/FirstInput.java)
