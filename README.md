@@ -84,11 +84,58 @@ public void run() {
 
 Mein Inhalt
  */
-
 ````
 
 ### File Printer
 
+Der File Printer funktioniert analog zum Console Printer.
+
+````java
+public void run() {
+    getFilePrintDecorator().printHeadline("Meine Überschrift");
+    printlnToFile("Mein Datei-Inhalt");
+}
+
+/* erzeugte Ausgabe:
+#####################
+# Meine Überschrift #
+#####################
+
+Mein Datei-Inhalt
+ */
+````
+
+#### Zieldatei bestimmen
+
+Anders als beim Console Printer, können wir hier optional festlegen, wo die zu erzeugende Datei gespeichert
+werden soll und welchen Namen sie trägt. Wenn wir keine Angaben machen, wird automatisch eine Datei erzeugt, die
+zum aktuellen Klassen-Namen passt. Als Standardpfad wird die Package-Struktur genutzt.
+
+Diese Klasse hat den vollqualifizierten Namen ``pr1.a04.Demo``. Die neue Datei liegt daher dann unter
+``./data/a04/demo.txt``.
+
+````java
+import pr1.helper.core.FileTarget;
+
+// ...
+
+public void run() {
+    // erzeugt die Datei ./data/a04/demo.txt
+    createFileWriter();
+    // erzeugt die Datei ./data/a04/my_file.html
+    createFileWriter("my_file.html");
+    // erzeugt die Datei 'my_file.txt' im Benutzerordner (je nach Betriebssystem)
+    createFileWriter(FileTarget.USER_DIR, "my_file.txt");
+}
+
+/* erzeugte Ausgabe:
+#####################
+# Meine Überschrift #
+#####################
+
+Mein Datei-Inhalt
+ */
+````
 
 
 ## Übungsaufgaben
