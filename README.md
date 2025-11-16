@@ -171,6 +171,8 @@ import pr1.helper.core.MatchPattern;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+// ...
+
 public void run() {
     // liest die Datei ./data/a04/demo.txt
     withFileScanner(scanner -> {
