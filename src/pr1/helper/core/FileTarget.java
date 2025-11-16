@@ -17,23 +17,21 @@
 package pr1.helper.core;
 
 public enum FileTarget {
+	PROJECT_DIR	("."),
+	DATA_DIR	("./data"),
+	USER_DIR	(System.getProperty("user.home"));
 
-    PROJECT_DIR("."),
-    DATA_DIR("./data"),
-    USER_DIR(System.getProperty("user.home"));
+	private final String baseDir;
+	private final char separator = java.io.File.separatorChar;
 
-    private final String baseDir;
-    private final char separator = java.io.File.separatorChar;
+	/**
+	 * @param property Base directory
+	 */
+	FileTarget(String property) {
+		baseDir = property;
+	}
 
-    /**
-     * @param property Base directory
-     */
-    FileTarget(String property) {
-        baseDir = property;
-    }
-
-    public String getBaseDir() {
-        return baseDir + separator;
-    }
-
+	public String getBaseDir() {
+		return baseDir + separator;
+	}
 }

@@ -37,70 +37,72 @@ import java.io.PrintWriter;
  */
 public class PrintDecorator {
 
-    /** Character used to draw the frame. Default is '#' */
-    public char frameChar = '#';
+	/** Character used to draw the frame. Default is '#' */
+	public char frameChar = '#';
 
-    /** The {@link PrintWriter} used for output */
-    public PrintWriter out;
+	/** The {@link PrintWriter} used for output */
+	public PrintWriter out;
 
-    /**
-     * Constructs a {@link PrintDecorator} using the given {@link PrintWriter}.
-     * The default frame character '#' is used.
-     *
-     * @param out the {@link PrintWriter} for output
-     */
-    public PrintDecorator(PrintWriter out) {
-        this.out = out;
-    }
+	/**
+	 * Constructs a {@link PrintDecorator} using the given {@link PrintWriter}. The
+	 * default frame character '#' is used.
+	 *
+	 * @param out the {@link PrintWriter} for output
+	 */
+	public PrintDecorator(PrintWriter out) {
+		this.out = out;
+	}
 
-    /**
-     * Constructs a {@link PrintDecorator} using the given {@link PrintWriter} and frame character.
-     *
-     * @param out       the {@link PrintWriter} for output
-     * @param frameChar the character used for framing
-     */
-    public PrintDecorator(PrintWriter out, char frameChar) {
-        this.out = out;
-        this.frameChar = frameChar;
-    }
+	/**
+	 * Constructs a {@link PrintDecorator} using the given {@link PrintWriter} and
+	 * frame character.
+	 *
+	 * @param out       the {@link PrintWriter} for output
+	 * @param frameChar the character used for framing
+	 */
+	public PrintDecorator(PrintWriter out, char frameChar) {
+		this.out = out;
+		this.frameChar = frameChar;
+	}
 
-    /**
-     * Prints a border around the given text with default bottom margin of 1 line.
-     *
-     * @param text the text to determine the border width
-     */
-    public void printBorder(String text) {
-        printBorder(text, 1);
-    }
+	/**
+	 * Prints a border around the given text with default bottom margin of 1 line.
+	 *
+	 * @param text the text to determine the border width
+	 */
+	public void printBorder(String text) {
+		printBorder(text, 1);
+	}
 
-    /**
-     * Prints a border around the given text with a specified bottom margin.
-     * <p>
-     * The width of the border matches the length of the input text plus padding.
-     * </p>
-     *
-     * @param text         the text to determine the border width
-     * @param marginBottom the number of line breaks to add after the border
-     */
-    public void printBorder(String text, int marginBottom) {
-        for (int i = -4; i < text.length(); i++) {
-            out.print(frameChar);
-        }
-        out.printf("%n".repeat(marginBottom));
-    }
+	/**
+	 * Prints a border around the given text with a specified bottom margin.
+	 * <p>
+	 * The width of the border matches the length of the input text plus padding.
+	 * </p>
+	 *
+	 * @param text         the text to determine the border width
+	 * @param marginBottom the number of line breaks to add after the border
+	 */
+	public void printBorder(String text, int marginBottom) {
+		for (int i = -4; i < text.length(); i++) {
+			out.print(frameChar);
+		}
+		out.printf("%n".repeat(marginBottom));
+	}
 
-    /**
-     * Prints a headline framed by borders above and below the text.
-     * <p>
-     * The headline consists of a top border, the text framed by the {@link #frameChar},
-     * and a bottom border with a default bottom margin of 2 lines.
-     * </p>
-     *
-     * @param text the headline text
-     */
-    public void printHeadline(String text) {
-        printBorder(text);
-        out.printf("%s %s %s%n", frameChar, text, frameChar);
-        printBorder(text, 2);
-    }
+	/**
+	 * Prints a headline framed by borders above and below the text.
+	 * <p>
+	 * The headline consists of a top border, the text framed by the
+	 * {@link #frameChar}, and a bottom border with a default bottom margin of 2
+	 * lines.
+	 * </p>
+	 *
+	 * @param text the headline text
+	 */
+	public void printHeadline(String text) {
+		printBorder(text);
+		out.printf("%s %s %s%n", frameChar, text, frameChar);
+		printBorder(text, 2);
+	}
 }
