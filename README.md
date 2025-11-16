@@ -1,5 +1,17 @@
 # Programmierung 1
 
+<!-- TOC -->
+* [Programmierung 1](#programmierung-1)
+  * [Hilfsklassen verwenden](#hilfsklassen-verwenden)
+    * [Setup](#setup)
+    * [Console Printer](#console-printer)
+    * [File Printer](#file-printer)
+      * [Zieldatei bestimmen](#zieldatei-bestimmen)
+    * [File Reader](#file-reader)
+      * [Beispiel](#beispiel)
+    * [Beispiele](#beispiele)
+<!-- TOC -->
+
 ## Hilfsklassen verwenden
 ### Setup
 
@@ -211,6 +223,8 @@ Zahl 43 gefunden.
  */
 ```
 
-## Beispiele
+Ein Anwendungsbeispiel stellt die [Übungsaufgabe 04](./src/pr1/a04/FirstInput.java) dar.
 
-[Übungsaufgabe 04](./src/pr1/a04/FirstInput.java)
+### Beispiele
+
+
