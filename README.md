@@ -74,12 +74,15 @@ Für Überschriften und ähnliches haben wir ebenfalls eine nützliche Klasse. D
 ````php
 public void run() {
     getConsolePrintDecorator().printHeadline("Meine Überschrift");
+    println("Mein Inhalt");
 }
 
 // Ausgabe
 #####################
 # Meine Überschrift #
 #####################
+
+Mein Inhalt
 ````
 
 ## Übungsaufgaben
