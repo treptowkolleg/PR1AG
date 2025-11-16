@@ -9,7 +9,7 @@
       * [Zieldatei bestimmen](#zieldatei-bestimmen)
     * [File Reader](#file-reader)
       * [Beispiel](#beispiel)
-    * [Beispiele](#beispiele)
+  * [Beispiele](#beispiele)
 <!-- TOC -->
 
 ## Hilfsklassen verwenden
@@ -225,6 +225,6 @@ Zahl 43 gefunden.
 
 Ein Anwendungsbeispiel stellt die [Übungsaufgabe 04](./src/pr1/a04/FirstInput.java) dar.
 
-### Beispiele
+## Beispiele
 
 
