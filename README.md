@@ -205,13 +205,13 @@ public void run() {
         Stream<String> stream = scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens();
         Stream<String> filteredStream = stream.filter(s -> s.matches(MatchPattern.INTEGER.getRegex()));
         IntStream intStream = filteredStream.mapToInt(Integer::parseInt);
-        intStream.forEach(i -> this.printf("Zahl %d gefunden.%n", i));
+        intStream.forEach(i -> printf("Zahl %d gefunden.%n", i));
     });
     
     // und kürzer:
     withFileScanner(scanner -> scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens()
             .filter(s -> s.matches(MatchPattern.INTEGER.getRegex())).mapToInt(Integer::parseInt).forEach(
-                    element -> this.printf("Zahl %d gefunden.%n", element))
+                    element -> printf("Zahl %d gefunden.%n", element))
     );
 }
 
