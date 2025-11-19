@@ -38,7 +38,7 @@ public class FirstInput extends AbstractApplication {
 				scanner -> prettyPrintNumbersFrom(scanner, 5, 2, getConsolePrintWriter()));
 
 		// Zahlen von A nach B mit neuer Breite kopieren
-		copyNumberFile("../a03/write_mixed_numbers_100.txt", "new_write_mixed_numbers.txt", 10, 0);
+		copyNumberFile("../a03/write_mixed_numbers_100.txt", "new_write_mixed_numbers.txt", 10, 2);
 	}
 
 	/**

@@ -1,14 +1,13 @@
 package pr1.helper.extension;
 
 public class Collector<T extends Number> {
-	private double sum = 0.0;
+	private Double sum = 0.0;
 
 	public void add(T value) {
 		if (null == value) {
 			return;
 		}
 		sum += value instanceof Double ? value.doubleValue() : value.intValue();
-
 	}
 
 	public void set(T value) {
@@ -19,6 +18,11 @@ public class Collector<T extends Number> {
 	}
 
 	public double getSum() {
-		return sum;
+		return sum.doubleValue();
 	}
+
+	public int getSumAsInteger() {
+		return sum.intValue();
+	}
+	
 }

@@ -1,18 +1,22 @@
 package pr1.helper.extension;
 
 public class Counter {
-	private int counter = 1;
+	private int counter;
+
+	public Counter() {
+		counter = 1;
+	}
+
+	public Counter(int startValue) {
+		counter = startValue;
+	}
 
 	public int get() {
 		return counter;
 	}
 
-	public void set(int counter) {
-		if (counter > 0) {
-			this.counter = counter;
-		} else {
-			this.counter = 1;
-		}
+	public void set(int startValue) {
+		counter = (startValue > 0) ? startValue : 1;
 	}
 
 	public void reset() {
