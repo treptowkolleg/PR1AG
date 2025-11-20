@@ -101,8 +101,9 @@ public class PrintDecorator {
 	 * @param text the headline text
 	 */
 	public void printHeadline(String text) {
+        out.println();
 		printBorder(text);
 		out.printf("%s %s %s%n", frameChar, text, frameChar);
-		printBorder(text, 2);
+		printBorder(text);
 	}
 }

@@ -1,0 +1,166 @@
+package pr1.a05;
+
+import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.Delimiter;
+import pr1.helper.extension.PrintDecorator;
+import pr1.helper.extension.Range;
+import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.*;
+
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class AddressPlay extends AbstractApplication {
+    public static PrintWriter out;
+    public static PrintDecorator decorator;
+
+    public static void main(String[] args) {
+        new AddressPlay();
+    }
+
+    @Override
+    public void run() {
+        out = getConsolePrintWriter();
+        decorator = getConsolePrintDecorator();
+        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg Freiheit 15";
+
+        decorator.printHeadline("Erste Testausgabe:");
+        test(out);
+        someInhabitants();
+
+        // nur eine Adresse erzeugen (weitere Token werden ignoriert)
+        decorator.printHeadline("Erste Adresse aus String:");
+        withInputScanner(myAddresses, scanner -> {
+            AdresseList aList = new AdresseList();
+            aList.add(createAdresse(scanner));
+            printListObjects(out, aList);
+        });
+
+        // Alle enthaltenen Adressen erzeugen
+        decorator.printHeadline("Alle Adressen aus String:");
+        withInputScanner(myAddresses, scanner -> {
+            AdresseList adresseList = createAdressen(scanner);
+            printListObjects(out, adresseList);
+        });
+
+        // Adressen aus Datei importieren und auf der Konsole ausgeben
+        decorator.printHeadline("Adressen aus Datei (A):");
+        withFileScanner("addresses.txt", scanner -> printListObjects(out, createAdressen(scanner)));
+        decorator.printHeadline("Adressen aus Datei (B):");
+        AdresseList addressesFromFile = createAdressen("./data/a05/addresses.txt");
+        printListObjects(out, addressesFromFile);
+
+        // Einwohner umziehen lassen
+        umzuege(out, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
+    }
+
+    public static void test(PrintWriter out) {
+        AdresseList addresses = createTestAddresses();
+        for (Adresse adresse : addresses) {
+            out.println(adresse);
+        }
+    }
+
+    public static AdresseList createTestAddresses() {
+        AdresseList addresses = new AdresseList();
+        addresses.add(new Adresse(13353, "Berlin", "Luxemburger Straße", 8));
+        for (int i : new Range(1, 4)) {
+            Adresse a0 = addresses.get(0);
+            addresses.add(new Adresse(a0, a0.getHausNr() + i));
+        }
+        for (int i : new Range(1, 5)) {
+            addresses.add(new Adresse(12437, "Berlin", "Baumschulenstraße", i * 2));
+        }
+        return addresses;
+    }
+
+    public static void someInhabitants() {
+        PersonList persons = Factory.createTestPersonliste();
+        AdresseList addresses = createTestAddresses();
+        EinwohnerList inhabitants = new EinwohnerList();
+        for (Person person : persons) {
+            int index = (int) (Math.random() * addresses.size() - 1);
+            inhabitants.add(new Einwohner(person, addresses.get(index)));
+        }
+        decorator.printHeadline("VOR UMZUG:");
+        printListObjects(out, inhabitants);
+
+        // Die ersten drei Personen umziehen lassen
+        for (int inhabitantIndex : new Range(0, 2)) {
+            Einwohner inhabitant = inhabitants.get(inhabitantIndex);
+            while (true) {
+                int index = (int) (Math.random() * addresses.size() - 1);
+                if (!inhabitant.getAdresse().equals(addresses.get(index))) {
+                    inhabitants.set(inhabitantIndex, new Einwohner(inhabitant, addresses.get(index)));
+                    break;
+                }
+            }
+        }
+        decorator.printHeadline("NACH UMZUG:");
+        printListObjects(out, inhabitants);
+    }
+
+    public static Adresse createAdresse(Scanner in) {
+        in.useDelimiter(Delimiter.WHITESPACE.getPattern());
+        /*
+        Nur rudimentäre Fehlerbehandlung. Wir wissen eigentlich, dass jede Adresse aus vier Komponenten besteht, davon
+        die erste und letzte aus einem Integer, der Rest aus Strings. Aktuell tun wir aber "fast" so, dass alle Eingaben
+        korrekt sind.
+         */
+        try {
+            int plz = in.nextInt();
+            String city = in.next();
+            String street = in.next();
+            int streetNumber = in.nextInt();
+            street = street.replaceAll("_", " ");
+            return new Adresse(plz, city, street, streetNumber);
+        } catch (Exception ignored) {
+            return new Adresse(12345, "Generischer Ort", "Dorfstraße", 12);
+        }
+    }
+
+    public static AdresseList createAdressen(Scanner in) {
+        AdresseList addressList = new AdresseList();
+        while (in.hasNext()) {
+            addressList.add(createAdresse(in));
+        }
+        return addressList;
+    }
+
+    public static AdresseList createAdressen(String filename) {
+        FunnyFirstFileReader fileReader = new FunnyFirstFileReader(filename);
+        return createAdressen(new Scanner(fileReader));
+    }
+
+    public static void umzuege(PrintWriter out, String addressFileStartAdressen, String addressFileZielAdressen) {
+        PersonList personList = Factory.createTestPersonliste();
+        EinwohnerList einwohnerList = new EinwohnerList();
+        AdresseList oldAddressList = createAdressen(addressFileStartAdressen);
+        AdresseList newAddressList = createAdressen(addressFileZielAdressen);
+        for (int i : new Range(0, oldAddressList.size() - 1)) {
+            einwohnerList.add(new Einwohner(personList.get(i), oldAddressList.get(i)));
+        }
+
+        // Ausgabe der Einwohner
+        out.println();
+        out.println("Einwohner (alte Adresse):");
+        printListObjects(out, einwohnerList);
+
+        // nun alle umziehen lassen
+        for (int i : new Range(0, newAddressList.size() - 1)) {
+            einwohnerList.set(i, new Einwohner(personList.get(i), newAddressList.get(i)));
+        }
+
+        // Ausgabe der Einwohner
+        out.println();
+        out.println("Einwohner (neue Adresse):");
+        printListObjects(out, einwohnerList);
+    }
+
+    public static void printListObjects(PrintWriter out, ArrayList<?> list) {
+        for (Object object : list) {
+            out.println(object);
+        }
+    }
+}

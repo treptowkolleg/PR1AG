@@ -14,11 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package pr1.a01;
+package pr1.a01.ue;
 
-import pr1.helper.extension.Range;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.DoubleList;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class FirstMethods {
 
@@ -26,27 +30,53 @@ public class FirstMethods {
     public static String frameChar = "*"; // oder: [...] char frameChar = '*';
 
     public static void main(String[] args) {
+        Locale.setDefault(Locale.US);
         PrintWriter writer = new PrintWriter(System.out);
 
         // Aufgaben
         printDecorated(writer, "23.10.: Aufgabe 1b");
         printValue(writer, 4);
         printFlaecheSiebeneck(writer, 1);
+        writer.println();
 
-        // START: Testdurchlauf mit Fehlerbehandlung
-        double a = 1;
-        for (int i : new Range(3, 9)) {
+        // START: Überprüfung und Vergleich mit Taschenrechner
+        for (Map.Entry<Double, Double> entry : getSiebeneckValues()) {
             try {
-                writer.printf("Die Fläche des %d-Ecks mit a=%.2f ergibt %.2f Flächeneinheiten.%n", i, a,
-                        flaecheAllgemein(a, i));
+                writer.printf("a: %10.3f A_Sollwert: %10.3f A_Istwert: %10.3f%n", entry.getKey(), entry.getValue(),
+                        flaecheAllgemein(entry.getKey(), 7));
             } catch (RuntimeException e) {
                 writer.print("FEHLER:\t" + e.getMessage());
             }
         }
-        // ENDE: Testdurchlauf mit Fehlerbehandlung
-
-        // gesammelte Ausgaben ausgeben
+        // ENDE: Überprüfung und Vergleich mit Taschenrechner
         writer.flush();
+
+        // Aufgabe 5.ue1.d)
+        // Nein, es ändert sich nichts, da DoubleList von ArrayList<Double> erbt. Es ist also ein nützlicher Shortcut.
+    }
+
+    private static Set<Map.Entry<Double, Double>> getSiebeneckValues() {
+        HashMap<Double, Double> allDimensions = new HashMap<>();
+        DoubleList formDimensions = new DoubleList();
+        DoubleList calculatorFormAreas = new DoubleList();
+
+        // feste Werte, da wir andernfalls nicht parallel nachrechnen können.
+        formDimensions.add(1);
+        formDimensions.add(2.3);
+        formDimensions.add(4);
+        formDimensions.add(5.156);
+        formDimensions.add(6.789);
+
+        // mit Taschenrechner ermittelte Flächen
+        calculatorFormAreas.add(3.634);
+        calculatorFormAreas.add(19.223);
+        calculatorFormAreas.add(58.143);
+        calculatorFormAreas.add(96.605);
+        calculatorFormAreas.add(167.489);
+        for (int index = 0; index < formDimensions.size(); index++) {
+            allDimensions.put(formDimensions.get(index), calculatorFormAreas.get(index));
+        }
+        return allDimensions.entrySet();
     }
 
     /**
@@ -122,7 +152,6 @@ public class FirstMethods {
         if (n < 3) {
             throw new RuntimeException(String.format("%d-seitige Flächen sind nicht definiert!%n", n));
         }
-
         if (a <= 0) {
             throw new RuntimeException(
                     String.format("Flächen mit einer Seitenlänge von a=%.2f sind nicht definiert!%n", a));
