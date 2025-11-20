@@ -25,6 +25,9 @@ public class Demo extends AbstractApplication {
 		// ./data/a03/write_numbers.txt
 		// createFileReader(Aufgabe03IO.class, "write_numbers.txt");
 
+        createInputScanner();
+        withInputScanner(scanner -> ScannerDemo.askFor(scanner, getConsolePrintWriter()));
+
 		// benutzt Ordnerstruktur dieser Klasse.
 		withFileScanner("test.txt", s -> {
 			Stream<String> stream = s.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens();
