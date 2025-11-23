@@ -148,6 +148,7 @@ public abstract class AbstractApplication {
      */
     public AbstractApplication createFileWriter() {
         String fileName = getClass().getSimpleName().toLowerCase() + ".txt";
+
         return createFileWriter(FileTarget.DATA_DIR, fileName);
     }
 
@@ -474,6 +475,7 @@ public abstract class AbstractApplication {
         String pkg = classname.getPackageName().toLowerCase();
         int dotIndex = pkg.indexOf('.');
         String subPkg = (dotIndex >= 0) ? pkg.substring(dotIndex + 1) : pkg;
+
         return subPkg.replace('.', java.io.File.separatorChar);
     }
 
