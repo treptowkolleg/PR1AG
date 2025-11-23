@@ -33,6 +33,7 @@ public class AddressPlay extends AbstractApplication {
         decorator.printHeadline("Erste Adresse aus String:");
         withInputScanner(myAddresses, scanner -> {
             AdresseList aList = new AdresseList();
+
             aList.add(createAdresse(scanner));
             printListObjects(out, aList);
         });
@@ -41,6 +42,7 @@ public class AddressPlay extends AbstractApplication {
         decorator.printHeadline("Alle Adressen aus String:");
         withInputScanner(myAddresses, scanner -> {
             AdresseList adresseList = createAdressen(scanner);
+
             printListObjects(out, adresseList);
         });
 
@@ -68,6 +70,7 @@ public class AddressPlay extends AbstractApplication {
         addresses.add(new Adresse(13353, "Berlin", "Luxemburger Straße", 8));
         for (int i : new Range(1, 4)) {
             Adresse a0 = addresses.get(0);
+
             addresses.add(new Adresse(a0, a0.getHausNr() + i));
         }
         for (int i : new Range(1, 5)) {
@@ -83,6 +86,7 @@ public class AddressPlay extends AbstractApplication {
 
         for (Person person : persons) {
             int index = (int) (Math.random() * addresses.size() - 1);
+
             inhabitants.add(new Einwohner(person, addresses.get(index)));
         }
         decorator.printHeadline("VOR UMZUG:");
@@ -91,8 +95,10 @@ public class AddressPlay extends AbstractApplication {
         // Die ersten drei Personen umziehen lassen
         for (int inhabitantIndex : new Range(0, 2)) {
             Einwohner inhabitant = inhabitants.get(inhabitantIndex);
+
             while (true) {
                 int index = (int) (Math.random() * addresses.size() - 1);
+
                 if (!inhabitant.getAdresse().equals(addresses.get(index))) {
                     inhabitants.set(inhabitantIndex, new Einwohner(inhabitant, addresses.get(index)));
                     break;
@@ -113,10 +119,9 @@ public class AddressPlay extends AbstractApplication {
         try {
             int plz = in.nextInt();
             String city = in.next();
-            String street = in.next();
+            String street = in.next().replaceAll("_", " ");
             int streetNumber = in.nextInt();
 
-            street = street.replaceAll("_", " ");
             return new Adresse(plz, city, street, streetNumber);
         } catch (Exception ignored) {
             return new Adresse(12345, "Generischer Ort", "Dorfstraße", 12);
