@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AddressPlay extends AbstractApplication {
-    public static PrintWriter out;
+    public static PrintWriter printWriter;
     public static PrintDecorator decorator;
 
     public static void main(String[] args) {
@@ -21,12 +21,12 @@ public class AddressPlay extends AbstractApplication {
 
     @Override
     public void run() {
-        out = getConsolePrintWriter();
+        printWriter = getConsolePrintWriter();
         decorator = getConsolePrintDecorator();
         String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg Freiheit 15";
 
         decorator.printHeadline("Erste Testausgabe:");
-        test(out);
+        test(printWriter);
         someInhabitants();
 
         // nur eine Adresse erzeugen (weitere Token werden ignoriert)
@@ -35,7 +35,7 @@ public class AddressPlay extends AbstractApplication {
             AdresseList aList = new AdresseList();
 
             aList.add(createAdresse(scanner));
-            printListObjects(out, aList);
+            printListObjects(printWriter, aList);
         });
 
         // Alle enthaltenen Adressen erzeugen
@@ -43,17 +43,17 @@ public class AddressPlay extends AbstractApplication {
         withInputScanner(myAddresses, scanner -> {
             AdresseList adresseList = createAdressen(scanner);
 
-            printListObjects(out, adresseList);
+            printListObjects(printWriter, adresseList);
         });
 
         // Adressen aus Datei importieren und auf der Konsole ausgeben
         decorator.printHeadline("Adressen aus Datei (A):");
-        withFileScanner("addresses.txt", scanner -> printListObjects(out, createAdressen(scanner)));
+        withFileScanner("addresses.txt", scanner -> printListObjects(printWriter, createAdressen(scanner)));
         decorator.printHeadline("Adressen aus Datei (B):");
-        printListObjects(out, createAdressen("./data/a05/addresses.txt"));
+        printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
 
         // Einwohner umziehen lassen
-        umzuege(out, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
+        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
     }
 
     public static void test(PrintWriter out) {
@@ -90,7 +90,7 @@ public class AddressPlay extends AbstractApplication {
             inhabitants.add(new Einwohner(person, addresses.get(index)));
         }
         decorator.printHeadline("VOR UMZUG:");
-        printListObjects(out, inhabitants);
+        printListObjects(printWriter, inhabitants);
 
         // Die ersten drei Personen umziehen lassen
         for (int inhabitantIndex : new Range(0, 2)) {
@@ -106,7 +106,7 @@ public class AddressPlay extends AbstractApplication {
             }
         }
         decorator.printHeadline("NACH UMZUG:");
-        printListObjects(out, inhabitants);
+        printListObjects(printWriter, inhabitants);
     }
 
     public static Adresse createAdresse(Scanner in) {

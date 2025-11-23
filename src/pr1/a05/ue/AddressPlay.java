@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AddressPlay extends AbstractApplication {
-    public static PrintWriter out;
+    public static PrintWriter printWriter;
     public static PrintDecorator decorator;
 
     public static void main(String[] args) {
@@ -31,52 +31,56 @@ public class AddressPlay extends AbstractApplication {
      */
     @Override
     public void run() {
-        out = getConsolePrintWriter();
+        printWriter = getConsolePrintWriter();
         decorator = getConsolePrintDecorator();
         String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg Freiheit 15";
 
         decorator.printHeadline("Erste Testausgabe:");
-        test(out);
+        test(printWriter);
         someInhabitants();
 
         // nur eine Adresse erzeugen (weitere Token werden ignoriert)
         decorator.printHeadline("Erste Adresse aus String:");
         withInputScanner(myAddresses, scanner -> {
             ArrayList<Adresse> aList = new ArrayList<>();
+
             aList.add(createAdresse(scanner));
-            printListObjects(out, aList);
+            printListObjects(printWriter, aList);
         });
 
         // Alle enthaltenen Adressen erzeugen
         decorator.printHeadline("Alle Adressen aus String:");
         withInputScanner(myAddresses, scanner -> {
             ArrayList<Adresse> addressList = createAdressen(scanner);
-            printListObjects(out, addressList);
+
+            printListObjects(printWriter, addressList);
         });
 
         // Adressen aus Datei importieren und auf der Konsole ausgeben
         decorator.printHeadline("Adressen aus Datei (A):");
-        withFileScanner("../addresses.txt", scanner -> printListObjects(out, createAdressen(scanner)));
+        withFileScanner("../addresses.txt", scanner -> printListObjects(printWriter, createAdressen(scanner)));
         decorator.printHeadline("Adressen aus Datei (B):");
-        ArrayList<Adresse> addressesFromFile = createAdressen("./data/a05/addresses.txt");
-        printListObjects(out, addressesFromFile);
+        printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
 
         // Einwohner umziehen lassen
-        umzuege(out, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
+        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
     }
 
     public static void test(PrintWriter out) {
         ArrayList<Adresse> addresses = createTestAddresses();
+
         for (Adresse adresse : addresses) {
             out.println(adresse);
         }
     }
 
     public static ArrayList<Adresse> createTestAddresses() {
-        ArrayList<Adresse> addresses = new ArrayList<Adresse>();
+        ArrayList<Adresse> addresses = new ArrayList<>();
+
         addresses.add(new Adresse(13353, "Berlin", "Luxemburger Straße", 8));
         for (int i : new Range(1, 4)) {
             Adresse a0 = addresses.get(0);
+
             addresses.add(new Adresse(a0, a0.getHausNr() + i));
         }
         for (int i : new Range(1, 5)) {
@@ -89,18 +93,22 @@ public class AddressPlay extends AbstractApplication {
         PersonList persons = Factory.createTestPersonliste();
         ArrayList<Adresse> addresses = createTestAddresses();
         EinwohnerList inhabitants = new EinwohnerList();
+
         for (Person person : persons) {
             int index = (int) (Math.random() * addresses.size() - 1);
+
             inhabitants.add(new Einwohner(person, addresses.get(index)));
         }
         decorator.printHeadline("VOR UMZUG:");
-        printListObjects(out, inhabitants);
+        printListObjects(printWriter, inhabitants);
 
         // Die ersten drei Personen umziehen lassen
         for (int inhabitantIndex : new Range(0, 2)) {
             Einwohner inhabitant = inhabitants.get(inhabitantIndex);
+
             while (true) {
                 int index = (int) (Math.random() * addresses.size() - 1);
+
                 if (!inhabitant.getAdresse().equals(addresses.get(index))) {
                     inhabitants.set(inhabitantIndex, new Einwohner(inhabitant, addresses.get(index)));
                     break;
@@ -108,7 +116,7 @@ public class AddressPlay extends AbstractApplication {
             }
         }
         decorator.printHeadline("NACH UMZUG:");
-        printListObjects(out, inhabitants);
+        printListObjects(printWriter, inhabitants);
     }
 
     public static Adresse createAdresse(Scanner in) {
@@ -121,9 +129,9 @@ public class AddressPlay extends AbstractApplication {
         try {
             int plz = in.nextInt();
             String city = in.next();
-            String street = in.next();
+            String street = in.next().replaceAll("_", " ");
             int streetNumber = in.nextInt();
-            street = street.replaceAll("_", " ");
+
             return new Adresse(plz, city, street, streetNumber);
         } catch (Exception ignored) {
             return new Adresse(12345, "Generischer Ort", "Dorfstraße", 12);
@@ -131,7 +139,8 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static ArrayList<Adresse> createAdressen(Scanner in) {
-        ArrayList<Adresse> addressList = new ArrayList<Adresse>();
+        ArrayList<Adresse> addressList = new ArrayList<>();
+
         while (in.hasNext()) {
             addressList.add(createAdresse(in));
         }
@@ -139,8 +148,7 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static ArrayList<Adresse> createAdressen(String filename) {
-        FunnyFirstFileReader fileReader = new FunnyFirstFileReader(filename);
-        return createAdressen(new Scanner(fileReader));
+        return createAdressen(new Scanner(new FunnyFirstFileReader(filename)));
     }
 
     public static void umzuege(PrintWriter out, String addressFileStartAdressen, String addressFileZielAdressen) {
@@ -148,6 +156,7 @@ public class AddressPlay extends AbstractApplication {
         EinwohnerList einwohnerList = new EinwohnerList();
         ArrayList<Adresse> oldAddressList = createAdressen(addressFileStartAdressen);
         ArrayList<Adresse> newAddressList = createAdressen(addressFileZielAdressen);
+
         for (int i : new Range(0, oldAddressList.size() - 1)) {
             einwohnerList.add(new Einwohner(personList.get(i), oldAddressList.get(i)));
         }
