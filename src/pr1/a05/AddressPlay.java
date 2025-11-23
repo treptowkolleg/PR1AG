@@ -48,8 +48,7 @@ public class AddressPlay extends AbstractApplication {
         decorator.printHeadline("Adressen aus Datei (A):");
         withFileScanner("addresses.txt", scanner -> printListObjects(out, createAdressen(scanner)));
         decorator.printHeadline("Adressen aus Datei (B):");
-        AdresseList addressesFromFile = createAdressen("./data/a05/addresses.txt");
-        printListObjects(out, addressesFromFile);
+        printListObjects(out, createAdressen("./data/a05/addresses.txt"));
 
         // Einwohner umziehen lassen
         umzuege(out, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
@@ -57,6 +56,7 @@ public class AddressPlay extends AbstractApplication {
 
     public static void test(PrintWriter out) {
         AdresseList addresses = createTestAddresses();
+
         for (Adresse adresse : addresses) {
             out.println(adresse);
         }
@@ -64,6 +64,7 @@ public class AddressPlay extends AbstractApplication {
 
     public static AdresseList createTestAddresses() {
         AdresseList addresses = new AdresseList();
+
         addresses.add(new Adresse(13353, "Berlin", "Luxemburger Straße", 8));
         for (int i : new Range(1, 4)) {
             Adresse a0 = addresses.get(0);
@@ -79,6 +80,7 @@ public class AddressPlay extends AbstractApplication {
         PersonList persons = Factory.createTestPersonliste();
         AdresseList addresses = createTestAddresses();
         EinwohnerList inhabitants = new EinwohnerList();
+
         for (Person person : persons) {
             int index = (int) (Math.random() * addresses.size() - 1);
             inhabitants.add(new Einwohner(person, addresses.get(index)));
@@ -113,6 +115,7 @@ public class AddressPlay extends AbstractApplication {
             String city = in.next();
             String street = in.next();
             int streetNumber = in.nextInt();
+
             street = street.replaceAll("_", " ");
             return new Adresse(plz, city, street, streetNumber);
         } catch (Exception ignored) {
@@ -122,6 +125,7 @@ public class AddressPlay extends AbstractApplication {
 
     public static AdresseList createAdressen(Scanner in) {
         AdresseList addressList = new AdresseList();
+
         while (in.hasNext()) {
             addressList.add(createAdresse(in));
         }
@@ -130,6 +134,7 @@ public class AddressPlay extends AbstractApplication {
 
     public static AdresseList createAdressen(String filename) {
         FunnyFirstFileReader fileReader = new FunnyFirstFileReader(filename);
+
         return createAdressen(new Scanner(fileReader));
     }
 
@@ -138,6 +143,7 @@ public class AddressPlay extends AbstractApplication {
         EinwohnerList einwohnerList = new EinwohnerList();
         AdresseList oldAddressList = createAdressen(addressFileStartAdressen);
         AdresseList newAddressList = createAdressen(addressFileZielAdressen);
+
         for (int i : new Range(0, oldAddressList.size() - 1)) {
             einwohnerList.add(new Einwohner(personList.get(i), oldAddressList.get(i)));
         }
