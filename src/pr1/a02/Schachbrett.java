@@ -24,9 +24,10 @@ import pr1.helper.extension.Range;
 import java.io.PrintWriter;
 
 public class Schachbrett {
-	public static PrintWriter out = new PrintWriter(System.out);
+	public static PrintWriter out;
 
 	public static void main(String[] args) {
+        out = new PrintWriter(System.out);
 
 		// Gibt schicke Überschriften aus.
 		PrintDecorator printer = new PrintDecorator(out);
@@ -100,8 +101,6 @@ public class Schachbrett {
 	 * @return Ergebnis
 	 */
 	public static String schachbrett(boolean isWhitePlayer) {
-
-		// Variablen deklarieren und ggf. Objekte instantiieren
 		StringBuilder result = new StringBuilder();
 		StringBuilder rows = new StringBuilder();
 		StringBuilder columns = new StringBuilder();
@@ -186,5 +185,4 @@ public class Schachbrett {
 		}
 		return result.toString();
 	}
-
 }

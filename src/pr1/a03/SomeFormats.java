@@ -44,8 +44,8 @@ public class SomeFormats {
 
 	public static String prettyNumber(double n, int width, int precision) {
 		StringBuilder sb = new StringBuilder();
+
 		if (precision > 0) {
-			// zur Breite den Dezimalpunkt und die Nachkommastellen addieren.
 			width += 1 + precision;
 		}
 		sb.append(String.format("%" + width + "." + precision + "f", n));
@@ -67,6 +67,7 @@ public class SomeFormats {
 
 	public static void printAllPretty(PrintWriter out, int gap, int breakPoint) {
 		final int[] counter = { 1 };
+
 		// längste Zahl ermitteln und Länge abspeichern (vor dem Komma).
 		maxLength = numberList.getMaxAmountLength();
 		maxPrecision = numberList.getMaxPrecision();
@@ -84,5 +85,4 @@ public class SomeFormats {
 			counter[0]++;
 		});
 	}
-
 }

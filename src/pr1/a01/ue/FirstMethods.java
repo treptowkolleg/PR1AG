@@ -30,8 +30,8 @@ public class FirstMethods {
     public static String frameChar = "*"; // oder: [...] char frameChar = '*';
 
     public static void main(String[] args) {
-        Locale.setDefault(Locale.US);
         PrintWriter writer = new PrintWriter(System.out);
+        Locale.setDefault(Locale.US);
 
         // Aufgaben
         printDecorated(writer, "23.10.: Aufgabe 1b");
@@ -206,5 +206,4 @@ public class FirstMethods {
     public static void printHeadline(PrintWriter out, String text) {
         out.printf("%s %s %s%n", frameChar, text, frameChar);
     }
-
 }

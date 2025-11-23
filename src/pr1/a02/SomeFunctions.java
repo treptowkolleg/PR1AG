@@ -37,7 +37,6 @@ public class SomeFunctions {
 			a = random.nextDouble();
 			b = random.nextDouble();
 			r = random.nextDouble();
-
 			out.printf("U (Kreis) mit r = %.2f = %.2f.%n", r, kreisUmfang(r));
 			out.printf("U (Rechteck) mit a = %.2f und b = %.2f = %.2f.%n", a, b, rechteckUmfang(a, b));
 			out.printf("A (Rechteck) mit a = %.2f und b = %.2f = %.2f.%n", a, b, rechteckFlaeche(a, b));
@@ -71,5 +70,4 @@ public class SomeFunctions {
 	public static double rechteckFlaeche(double a, double b) {
 		return a * b;
 	}
-
 }

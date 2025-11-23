@@ -12,6 +12,7 @@ import pr1.helper.extension.Counter;
 import pr1.helper.extension.PrintDecorator;
 
 public class FirstInput extends AbstractApplication {
+
 	public static void main(String[] args) {
 		new FirstInput();
 	}
@@ -49,6 +50,7 @@ public class FirstInput extends AbstractApplication {
 	 */
 	public double sumOfNumbersIn(Scanner scanner) {
 		Collector<Double> sum = new Collector<>();
+
 		while (scanner.hasNext()) {
 			if (scanner.hasNextInt() || scanner.hasNextDouble()) {
 				sum.add(Double.parseDouble(scanner.next()));
@@ -67,6 +69,7 @@ public class FirstInput extends AbstractApplication {
 	 */
 	public double sumOfNumbersIn(String filename) {
 		final Collector<Double> sum = new Collector<>();
+
 		withFileScanner(filename, scanner -> sum.set(sumOfNumbersIn(scanner)));
 		return sum.getSum();
 	}
@@ -91,6 +94,7 @@ public class FirstInput extends AbstractApplication {
 	 */
 	public void prettyPrintNumbersFrom(Scanner scanner, int width, int precision, PrintWriter out) {
 		final Counter counter = new Counter();
+
 		scanner.useDelimiter(Delimiter.WHITESPACE.getPattern());
 		scanner.tokens().filter(f -> f.matches(MatchPattern.NUMBER.getRegex())).forEach(element -> {
 			if (element.matches(MatchPattern.INTEGER.getRegex())) {

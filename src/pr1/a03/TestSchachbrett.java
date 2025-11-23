@@ -23,10 +23,13 @@ import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileWriter;
 import java.util.HashMap;
 
 public class TestSchachbrett {
-    public static HashMap<String, Boolean> actions = new HashMap<>();
-    public static ConsolePrinter out = ConsolePrinter.createInstance();
+    public static HashMap<String, Boolean> actions;
+    public static ConsolePrinter out;
 
     public static void main(String[] args) {
+        actions = new HashMap<>();
+        out = ConsolePrinter.createInstance();
+
         actions.put("./data/schach_normal.txt", false);
         actions.put("./data/schach_reverse.txt", true);
         out.append(String.format("Beginne Schreiben von %d Dateien.\n", actions.size()));
@@ -36,9 +39,9 @@ public class TestSchachbrett {
 
     public static void printSchachbrett(String filename, boolean isReverse) {
         FunnyFirstFileWriter fout = new FunnyFirstFileWriter(filename);
+
         fout.append(Schachbrett.schachbrett(!isReverse));
         fout.close();
         out.append(String.format("Datei '%s' erfolgreich geschrieben.%n", filename));
     }
-
 }

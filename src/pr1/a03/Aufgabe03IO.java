@@ -28,9 +28,10 @@ public class Aufgabe03IO {
     public static void main(String[] args) {
         StopWatch stopWatch = new StopWatch();
         ConsolePrinter consolePrinter = ConsolePrinter.createInstance();
+        String result = "PASS";
+
         Locale.setDefault(Locale.US);
         writeIntNumberFile("./data/write_numbers.txt", 100);
-        String result = "PASS";
 
         // Zeit für diese Datei stoppen
         for (int amount = 100; amount <= 1e7; amount *= 10) {
@@ -60,12 +61,14 @@ public class Aufgabe03IO {
     public static void generateNumbers(String filename, int numberCount, int maxPrecision, int lowerBound, int upperBound) {
         FunnyFirstFileWriter fileWriter = new FunnyFirstFileWriter(filename);
         PrintWriter out = new PrintWriter(fileWriter);
+
         if (numberCount % 2 == 1) {
             numberCount++;
         }
         for (int i = 1; i <= numberCount; i++) {
             double randomNummer = randomNumber(lowerBound, upperBound);
             int randomPrecise = (int) randomNumber(0, maxPrecision);
+
             SomeFormats.addNumber(randomNummer, randomPrecise);
         }
         SomeFormats.printAllPretty(out, 3, 10);
@@ -82,11 +85,12 @@ public class Aufgabe03IO {
      * @return zufällige Zahl, die zwischen lowerBound und upperBound liegt.
      */
     public static double randomNumber(int lowerBound, int upperBound) {
+        double randomNumber;
+
         if (lowerBound > upperBound) {
             throw new IllegalArgumentException("lowerBound muss kleiner als upperBound sein!");
         }
-        double randomNumber = lowerBound + (Math.random() * (upperBound - lowerBound));
+        randomNumber = lowerBound + (Math.random() * (upperBound - lowerBound));
         return Math.random() < .5 ? (int) randomNumber : randomNumber;
     }
-
 }

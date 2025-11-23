@@ -62,6 +62,7 @@ public class VorbereitungInput extends AbstractApplication {
 
 	private String formatScannedIntOrDouble(String intFormat, String doubleFormat, Scanner s) {
 		StringBuilder output = new StringBuilder();
+
 		while (s.hasNext()) {
 			if (s.hasNextInt()) {
 				output.append(String.format(intFormat, s.nextInt()));
