@@ -18,34 +18,46 @@ package pr1.helper.extension;
 
 import java.util.Iterator;
 
+/**
+ * A utility class to iterate over a range of chars or integers.
+ * <p>
+ * This class is typically used with for-each loops to enhance
+ * code readability.
+ * </p>
+ *
+ * @see java.util.Iterator
+ *
+ * @author Benjamin Wagner
+ * @version 1.0
+ * @since 2025
+ */
 public class Range implements Iterable<Character> {
-	private final char start;
-	private final char endInclusive;
-	public Range(char start, char endInclusive) {
-		this.start = start;
-		this.endInclusive = endInclusive;
-	}
+    private final char start;
+    private final char endInclusive;
 
-	public Range(int start, int endInclusive) {
-		this.start = (char) start;
-		this.endInclusive = (char) endInclusive;
-	}
+    public Range(char start, char endInclusive) {
+        this.start = start;
+        this.endInclusive = endInclusive;
+    }
 
-	@Override
-	public Iterator<Character> iterator() {
-		return new Iterator<>() {
-			private char current = start;
+    public Range(int start, int endInclusive) {
+        this((char) start, (char) endInclusive);
+    }
 
-			@Override
-			public boolean hasNext() {
-				return current <= endInclusive;
-			}
+    @Override
+    public Iterator<Character> iterator() {
+        return new Iterator<>() {
+            private char current = start;
 
-			@Override
-			public Character next() {
-				return current++;
-			}
-		};
-	}
+            @Override
+            public boolean hasNext() {
+                return current <= endInclusive;
+            }
 
+            @Override
+            public Character next() {
+                return current++;
+            }
+        };
+    }
 }
