@@ -67,11 +67,7 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static void test(PrintWriter out) {
-        ArrayList<Adresse> addresses = createTestAddresses();
-
-        for (Adresse adresse : addresses) {
-            out.println(adresse);
-        }
+        printListObjects(out, createTestAddresses());
     }
 
     public static ArrayList<Adresse> createTestAddresses() {
@@ -178,8 +174,6 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static void printListObjects(PrintWriter out, ArrayList<?> list) {
-        for (Object object : list) {
-            out.println(object);
-        }
+        list.forEach(out::println);
     }
 }
