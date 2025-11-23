@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"pr1.helper.core"},{"l":"pr1.helper.entity"},{"l":"pr1.helper.extension"},{"l":"pr1.helper.repository"}]

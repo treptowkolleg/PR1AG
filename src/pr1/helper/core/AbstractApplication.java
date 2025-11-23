@@ -16,12 +16,12 @@
  */
 package pr1.helper.core;
 
+import pr1.helper.extension.PrintDecorator;
+
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.function.Consumer;
-
-import pr1.helper.extension.PrintDecorator;
 
 /**
  * Base class for console and file-based applications.
@@ -164,7 +164,6 @@ public abstract class AbstractApplication {
      */
     public AbstractApplication createFileWriter() {
         String fileName = getClass().getSimpleName().toLowerCase() + ".txt";
-
         return createFileWriter(FileTarget.DATA_DIR, fileName);
     }
 
@@ -208,6 +207,7 @@ public abstract class AbstractApplication {
      * Appends content to the current console output.
      *
      * @param content char sequence to be appended to the console output.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication append(CharSequence content) {
         if (null == printWriter) {
@@ -220,8 +220,8 @@ public abstract class AbstractApplication {
     /**
      * Appends content to the current file output.
      *
-     * @param content @param content char sequence to be appended to the file
-     *                output.
+     * @param content char sequence to be appended to the file output.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication appendToFile(CharSequence content) {
         if (null == fileWriter) {
@@ -235,6 +235,7 @@ public abstract class AbstractApplication {
      * Prints content to the console output.
      *
      * @param content String to be printed to the console output.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication print(String content) {
         if (null == printWriter) {
@@ -248,6 +249,7 @@ public abstract class AbstractApplication {
      * Prints content to the file output.
      *
      * @param content String to be printed to the file output.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication printToFile(String content) {
         if (null == fileWriter) {
@@ -259,6 +261,8 @@ public abstract class AbstractApplication {
 
     /**
      * Prints a linebreak to the console output.
+     *
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication println() {
         if (null == printWriter) {
@@ -269,7 +273,10 @@ public abstract class AbstractApplication {
     }
 
     /**
-     * Prints a line to the console output.
+     * Prints a line to the console output appending a linebreak.
+     *
+     * @param content String to be printed to the console output.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication println(String content) {
         if (null == printWriter) {
@@ -281,6 +288,8 @@ public abstract class AbstractApplication {
 
     /**
      * Prints a linebreak to the file output.
+     *
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication printlnToFile() {
         if (null == fileWriter) {
@@ -291,7 +300,10 @@ public abstract class AbstractApplication {
     }
 
     /**
-     * Prints a line to the file output.
+     * Prints a line to the file output appending a linebreak.
+     *
+     * @param content String to be printed to the file output.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication printlnToFile(String content) {
         if (null == fileWriter) {
@@ -303,6 +315,10 @@ public abstract class AbstractApplication {
 
     /**
      * Prints formatted text to the console output.
+     *
+     * @param format format string (as per {@link String#format}).
+     * @param args   arguments referenced by the format specifiers.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication printf(String format, Object... args) {
         if (null == printWriter) {
@@ -314,6 +330,10 @@ public abstract class AbstractApplication {
 
     /**
      * Prints formatted text to the file output.
+     *
+     * @param format format string (as per {@link String#format}).
+     * @param args   arguments referenced by the format specifiers.
+     * @return this instance for fluent method chaining.
      */
     public AbstractApplication printfToFile(String format, Object... args) {
         if (null == fileWriter) {
@@ -392,6 +412,10 @@ public abstract class AbstractApplication {
     /**
      * Overload: executes {@code closure} for a specific file name in the subclass
      * data path.
+     *
+     * @param filename name of the file to read from within the subclass data directory.
+     * @param closure  lambda function that processes the {@link Scanner}.
+     * @see FileReader
      */
     public void withFileScanner(String filename, Consumer<Scanner> closure) {
         createFileReader(filename);
@@ -400,6 +424,11 @@ public abstract class AbstractApplication {
 
     /**
      * Overload: executes {@code closure} for a specific class and file path.
+     *
+     * @param classname the class used to resolve the package-based subdirectory.
+     * @param filename  name of the file to read from within the derived data path.
+     * @param closure   lambda function that processes the {@link Scanner}.
+     * @see FileReader
      */
     public void withFileScanner(Class<?> classname, String filename, Consumer<Scanner> closure) {
         createFileReader(classname, filename);
@@ -408,6 +437,8 @@ public abstract class AbstractApplication {
 
     /**
      * Returns the {@link PrintWriter} for file output.
+     *
+     * @return file {@link PrintWriter}.
      */
     public PrintWriter getFilePrintWriter() {
         if (null == fileWriter) {
@@ -418,6 +449,8 @@ public abstract class AbstractApplication {
 
     /**
      * Returns the {@link PrintDecorator} for console output.
+     *
+     * @return console {@link PrintDecorator}.
      */
     public PrintDecorator getConsolePrintDecorator() {
         if (null == printDecorator) {
@@ -428,6 +461,8 @@ public abstract class AbstractApplication {
 
     /**
      * Returns the {@link PrintDecorator} for file output.
+     *
+     * @return file {@link PrintDecorator}.
      */
     public PrintDecorator getFilePrintDecorator() {
         if (null == filePrintDecorator) {
@@ -440,7 +475,9 @@ public abstract class AbstractApplication {
      * Flushes the console output buffer.
      */
     public void flush() {
-        printWriter.flush();
+        if (printWriter != null) {
+            printWriter.flush();
+        }
     }
 
     /**
@@ -478,6 +515,8 @@ public abstract class AbstractApplication {
     /**
      * Returns the relative directory path based on the current subclass package
      * hierarchy.
+     *
+     * @return relative path derived from the current class’s package name.
      */
     private String getDir() {
         return getDir(getClass());
@@ -486,12 +525,14 @@ public abstract class AbstractApplication {
     /**
      * Returns the relative directory path for the specified class package
      * hierarchy.
+     *
+     * @param classname the class whose package name is used to derive the path.
+     * @return relative path derived from the given class’s package name.
      */
     private String getDir(Class<?> classname) {
         String pkg = classname.getPackageName().toLowerCase();
         int dotIndex = pkg.indexOf('.');
         String subPkg = (dotIndex >= 0) ? pkg.substring(dotIndex + 1) : pkg;
-
         return subPkg.replace('.', java.io.File.separatorChar);
     }
 

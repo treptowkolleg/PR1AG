@@ -33,7 +33,7 @@ import java.util.Iterator;
  *     System.out.println(c);
  * }
  * }</pre>
- * </p>
+ *
  *
  * @see java.util.Iterator
  *
