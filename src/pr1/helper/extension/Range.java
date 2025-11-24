@@ -16,6 +16,7 @@
  */
 package pr1.helper.extension;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -34,11 +35,9 @@ import java.util.Iterator;
  * }
  * }</pre>
  *
- *
- * @see java.util.Iterator
- *
  * @author Benjamin Wagner
  * @version 1.0
+ * @see java.util.Iterator
  * @since 2025
  */
 public class Range implements Iterable<Character> {
@@ -48,8 +47,8 @@ public class Range implements Iterable<Character> {
     /**
      * Constructs a {@code Range} from the specified start and end characters (inclusive).
      *
-     * @param start          the first character in the range
-     * @param endInclusive   the last character in the range (included in iteration)
+     * @param start        the first character in the range
+     * @param endInclusive the last character in the range (included in iteration)
      */
     public Range(char start, char endInclusive) {
         this.start = start;
@@ -66,11 +65,43 @@ public class Range implements Iterable<Character> {
      * Java’s narrowing primitive conversion.
      * </p>
      *
-     * @param start          the numeric representation of the first character
-     * @param endInclusive   the numeric representation of the last character (inclusive)
+     * @param amount the amount of range numbers
+     */
+    public Range(int amount) {
+        this((char) 0, (char) (amount - 1));
+    }
+
+    /**
+     * Constructs a {@code Range} from the specified integer values, which are
+     * cast to {@code char}.
+     * <p>
+     * This is a convenience constructor for creating character ranges using
+     * integer literals (e.g., ASCII codes). Note that values outside the
+     * valid {@code char} range (0–65535) will be silently truncated due to
+     * Java’s narrowing primitive conversion.
+     * </p>
+     *
+     * @param start        the numeric representation of the first character
+     * @param endInclusive the numeric representation of the last character (inclusive)
      */
     public Range(int start, int endInclusive) {
         this((char) start, (char) endInclusive);
+    }
+
+    /**
+     * Constructs a {@code Range} from the size of the specified list, which are
+     * cast to {@code char}, starting at 0.
+     * <p>
+     * This is a convenience constructor for creating character ranges using
+     * integer literals (e.g., ASCII codes). Note that values outside the
+     * valid {@code char} range (0–65535) will be silently truncated due to
+     * Java’s narrowing primitive conversion.
+     * </p>
+     *
+     * @param list used to iterate over its indexes.
+     */
+    public Range(ArrayList<?> list) {
+        this((char) 0, (char) (list.size() - 1));
     }
 
     /**

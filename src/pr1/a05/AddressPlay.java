@@ -89,7 +89,7 @@ public class AddressPlay extends AbstractApplication {
         printListObjects(printWriter, inhabitants);
 
         // Die ersten drei Personen umziehen lassen
-        for (int inhabitantIndex : new Range(0, 2)) {
+        for (int inhabitantIndex : new Range(3)) {
             Einwohner inhabitant = inhabitants.get(inhabitantIndex);
 
             while (true) {
@@ -145,7 +145,7 @@ public class AddressPlay extends AbstractApplication {
         AdresseList oldAddressList = createAdressen(addressFileStartAdressen);
         AdresseList newAddressList = createAdressen(addressFileZielAdressen);
 
-        for (int i : new Range(0, oldAddressList.size() - 1)) {
+        for (int i : new Range(oldAddressList)) {
             einwohnerList.add(new Einwohner(personList.get(i), oldAddressList.get(i)));
         }
 
@@ -155,7 +155,7 @@ public class AddressPlay extends AbstractApplication {
         printListObjects(out, einwohnerList);
 
         // nun alle umziehen lassen
-        for (int i : new Range(0, newAddressList.size() - 1)) {
+        for (int i : new Range(newAddressList)) {
             einwohnerList.set(i, new Einwohner(personList.get(i), newAddressList.get(i)));
         }
 
