@@ -49,7 +49,7 @@ public class AddressPlay extends AbstractApplication {
         // Adressen aus Datei importieren und auf der Konsole ausgeben
         decorator.printHeadline("Adressen aus Datei (A):");
         withFileScanner("addresses.txt",
-                scanner -> printListObjects(printWriter, createAdressen(scanner)));
+                        scanner -> printListObjects(printWriter, createAdressen(scanner)));
         decorator.printHeadline("Adressen aus Datei (B):");
         printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
 
