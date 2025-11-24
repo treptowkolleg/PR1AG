@@ -34,6 +34,7 @@ public enum Delimiter {
 	
     private final String regex;
     private final Pattern pattern;
+
     Delimiter(String regex) {
         this.regex = regex;
         this.pattern = Pattern.compile(regex);

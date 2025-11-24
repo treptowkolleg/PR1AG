@@ -25,6 +25,7 @@ public enum MatchPattern {
 
 	private final String regex;
 	private final Pattern pattern;
+
 	MatchPattern(String regex) {
 		this.regex = regex;
 		this.pattern = Pattern.compile(regex);

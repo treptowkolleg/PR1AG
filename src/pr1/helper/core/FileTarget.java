@@ -23,10 +23,7 @@ public enum FileTarget {
 
 	private final String baseDir;
 	private final char separator = java.io.File.separatorChar;
-
-	/**
-	 * @param property Base directory
-	 */
+    
 	FileTarget(String property) {
 		baseDir = property;
 	}
