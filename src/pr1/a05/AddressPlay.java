@@ -1,16 +1,22 @@
 package pr1.a05;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import pr1.helper.core.AbstractApplication;
 import pr1.helper.core.Delimiter;
 import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.Range;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.*;
-
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Adresse;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.AdresseList;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Einwohner;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.EinwohnerList;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Factory;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Person;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.PersonList;
 
 public class AddressPlay extends AbstractApplication {
     public static PrintWriter printWriter;
@@ -24,7 +30,7 @@ public class AddressPlay extends AbstractApplication {
     public void run() {
         printWriter = getConsolePrintWriter();
         decorator = getConsolePrintDecorator();
-        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg Freiheit 15";
+        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg" + " Freiheit 15";
 
         decorator.printHeadline("Erste Testausgabe:");
         test(printWriter);
@@ -49,14 +55,12 @@ public class AddressPlay extends AbstractApplication {
 
         // Adressen aus Datei importieren und auf der Konsole ausgeben
         decorator.printHeadline("Adressen aus Datei (A):");
-        withFileScanner("addresses.txt",
-                        scanner -> printListObjects(printWriter, createAdressen(scanner)));
+        withFileScanner("addresses.txt", scanner -> printListObjects(printWriter, createAdressen(scanner)));
         decorator.printHeadline("Adressen aus Datei (B):");
         printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
 
         // Einwohner umziehen lassen
-        umzuege(printWriter, "./data/a05/addresses.txt",
-                "./data/a05/addresses_new.txt");
+        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
     }
 
     public static void test(PrintWriter out) {
@@ -111,9 +115,10 @@ public class AddressPlay extends AbstractApplication {
     public static Adresse createAdresse(Scanner in) {
         in.useDelimiter(Delimiter.WHITESPACE.getPattern());
         /*
-        Nur rudimentäre Fehlerbehandlung. Wir wissen eigentlich, dass jede Adresse aus vier Komponenten besteht, davon
-        die erste und letzte aus einem Integer, der Rest aus Strings. Aktuell tun wir aber "fast" so, dass alle Eingaben
-        korrekt sind.
+         * Nur rudimentäre Fehlerbehandlung. Wir wissen eigentlich, dass jede Adresse
+         * aus vier Komponenten besteht, davon die erste und letzte aus einem Integer,
+         * der Rest aus Strings. Aktuell tun wir aber "fast" so, dass alle Eingaben
+         * korrekt sind.
          */
         try {
             int plz = in.nextInt();
