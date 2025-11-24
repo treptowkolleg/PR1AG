@@ -58,12 +58,14 @@ public class AddressPlay extends AbstractApplication {
 
         // Adressen aus Datei importieren und auf der Konsole ausgeben
         decorator.printHeadline("Adressen aus Datei (A):");
-        withFileScanner("../addresses.txt", scanner -> printListObjects(printWriter, createAdressen(scanner)));
+        withFileScanner("../addresses.txt",
+                        scanner -> printListObjects(printWriter, createAdressen(scanner)));
         decorator.printHeadline("Adressen aus Datei (B):");
         printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
 
         // Einwohner umziehen lassen
-        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
+        umzuege(printWriter, "./data/a05/addresses.txt",
+                "./data/a05/addresses_new.txt");
     }
 
     public static void test(PrintWriter out) {
