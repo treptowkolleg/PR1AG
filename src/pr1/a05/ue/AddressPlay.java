@@ -2,6 +2,7 @@ package pr1.a05.ue;
 
 import pr1.helper.core.AbstractApplication;
 import pr1.helper.core.Delimiter;
+import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.Range;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
@@ -93,7 +94,7 @@ public class AddressPlay extends AbstractApplication {
         EinwohnerList inhabitants = new EinwohnerList();
 
         for (Person person : persons) {
-            int index = (int) (Math.random() * addresses.size() - 1);
+            int index = BetterRandom.indexOf(addresses);
 
             inhabitants.add(new Einwohner(person, addresses.get(index)));
         }
@@ -105,7 +106,7 @@ public class AddressPlay extends AbstractApplication {
             Einwohner inhabitant = inhabitants.get(inhabitantIndex);
 
             while (true) {
-                int index = (int) (Math.random() * addresses.size() - 1);
+                int index = BetterRandom.indexOf(addresses);
 
                 if (!inhabitant.getAdresse().equals(addresses.get(index))) {
                     inhabitants.set(inhabitantIndex, new Einwohner(inhabitant, addresses.get(index)));
