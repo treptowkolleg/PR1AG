@@ -19,7 +19,8 @@ package pr1.helper.core;
 /**
  * A simple and lightweight utility class for measuring elapsed time.
  * <p>
- * The {@code StopWatch} class provides nanosecond precision for timing operations
+ * The {@code StopWatch} class provides nanosecond precision for timing
+ * operations
  * and can report elapsed time in both milliseconds and seconds. It uses
  * {@link System#nanoTime()} internally for high-resolution time measurement.
  * </p>
@@ -82,7 +83,8 @@ public class StopWatch {
      * @return elapsed time in seconds as a {@code double}.
      */
     public double getElapsedSeconds() {
-        long elapsed = isRunning ? System.nanoTime() - startTime : endTime - startTime;
+        long elapsed = isRunning ? System.nanoTime() - startTime :
+                endTime - startTime;
         return elapsed / 1_000_000_000.0;
     }
 
@@ -97,7 +99,8 @@ public class StopWatch {
      * @return elapsed time in milliseconds as a {@code long}.
      */
     public long getElapsedMillis() {
-        long elapsed = isRunning ? System.nanoTime() - startTime : endTime - startTime;
+        long elapsed = isRunning ? System.nanoTime() - startTime :
+                endTime - startTime;
         return elapsed / 1_000_000;
     }
 }

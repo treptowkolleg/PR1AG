@@ -23,7 +23,8 @@ import java.util.Iterator;
  * A utility class that represents an inclusive range of characters and enables
  * iteration over that range using a for-each loop.
  * <p>
- * This class supports construction from either {@code char} values or {@code int}
+ * This class supports construction from either {@code char} values or {@code
+ * int}
  * values (which are cast to {@code char}). The range is inclusive on both ends,
  * meaning both the start and end characters are part of the iteration.
  * </p>
@@ -45,10 +46,12 @@ public class Range implements Iterable<Character> {
     private final char endInclusive;
 
     /**
-     * Constructs a {@code Range} from the specified start and end characters (inclusive).
+     * Constructs a {@code Range} from the specified start and end characters
+     * (inclusive).
      *
      * @param start        the first character in the range
-     * @param endInclusive the last character in the range (included in iteration)
+     * @param endInclusive the last character in the range (included in
+     *                     iteration)
      */
     public Range(char start, char endInclusive) {
         this.start = start;
@@ -82,7 +85,8 @@ public class Range implements Iterable<Character> {
      * </p>
      *
      * @param start        the numeric representation of the first character
-     * @param endInclusive the numeric representation of the last character (inclusive)
+     * @param endInclusive the numeric representation of the last character
+     *                     (inclusive)
      */
     public Range(int start, int endInclusive) {
         this((char) start, (char) endInclusive);

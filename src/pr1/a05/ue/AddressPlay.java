@@ -20,55 +20,6 @@ public class AddressPlay extends AbstractApplication {
         new AddressPlay();
     }
 
-    /**
-     * {@link AdresseList} wurde in {@link ArrayList<Adresse>} geändert. Es ändert sich auch hier nichts, weil
-     * hier dieselbe Situation stattfindet wie bei {@link DoubleList} und {@link ArrayList<Double>}.
-     * <p>
-     * Die für die Ausgaben relevanten Objektmethoden werden gleichermaßen durch {@link Adresse} bzw. {@link Double}
-     * umgesetzt. Gleichzeitig kann {@link AdresseList} aber auch <i>polymorph</i> zu {@link ArrayList<Adresse>}
-     * betrachtet werden. Aus diesem Grund funktioniert die Methode {@link #printListObjects(PrintWriter, ArrayList)}
-     * auch für sämtliche ArrayList-Container.
-     * </p>
-     */
-    @Override
-    public void run() {
-        printWriter = getConsolePrintWriter();
-        decorator = getConsolePrintDecorator();
-        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg Freiheit 15";
-
-        decorator.printHeadline("Erste Testausgabe:");
-        test(printWriter);
-        someInhabitants();
-
-        // nur eine Adresse erzeugen (weitere Token werden ignoriert)
-        decorator.printHeadline("Erste Adresse aus String:");
-        withInputScanner(myAddresses, scanner -> {
-            ArrayList<Adresse> aList = new ArrayList<>();
-
-            aList.add(createAdresse(scanner));
-            printListObjects(printWriter, aList);
-        });
-
-        // Alle enthaltenen Adressen erzeugen
-        decorator.printHeadline("Alle Adressen aus String:");
-        withInputScanner(myAddresses, scanner -> {
-            ArrayList<Adresse> addressList = createAdressen(scanner);
-
-            printListObjects(printWriter, addressList);
-        });
-
-        // Adressen aus Datei importieren und auf der Konsole ausgeben
-        decorator.printHeadline("Adressen aus Datei (A):");
-        withFileScanner("../addresses.txt",
-                        scanner -> printListObjects(printWriter, createAdressen(scanner)));
-        decorator.printHeadline("Adressen aus Datei (B):");
-        printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
-
-        // Einwohner umziehen lassen
-        umzuege(printWriter, "./data/a05/addresses.txt",
-                "./data/a05/addresses_new.txt");
-    }
-
     public static void test(PrintWriter out) {
         printListObjects(out, createTestAddresses());
     }
@@ -178,5 +129,52 @@ public class AddressPlay extends AbstractApplication {
 
     public static void printListObjects(PrintWriter out, ArrayList<?> list) {
         list.forEach(out::println);
+    }
+
+    /**
+     * {@link AdresseList} wurde in {@link ArrayList<Adresse>} geändert. Es ändert sich auch hier nichts, weil
+     * hier dieselbe Situation stattfindet wie bei {@link DoubleList} und {@link ArrayList<Double>}.
+     * <p>
+     * Die für die Ausgaben relevanten Objektmethoden werden gleichermaßen durch {@link Adresse} bzw. {@link Double}
+     * umgesetzt. Gleichzeitig kann {@link AdresseList} aber auch <i>polymorph</i> zu {@link ArrayList<Adresse>}
+     * betrachtet werden. Aus diesem Grund funktioniert die Methode {@link #printListObjects(PrintWriter, ArrayList)}
+     * auch für sämtliche ArrayList-Container.
+     * </p>
+     */
+    @Override
+    public void run() {
+        printWriter = getConsolePrintWriter();
+        decorator = getConsolePrintDecorator();
+        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg Freiheit 15";
+
+        decorator.printHeadline("Erste Testausgabe:");
+        test(printWriter);
+        someInhabitants();
+
+        // nur eine Adresse erzeugen (weitere Token werden ignoriert)
+        decorator.printHeadline("Erste Adresse aus String:");
+        withInputScanner(myAddresses, scanner -> {
+            ArrayList<Adresse> aList = new ArrayList<>();
+
+            aList.add(createAdresse(scanner));
+            printListObjects(printWriter, aList);
+        });
+
+        // Alle enthaltenen Adressen erzeugen
+        decorator.printHeadline("Alle Adressen aus String:");
+        withInputScanner(myAddresses, scanner -> {
+            ArrayList<Adresse> addressList = createAdressen(scanner);
+
+            printListObjects(printWriter, addressList);
+        });
+
+        // Adressen aus Datei importieren und auf der Konsole ausgeben
+        decorator.printHeadline("Adressen aus Datei (A):");
+        withFileScanner("../addresses.txt", scanner -> printListObjects(printWriter, createAdressen(scanner)));
+        decorator.printHeadline("Adressen aus Datei (B):");
+        printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
+
+        // Einwohner umziehen lassen
+        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
     }
 }

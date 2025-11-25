@@ -44,7 +44,8 @@ public class Aufgabe03IO {
             } finally {
                 stopWatch.stop();
             }
-            consolePrinter.printf("%9.3fs\t%s%n", stopWatch.getElapsedSeconds(), result);
+            consolePrinter.printf("%9.3fs\t%s%n",
+                    stopWatch.getElapsedSeconds(), result);
         }
         consolePrinter.print("Fertig!");
         consolePrinter.flush();
@@ -58,7 +59,9 @@ public class Aufgabe03IO {
         generateNumbers(filename, numberCount, 4, 0, 1000);
     }
 
-    public static void generateNumbers(String filename, int numberCount, int maxPrecision, int lowerBound, int upperBound) {
+    public static void generateNumbers(String filename, int numberCount,
+                                       int maxPrecision, int lowerBound,
+                                       int upperBound) {
         FunnyFirstFileWriter fileWriter = new FunnyFirstFileWriter(filename);
         PrintWriter out = new PrintWriter(fileWriter);
 
@@ -77,8 +80,10 @@ public class Aufgabe03IO {
     }
 
     /**
-     * Erzeugt eine zufällige Gleitkommazahl innerhalb der unteren und oberen Grenzen (inklusiv),
-     * die mit einer Wahrscheinlichkeit von 50 % als ganze Zahl formatiert ist <strong>(z. B. 34.00000)</strong>.
+     * Erzeugt eine zufällige Gleitkommazahl innerhalb der unteren und oberen
+     * Grenzen (inklusiv),
+     * die mit einer Wahrscheinlichkeit von 50 % als ganze Zahl formatiert
+     * ist <strong>(z. B. 34.00000)</strong>.
      *
      * @param lowerBound untere Grenze (inklusiv)
      * @param upperBound obere Grenze (inklusiv)
@@ -88,7 +93,7 @@ public class Aufgabe03IO {
         double randomNumber;
 
         if (lowerBound > upperBound) {
-            throw new IllegalArgumentException("lowerBound muss kleiner als upperBound sein!");
+            throw new IllegalArgumentException("lowerBound muss kleiner als " + "upperBound sein!");
         }
         randomNumber = lowerBound + (Math.random() * (upperBound - lowerBound));
         return Math.random() < .5 ? (int) randomNumber : randomNumber;

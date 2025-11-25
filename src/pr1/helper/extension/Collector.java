@@ -17,11 +17,15 @@
 package pr1.helper.extension;
 
 /**
- * A generic accumulator for numeric values that internally stores the sum as a {@code double}.
+ * A generic accumulator for numeric values that internally stores the sum as
+ * a {@code double}.
  * <p>
- * This class accepts any {@link Number} subtype (e.g., {@code Integer}, {@code Double}, {@code Long}, etc.)
- * and accumulates or sets their numeric values. Non-{@code double} numbers are converted using
- * {@link Number#intValue()} for compatibility with legacy or integer-based contexts, while {@code Double}
+ * This class accepts any {@link Number} subtype (e.g., {@code Integer},
+ * {@code Double}, {@code Long}, etc.)
+ * and accumulates or sets their numeric values. Non-{@code double} numbers
+ * are converted using
+ * {@link Number#intValue()} for compatibility with legacy or integer-based
+ * contexts, while {@code Double}
  * values are preserved with full precision.
  * </p>
  * <p>
@@ -40,7 +44,8 @@ public class Collector<T extends Number> {
      * Adds the numeric value of the given {@code Number} to the internal sum.
      * <p>
      * If the argument is {@code null}, this method does nothing.
-     * If the argument is an instance of {@code Double}, its {@code doubleValue()} is used;
+     * If the argument is an instance of {@code Double}, its {@code
+     * doubleValue()} is used;
      * otherwise, {@code intValue()} is used for conversion.
      * </p>
      *
@@ -58,7 +63,8 @@ public class Collector<T extends Number> {
      * replacing any previous value.
      * <p>
      * If the argument is {@code null}, this method does nothing.
-     * If the argument is an instance of {@code Double}, its {@code doubleValue()} is used;
+     * If the argument is an instance of {@code Double}, its {@code
+     * doubleValue()} is used;
      * otherwise, {@code intValue()} is used for conversion.
      * </p>
      *
@@ -81,7 +87,8 @@ public class Collector<T extends Number> {
     }
 
     /**
-     * Returns the current sum as an {@code int}, truncating any fractional part.
+     * Returns the current sum as an {@code int}, truncating any fractional
+     * part.
      *
      * @return the accumulated sum converted to an integer
      */

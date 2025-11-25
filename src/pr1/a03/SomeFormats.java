@@ -22,67 +22,71 @@ import pr1.helper.entity.MixedNumber;
 import pr1.helper.repository.MixedNumberList;
 
 public class SomeFormats {
-	public static final MixedNumberList numberList = new MixedNumberList();
-	private static int maxLength;
-	private static int maxPrecision;
+    public static final MixedNumberList numberList = new MixedNumberList();
+    private static int maxLength;
+    private static int maxPrecision;
 
-	public static void addNumber(double number, int precision) {
-		numberList.add(new MixedNumber(number, precision));
-	}
+    public static void addNumber(double number, int precision) {
+        numberList.add(new MixedNumber(number, precision));
+    }
 
-	public static void clearNumbers() {
-		numberList.clear();
-	}
+    public static void clearNumbers() {
+        numberList.clear();
+    }
 
-	public static String prettyInt(int n, int width) {
-		return prettyInt((double) n, width);
-	}
+    public static String prettyInt(int n, int width) {
+        return prettyInt((double) n, width);
+    }
 
-	public static String prettyInt(double n, int width) {
-		return prettyNumber(n, width, 0);
-	}
+    public static String prettyInt(double n, int width) {
+        return prettyNumber(n, width, 0);
+    }
 
-	public static String prettyNumber(double n, int width, int precision) {
-		StringBuilder sb = new StringBuilder();
+    public static String prettyNumber(double n, int width, int precision) {
+        StringBuilder sb = new StringBuilder();
 
-		if (precision > 0) {
-			width += 1 + precision;
-		}
-		sb.append(String.format("%" + width + "." + precision + "f", n));
-		if (precision > 0) {
-			precision = maxPrecision - precision;
-		} else {
-			precision = 1 + maxPrecision;
-		}
-		if (0 == maxPrecision) {
-			precision = 0;
-		}
-		sb.append(" ".repeat(precision));
-		return sb.toString();
-	}
+        if (precision > 0) {
+            width += 1 + precision;
+        }
+        sb.append(String.format("%" + width + "." + precision + "f", n));
+        if (precision > 0) {
+            precision = maxPrecision - precision;
+        } else {
+            precision = 1 + maxPrecision;
+        }
+        if (0 == maxPrecision) {
+            precision = 0;
+        }
+        sb.append(" ".repeat(precision));
+        return sb.toString();
+    }
 
-	public static void printPretty(PrintWriter out, double n, int width, int precision) {
-		out.append(0 != precision ? prettyNumber(n, width, precision) : prettyInt(n, width));
-	}
+    public static void printPretty(PrintWriter out, double n, int width,
+                                   int precision) {
+        out.append(0 != precision ? prettyNumber(n, width, precision) :
+                prettyInt(n, width));
+    }
 
-	public static void printAllPretty(PrintWriter out, int gap, int breakPoint) {
-		final int[] counter = { 1 };
+    public static void printAllPretty(PrintWriter out, int gap,
+                                      int breakPoint) {
+        final int[] counter = {1};
 
-		// längste Zahl ermitteln und Länge abspeichern (vor dem Komma).
-		maxLength = numberList.getMaxAmountLength();
-		maxPrecision = numberList.getMaxPrecision();
+        // längste Zahl ermitteln und Länge abspeichern (vor dem Komma).
+        maxLength = numberList.getMaxAmountLength();
+        maxPrecision = numberList.getMaxPrecision();
 
-		// Alle Zahlen ausgeben
-		numberList.forEach(element -> {
-			printPretty(out, element.getAmount(), maxLength, element.getPrecision());
-			if (counter[0] % breakPoint == 0) {
-				out.println();
-			} else {
-				for (int i = 1; i <= gap; i++) {
-					out.append(" ");
-				}
-			}
-			counter[0]++;
-		});
-	}
+        // Alle Zahlen ausgeben
+        numberList.forEach(element -> {
+            printPretty(out, element.getAmount(), maxLength,
+                    element.getPrecision());
+            if (counter[0] % breakPoint == 0) {
+                out.println();
+            } else {
+                for (int i = 1; i <= gap; i++) {
+                    out.append(" ");
+                }
+            }
+            counter[0]++;
+        });
+    }
 }

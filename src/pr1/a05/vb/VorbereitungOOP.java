@@ -14,11 +14,6 @@ public class VorbereitungOOP extends AbstractApplication {
         new VorbereitungOOP();
     }
 
-    @Override
-    public void run() {
-        test(getConsolePrintWriter());
-    }
-
     public static void test(PrintWriter out) {
         PrintDecorator decorator = new PrintDecorator(out);
 
@@ -48,5 +43,10 @@ public class VorbereitungOOP extends AbstractApplication {
         for (Adresse adresse : addresses) {
             out.println(adresse);
         }
+    }
+
+    @Override
+    public void run() {
+        test(getConsolePrintWriter());
     }
 }

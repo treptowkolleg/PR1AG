@@ -20,7 +20,8 @@ package pr1.helper.extension;
  * A utility class to count oop-based.
  * <p>
  * This class is typically used with for-each or while loops to enhance
- * code readability or when final vars are needed like in {@link java.util.function.Consumer} functions.
+ * code readability or when final vars are needed like in
+ * {@link java.util.function.Consumer} functions.
  * </p>
  *
  * @author Benjamin Wagner
