@@ -6,7 +6,14 @@ import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.Range;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.*;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Adresse;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.AdresseList;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.DoubleList;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Einwohner;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.EinwohnerList;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Factory;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.Person;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.PersonList;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
