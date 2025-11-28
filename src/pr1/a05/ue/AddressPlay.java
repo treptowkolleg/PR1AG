@@ -6,18 +6,13 @@ import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.Range;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.Adresse;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.AdresseList;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.DoubleList;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.Einwohner;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.EinwohnerList;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.Factory;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.Person;
-import schimkat.berlin.lernhilfe2025ws.objectPlay.PersonList;
+import schimkat.berlin.lernhilfe2025ws.objectPlay.*;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AddressPlay extends AbstractApplication {
     public static PrintWriter printWriter;
@@ -25,53 +20,6 @@ public class AddressPlay extends AbstractApplication {
 
     public static void main(String[] args) {
         new AddressPlay();
-    }
-
-    /**
-     * {@link AdresseList} wurde in {@link ArrayList<Adresse>} geändert. Es ändert sich auch hier nichts, weil
-     * hier dieselbe Situation stattfindet wie bei {@link DoubleList} und {@link ArrayList<Double>}.
-     * <p>
-     * Die für die Ausgaben relevanten Objektmethoden werden gleichermaßen durch {@link Adresse} bzw. {@link Double}
-     * umgesetzt. Gleichzeitig kann {@link AdresseList} aber auch <i>polymorph</i> zu {@link ArrayList<Adresse>}
-     * betrachtet werden. Aus diesem Grund funktioniert die Methode {@link #printListObjects(PrintWriter, ArrayList)}
-     * auch für sämtliche ArrayList-Container.
-     * </p>
-     */
-    @Override
-    public void run() {
-        printWriter = getConsolePrintWriter();
-        decorator = getConsolePrintDecorator();
-        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg Freiheit 15";
-
-        decorator.printHeadline("Erste Testausgabe:");
-        test(printWriter);
-        someInhabitants();
-
-        // nur eine Adresse erzeugen (weitere Token werden ignoriert)
-        decorator.printHeadline("Erste Adresse aus String:");
-        withInputScanner(myAddresses, scanner -> {
-            ArrayList<Adresse> aList = new ArrayList<>();
-
-            aList.add(createAdresse(scanner));
-            printListObjects(printWriter, aList);
-        });
-
-        // Alle enthaltenen Adressen erzeugen
-        decorator.printHeadline("Alle Adressen aus String:");
-        withInputScanner(myAddresses, scanner -> {
-            ArrayList<Adresse> addressList = createAdressen(scanner);
-
-            printListObjects(printWriter, addressList);
-        });
-
-        // Adressen aus Datei importieren und auf der Konsole ausgeben
-        decorator.printHeadline("Adressen aus Datei (A):");
-        withFileScanner("../addresses.txt", scanner -> printListObjects(printWriter, createAdressen(scanner)));
-        decorator.printHeadline("Adressen aus Datei (B):");
-        printListObjects(printWriter, createAdressen("./data/a05/addresses.txt"));
-
-        // Einwohner umziehen lassen
-        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05/addresses_new.txt");
     }
 
     public static void test(PrintWriter out) {
@@ -88,7 +36,8 @@ public class AddressPlay extends AbstractApplication {
             addresses.add(new Adresse(a0, a0.getHausNr() + i));
         }
         for (int i : new Range(1, 5)) {
-            addresses.add(new Adresse(12437, "Berlin", "Baumschulenstraße", i * 2));
+            addresses.add(new Adresse(12437, "Berlin", "Baumschulenstraße",
+                    i * 2));
         }
         return addresses;
     }
@@ -114,7 +63,8 @@ public class AddressPlay extends AbstractApplication {
                 int index = BetterRandom.indexOf(addresses);
 
                 if (!inhabitant.getAdresse().equals(addresses.get(index))) {
-                    inhabitants.set(inhabitantIndex, new Einwohner(inhabitant, addresses.get(index)));
+                    inhabitants.set(inhabitantIndex, new Einwohner(inhabitant
+                            , addresses.get(index)));
                     break;
                 }
             }
@@ -124,35 +74,51 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static Adresse createAdresse(Scanner in) {
-        in.useDelimiter(Delimiter.WHITESPACE.getPattern());
-        int plz = in.nextInt();
-        String city = in.next();
-        String street = in.next().replaceAll("_", " ");
-        int streetNumber = in.nextInt();
-        return new Adresse(plz, city, street, streetNumber);
+        return in.useDelimiter("\\n").tokens()
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(line -> line.split("\\s+"))
+                .filter(parts -> parts.length == 4)
+                .map(AddressPlay::createAdresse)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static Adresse createAdresse(String[] parts) {
+        return new Adresse(Integer.parseInt(parts[0]),
+                parts[1].replaceAll("_", " "),
+                parts[2].replaceAll("_", " "),
+                Integer.parseInt(parts[3]));
     }
 
     public static ArrayList<Adresse> createAdressen(Scanner in) {
-        ArrayList<Adresse> addressList = new ArrayList<>();
-
-        while (in.hasNext()) {
-            addressList.add(createAdresse(in));
-        }
-        return addressList;
+        in.useDelimiter("\\n");
+        return in.tokens()
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .map(line -> line.split("\\s+"))
+                .filter(parts -> parts.length == 4)
+                .map(AddressPlay::createAdresse)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static ArrayList<Adresse> createAdressen(String filename) {
         return createAdressen(new Scanner(new FunnyFirstFileReader(filename)));
     }
 
-    public static void umzuege(PrintWriter out, String addressFileStartAdressen, String addressFileZielAdressen) {
+    public static void umzuege(PrintWriter out,
+                               String addressFileStartAdressen,
+                               String addressFileZielAdressen) {
         PersonList personList = Factory.createTestPersonliste();
         EinwohnerList einwohnerList = new EinwohnerList();
-        ArrayList<Adresse> oldAddressList = createAdressen(addressFileStartAdressen);
-        ArrayList<Adresse> newAddressList = createAdressen(addressFileZielAdressen);
+        ArrayList<Adresse> oldAddressList =
+                createAdressen(addressFileStartAdressen);
+        ArrayList<Adresse> newAddressList =
+                createAdressen(addressFileZielAdressen);
 
         for (int i : new Range(oldAddressList)) {
-            einwohnerList.add(new Einwohner(personList.get(i), oldAddressList.get(i)));
+            einwohnerList.add(new Einwohner(personList.get(i),
+                    oldAddressList.get(i)));
         }
 
         // Ausgabe der Einwohner
@@ -162,7 +128,8 @@ public class AddressPlay extends AbstractApplication {
 
         // nun alle umziehen lassen
         for (int i : new Range(newAddressList)) {
-            einwohnerList.set(i, new Einwohner(personList.get(i), newAddressList.get(i)));
+            einwohnerList.set(i, new Einwohner(personList.get(i),
+                    newAddressList.get(i)));
         }
 
         // Ausgabe der Einwohner
@@ -173,5 +140,62 @@ public class AddressPlay extends AbstractApplication {
 
     public static void printListObjects(PrintWriter out, ArrayList<?> list) {
         list.forEach(out::println);
+    }
+
+    /**
+     * {@link AdresseList} wurde in {@link ArrayList<Adresse>} geändert. Es
+     * ändert sich auch hier nichts, weil
+     * hier dieselbe Situation stattfindet wie bei {@link DoubleList} und
+     * {@link ArrayList<Double>}.
+     * <p>
+     * Die für die Ausgaben relevanten Objektmethoden werden gleichermaßen
+     * durch {@link Adresse} bzw. {@link Double}
+     * umgesetzt. Gleichzeitig kann {@link AdresseList} aber auch
+     * <i>polymorph</i> zu {@link ArrayList<Adresse>}
+     * betrachtet werden. Aus diesem Grund funktioniert die Methode
+     * {@link #printListObjects(PrintWriter, ArrayList)}
+     * auch für sämtliche ArrayList-Container.
+     * </p>
+     */
+    @Override
+    public void run() {
+        printWriter = getConsolePrintWriter();
+        decorator = getConsolePrintDecorator();
+        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg " +
+                "Freiheit 15";
+
+        decorator.printHeadline("Erste Testausgabe:");
+        test(printWriter);
+        someInhabitants();
+
+        // nur eine Adresse erzeugen (weitere Token werden ignoriert)
+        decorator.printHeadline("Erste Adresse aus String:");
+        withInputScanner(myAddresses, scanner -> {
+            ArrayList<Adresse> aList = new ArrayList<>();
+
+            aList.add(createAdresse(scanner));
+            printListObjects(printWriter, aList);
+        });
+
+        // Alle enthaltenen Adressen erzeugen
+        decorator.printHeadline("Alle Adressen aus String:");
+        withInputScanner(myAddresses, scanner -> {
+            ArrayList<Adresse> addressList = createAdressen(scanner);
+
+            printListObjects(printWriter, addressList);
+        });
+
+        // Adressen aus Datei importieren und auf der Konsole ausgeben
+        decorator.printHeadline("Adressen aus Datei (A):");
+        withFileScanner("../addresses.txt",
+                scanner -> printListObjects(printWriter,
+                        createAdressen(scanner)));
+        decorator.printHeadline("Adressen aus Datei (B):");
+        printListObjects(printWriter, createAdressen("./data/a05/addresses" +
+                ".txt"));
+
+        // Einwohner umziehen lassen
+        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05" +
+                "/addresses_new.txt");
     }
 }
