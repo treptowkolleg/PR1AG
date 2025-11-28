@@ -72,7 +72,8 @@ public class PersonTest extends AbstractApplication {
         withFileScanner("import_person_List.txt", s -> {
             // Tokens an Zeilenumbruch trennen
             s.useDelimiter("\\n");
-            ArrayList<Person> personList = s.tokens().map(String::trim)
+            ArrayList<Person> personList = s.tokens()
+                    .map(String::trim)
                     // nur nicht leere Zeilen
                     .filter(line -> !line.isEmpty())
                     // Sub-Tokens an WS trennen
