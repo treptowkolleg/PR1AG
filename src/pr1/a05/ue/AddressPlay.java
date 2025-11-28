@@ -161,7 +161,8 @@ public class AddressPlay extends AbstractApplication {
     public void run() {
         printWriter = getConsolePrintWriter();
         decorator = getConsolePrintDecorator();
-        String myAddresses = "12356 Berlin Baumstraße 4 56789 Hamburg " +
+        // wir benötigen nun Zeilenumbrüche zur Trennung der Tupel.
+        String myAddresses = "12356 Berlin Baumstraße 4\n56789 Hamburg " +
                 "Freiheit 15";
 
         decorator.printHeadline("Erste Testausgabe:");
