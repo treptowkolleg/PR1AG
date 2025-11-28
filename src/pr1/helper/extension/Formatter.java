@@ -6,28 +6,34 @@ import java.io.Serializable;
 
 public class Formatter {
 
-    public static String slugify(Object obj) {
+    public static String slugify(Object obj, Class<?
+            extends LanguageInterface> languageInterface) {
         checkIfIsSerializable(obj);
-        return convert(Delimiter.WHITESPACE.getRegex(), "_", obj.toString())
-                .replace("ä", "&auml")
-                .replace("ö", "&ouml")
-                .replace("ü", "&uuml")
-                .replace("Ä", "&Auml")
-                .replace("Ö", "&Ouml")
-                .replace("Ü", "&Uuml")
-                .replace("ß", "&szlig");
+        String s = convert(Delimiter.WHITESPACE.getRegex(), "_",
+                obj.toString());
+
+        return applyReplacements(s, languageInterface, false);
     }
 
-    public static String humanize(Object obj) {
+    public static String humanize(Object obj, Class<?
+            extends LanguageInterface> languageInterface) {
         checkIfIsSerializable(obj);
-        return convert("_", " ", obj.toString())
-                .replace("&auml", "ä")
-                .replace("&ouml", "ö")
-                .replace("&uuml", "ü")
-                .replace("&Auml", "Ä")
-                .replace("&Ouml", "Ö")
-                .replace("&Uuml", "Ü")
-                .replace("&szlig", "ß");
+        String s = convert("_", " ",
+                obj.toString());
+
+        return applyReplacements(s, languageInterface, true);
+    }
+
+    private static String applyReplacements(String s, Class<?
+            extends LanguageInterface> languageInterface, boolean reverse) {
+        for (LanguageInterface l : languageInterface.getEnumConstants()) {
+            if (reverse) {
+                s = s.replace(l.encoded(), l.plain());
+            } else {
+                s = s.replace(l.plain(), l.encoded());
+            }
+        }
+        return s;
     }
 
     private static String convert(String needle, String replacement,
