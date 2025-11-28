@@ -1,5 +1,6 @@
 package pr1.a06;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PersonFactory {
@@ -11,7 +12,19 @@ public class PersonFactory {
 
     public static Person createPerson(String firstName, String lastName,
                                       int birthYear) {
-        return new Person(firstName, lastName, birthYear);
+        return createPerson(firstName, lastName, birthYear, 1, 1);
+    }
+
+    public static Person createPerson(String firstName, String lastName,
+                                      int birthYear, int birthMonth,
+                                      int birthDay) {
+        return createPerson(firstName, lastName, LocalDate.of(birthYear,
+                birthMonth, birthDay));
+    }
+
+    public static Person createPerson(String firstName, String lastName,
+                                      LocalDate birthDate) {
+        return new Person(firstName, lastName, birthDate);
     }
 
     public static ArrayList<Person> createTestPersons() {
@@ -35,7 +48,8 @@ public class PersonFactory {
                 {"Tim", "Berners-Lee", "1955"},
                 {"Barbara", "Liskov", "1939"},
                 {"Vint", "Cerf", "1943"},
-                {"Margaret", "Hamilton", "1936"}
+                {"Margaret", "Hamilton", "1936"},
+                {"Günther", "Maßfühler von Petermann", "1987"}
         };
     }
 }

@@ -1,59 +1,60 @@
 package pr1.a06;
 
-import pr1.helper.core.Delimiter;
+import java.time.LocalDate;
+import java.time.Month;
 
 public class Person {
     private final String firstName;
     private final String lastName;
-    private final BirthYear birthYear;
+    private final LocalDate birthYear;
 
-    public Person(String firstName, String lastName, int birthYear) {
+    public Person(String firstName, String lastName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthYear = new BirthYear(birthYear);
+        this.birthYear = birthDate;
+    }
+
+    public Person(String firstName, String lastName, int birthYear) {
+        this(firstName, lastName, birthYear, 1, 1);
+    }
+
+    public Person(String firstName, String lastName, int birthYear,
+                  int birthMonth, int birthDayOfMonth) {
+        this(firstName, lastName, LocalDate.of(birthYear, birthMonth,
+                birthDayOfMonth));
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    /**
-     * replaces whitespace with underscore for scanner friendly readability.
-     *
-     * @return slugified firstname
-     */
-    public String getFirstNameAsSlug() {
-        return slugify(firstName);
-    }
-
     public String getLastName() {
         return lastName;
     }
 
-    /**
-     * replaces whitespace with underscore for scanner friendly readability.
-     *
-     * @return slugified lastname
-     */
-    public String getLastNameAsSlug() {
-        return slugify(lastName);
+    public LocalDate getBirthDate() {
+        return birthYear;
     }
 
-    public BirthYear getBirthYear() {
-        return birthYear;
+    public int getBirthYear() {
+        return birthYear.getYear();
+    }
+
+    public Month getBirthMonth() {
+        return birthYear.getMonth();
+    }
+
+    public int getBirthDayOfMonth() {
+        return birthYear.getDayOfMonth();
     }
 
     @Override
     public String toString() {
+        return String.format("%s %s %d", firstName, lastName,
+                birthYear.getYear());
+    }
+
+    public String toStringFullBirthDate() {
         return String.format("%s %s %s", firstName, lastName, birthYear);
-    }
-
-    public String toStringAsSlug() {
-        return String.format("%s %s %s", getFirstNameAsSlug(),
-                getLastNameAsSlug(), birthYear);
-    }
-
-    private String slugify(String string) {
-        return string.replaceAll(Delimiter.WHITESPACE.getRegex(), "_");
     }
 }
