@@ -4,10 +4,10 @@ import pr1.helper.core.Delimiter;
 
 import java.io.Serializable;
 
-public class Formatter {
+public class StringTransformer {
 
     public static String slugify(Object obj, Class<?
-            extends LanguageInterface> languageInterface) {
+            extends ReplacementRuleInterface> languageInterface) {
         checkIfIsSerializable(obj);
         String s = convert(Delimiter.WHITESPACE.getRegex(), "_",
                 obj.toString());
@@ -16,17 +16,18 @@ public class Formatter {
     }
 
     public static String humanize(Object obj, Class<?
-            extends LanguageInterface> languageInterface) {
+            extends ReplacementRuleInterface> languageInterface) {
         checkIfIsSerializable(obj);
-        String s = convert("_", " ",
-                obj.toString());
+        String s = convert("_", " ", obj.toString());
 
         return applyReplacements(s, languageInterface, true);
     }
 
     private static String applyReplacements(String s, Class<?
-            extends LanguageInterface> languageInterface, boolean reverse) {
-        for (LanguageInterface l : languageInterface.getEnumConstants()) {
+            extends ReplacementRuleInterface> languageInterface,
+                                            boolean reverse) {
+        for (ReplacementRuleInterface l :
+                languageInterface.getEnumConstants()) {
             if (reverse) {
                 s = s.replace(l.encoded(), l.plain());
             } else {

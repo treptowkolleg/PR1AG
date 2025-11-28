@@ -1,6 +1,6 @@
 package pr1.helper.extension;
 
-public interface LanguageInterface {
+public interface ReplacementRuleInterface {
     String plain();
     String encoded();
 }

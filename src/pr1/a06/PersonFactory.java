@@ -37,6 +37,16 @@ public class PersonFactory {
         return personList;
     }
 
+    /**
+     * Erzeugt Rohdaten für Personenobjekte. Testweise werden Namen mit
+     * Sonderzeichen erstellt.
+     * <p>
+     * {@link pr1.helper.extension.DefaultReplacementRule} für weitere
+     * Informationen.
+     * </p>
+     *
+     * @return Mehrdimensionales Array mit Vorname, Name und Geburtsjahr.
+     */
     public static String[][] createTestPersonsRaw() {
         return new String[][]{
                 {"Ada", "Lovelace", "1815"},
@@ -49,7 +59,11 @@ public class PersonFactory {
                 {"Barbara", "Liskov", "1939"},
                 {"Vint", "Cerf", "1943"},
                 {"Margaret", "Hamilton", "1936"},
-                {"Günther", "Maßfühler von Petermann", "1987"}
+                {"Günther", "Maßfühler von Petermann", "1987"},
+                {"François", "Bry", "1953"},
+                {"Jiří", "Matoušek", "1963"},
+                {"Ľubomír", "Balko", "1970"},
+                {"Åsmund", "Tveit", "1975"},
         };
     }
 }

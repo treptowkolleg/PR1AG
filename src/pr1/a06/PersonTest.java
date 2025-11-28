@@ -1,9 +1,9 @@
 package pr1.a06;
 
 import pr1.helper.core.AbstractApplication;
-import pr1.helper.extension.Formatter;
-import pr1.helper.extension.GermanLanguage;
+import pr1.helper.extension.DefaultReplacementRule;
 import pr1.helper.extension.PrintDecorator;
+import pr1.helper.extension.StringTransformer;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,8 +23,10 @@ public class PersonTest extends AbstractApplication {
     public static void printPersonsSlugified(PrintWriter out,
                                              ArrayList<Person> persons) {
         persons.forEach(p -> out.printf("%s %s %s%n",
-                Formatter.slugify(p.getFirstName(), GermanLanguage.class),
-                Formatter.slugify(p.getLastName(), GermanLanguage.class),
+                StringTransformer.slugify(p.getFirstName(),
+                        DefaultReplacementRule.class),
+                StringTransformer.slugify(p.getLastName(),
+                        DefaultReplacementRule.class),
                 p.getBirthYear()));
     }
 
