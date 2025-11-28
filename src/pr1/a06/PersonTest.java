@@ -1,10 +1,9 @@
 package pr1.a06;
 
 import pr1.helper.core.AbstractApplication;
-import pr1.helper.core.Delimiter;
-import pr1.helper.extension.WesternReplacementRule;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.StringTransformer;
+import pr1.helper.extension.WesternReplacementRule;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -72,11 +71,12 @@ public class PersonTest extends AbstractApplication {
         // Test: Maschinentext aus Datei dekodieren und auf Konsole ausgeben.
         withFileScanner("import_person_List.txt", s -> {
             // Tokens an Zeilenumbruch trennen
-            s.useDelimiter("\n");
+            s.useDelimiter("\\n");
             ArrayList<Person> personList = s.tokens().map(String::trim)
                     // nur nicht leere Zeilen
                     .filter(line -> !line.isEmpty())
-                    .map(line -> line.split(Delimiter.WHITESPACE.getRegex()))
+                    // Sub-Tokens an WS trennen
+                    .map(line -> line.split("\\s+"))
                     // nur Zeilen mit 3 Token
                     .filter(parts -> parts.length == 3)
                     // Stream<Person>
