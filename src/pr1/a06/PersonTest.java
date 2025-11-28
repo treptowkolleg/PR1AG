@@ -73,12 +73,13 @@ public class PersonTest extends AbstractApplication {
             // Tokens an Zeilenumbruch trennen
             s.useDelimiter("\\n");
             ArrayList<Person> personList = s.tokens()
+                    // Stream<String>
                     .map(String::trim)
                     // nur nicht leere Zeilen
                     .filter(line -> !line.isEmpty())
-                    // Sub-Tokens an WS trennen
+                    // Stream<String[]> (Sub-Tokens an WS trennen)
                     .map(line -> line.split("\\s+"))
-                    // nur Zeilen mit 3 Token
+                    // nur Zeilen mit 3 Tokens
                     .filter(parts -> parts.length == 3)
                     // Stream<Person>
                     .map(parts -> new Person(
