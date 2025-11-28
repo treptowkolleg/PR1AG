@@ -16,7 +16,7 @@ public class PersonFactory {
 
     public static ArrayList<Person> createTestPersons() {
         ArrayList<Person> personList = new ArrayList<>();
-        String[][] persons = getPersonsRaw();
+        String[][] persons = createTestPersonsRaw();
 
         for (String[] person : persons) {
             personList.add(createPerson(person[0], person[1], person[2]));
@@ -24,7 +24,7 @@ public class PersonFactory {
         return personList;
     }
 
-    public static String[][] getPersonsRaw() {
+    public static String[][] createTestPersonsRaw() {
         return new String[][]{
                 {"Ada", "Lovelace", "1815"},
                 {"Alan", "Turing", "1912"},

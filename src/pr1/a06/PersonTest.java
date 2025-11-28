@@ -24,7 +24,7 @@ public class PersonTest extends AbstractApplication {
     }
 
     public static void test(PrintWriter out) {
-        String[][] persons = PersonFactory.getPersonsRaw();
+        String[][] persons = PersonFactory.createTestPersonsRaw();
         ArrayList<Person> personsList = new ArrayList<>();
 
         while (personsList.size() < TEST_PERSON_AMOUNT) {
