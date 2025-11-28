@@ -1,6 +1,6 @@
 package pr1.helper.extension;
 
-public enum DefaultReplacementRule implements ReplacementRuleInterface {
+public enum WesternReplacementRule implements ReplacementRuleInterface {
     AE_C            ("Ä", "&Auml"),
     AE_L            ("ä", "&auml"),
     OE_C            ("Ö", "&Ouml"),
@@ -71,15 +71,15 @@ public enum DefaultReplacementRule implements ReplacementRuleInterface {
     N_Tilde_L       ("ñ", "&ntl"),
     AE_Ligatur_C    ("Æ", "&AElig"),
     AE_Ligatur_L    ("æ", "&aelig"),
-    O_Slash_C       ("Ø", "&Oslash"),
-    O_Slash_L       ("ø", "&oslash"),
-    A_Ring_C        ("Å", "&Aring"),
-    A_Ring_L        ("å", "&aring");
+    O_Slash_C       ("Ø", "&Osl"),
+    O_Slash_L       ("ø", "&osl"),
+    A_Ring_C        ("Å", "&Arn"),
+    A_Ring_L        ("å", "&arn");
 
     private final String plainLetter;
     private final String encodedLetter;
 
-    DefaultReplacementRule(String plainLetter, String encodedLetter) {
+    WesternReplacementRule(String plainLetter, String encodedLetter) {
         this.plainLetter = plainLetter;
         this.encodedLetter = encodedLetter;
     }

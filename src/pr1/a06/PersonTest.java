@@ -1,12 +1,14 @@
 package pr1.a06;
 
 import pr1.helper.core.AbstractApplication;
-import pr1.helper.extension.DefaultReplacementRule;
+import pr1.helper.core.Delimiter;
+import pr1.helper.extension.WesternReplacementRule;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.StringTransformer;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class PersonTest extends AbstractApplication {
     public static int TEST_PERSON_AMOUNT = 7;
@@ -24,9 +26,9 @@ public class PersonTest extends AbstractApplication {
                                              ArrayList<Person> persons) {
         persons.forEach(p -> out.printf("%s %s %s%n",
                 StringTransformer.slugify(p.getFirstName(),
-                        DefaultReplacementRule.class),
+                        WesternReplacementRule.class),
                 StringTransformer.slugify(p.getLastName(),
-                        DefaultReplacementRule.class),
+                        WesternReplacementRule.class),
                 p.getBirthYear()));
     }
 
@@ -66,5 +68,29 @@ public class PersonTest extends AbstractApplication {
         printlnToFile("Demo, Slugified Strings:");
         printPersonsSlugified(getFilePrintWriter(),
                 PersonFactory.createTestPersons());
+
+        // Test: Maschinentext aus Datei dekodieren und auf Konsole ausgeben.
+        withFileScanner("import_person_List.txt", s -> {
+            // Tokens an Zeilenumbruch trennen
+            s.useDelimiter("\n");
+            ArrayList<Person> personList = s.tokens().map(String::trim)
+                    // nur nicht leere Zeilen
+                    .filter(line -> !line.isEmpty())
+                    .map(line -> line.split(Delimiter.WHITESPACE.getRegex()))
+                    // nur Zeilen mit 3 Token
+                    .filter(parts -> parts.length == 3)
+                    // Stream<Person>
+                    .map(parts -> new Person(
+                            StringTransformer.humanize(parts[0],
+                                    WesternReplacementRule.class),
+                            StringTransformer.humanize(parts[1],
+                                    WesternReplacementRule.class),
+                            Integer.parseInt(parts[2])
+                    ))
+                    // Sammeln und zu ArrayList hinzufügen
+                    .collect(Collectors.toCollection(ArrayList::new));
+            decorator.printHeadline("dekodierte Personen");
+            printPersons(getConsolePrintWriter(), personList);
+        });
     }
 }

@@ -1,5 +1,7 @@
 package pr1.a06;
 
+import pr1.helper.extension.WesternReplacementRule;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -41,7 +43,7 @@ public class PersonFactory {
      * Erzeugt Rohdaten für Personenobjekte. Testweise werden Namen mit
      * Sonderzeichen erstellt.
      * <p>
-     * {@link pr1.helper.extension.DefaultReplacementRule} für weitere
+     * {@link WesternReplacementRule} für weitere
      * Informationen.
      * </p>
      *
