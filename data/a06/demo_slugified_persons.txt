@@ -1,0 +1,11 @@
+Demo, Slugified Strings:
+Ada Lovelace 1815
+Alan Turing 1912
+Grace Hopper 1906
+John von_Neumann 1903
+Donald Knuth 1938
+Linus Torvalds 1969
+Tim Berners-Lee 1955
+Barbara Liskov 1939
+Vint Cerf 1943
+Margaret Hamilton 1936

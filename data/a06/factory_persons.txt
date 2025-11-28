@@ -1,0 +1,7 @@
+Ada Lovelace 1815
+Alan Turing 1912
+Grace Hopper 1906
+John von Neumann 1903
+Donald Knuth 1938
+Linus Torvalds 1969
+Tim Berners-Lee 1955
