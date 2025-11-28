@@ -2,10 +2,13 @@ package pr1.helper.extension;
 
 import pr1.helper.core.Delimiter;
 
+import java.io.Serializable;
+
 public class Formatter {
 
-    public static String slugify(Object string) {
-        return convert(Delimiter.WHITESPACE.getRegex(), "_", string.toString())
+    public static String slugify(Object obj) {
+        checkIfIsSerializable(obj);
+        return convert(Delimiter.WHITESPACE.getRegex(), "_", obj.toString())
                 .replace("ä", "&auml")
                 .replace("ö", "&ouml")
                 .replace("ü", "&uuml")
@@ -15,8 +18,9 @@ public class Formatter {
                 .replace("ß", "&szlig");
     }
 
-    public static String humanize(Object string) {
-        return convert("_", " ", string.toString())
+    public static String humanize(Object obj) {
+        checkIfIsSerializable(obj);
+        return convert("_", " ", obj.toString())
                 .replace("&auml", "ä")
                 .replace("&ouml", "ö")
                 .replace("&uuml", "ü")
@@ -29,5 +33,12 @@ public class Formatter {
     private static String convert(String needle, String replacement,
                                   String haystack) {
         return haystack.replaceAll(needle, replacement).trim();
+    }
+
+    private static void checkIfIsSerializable(Object obj) {
+        if (!(obj instanceof Serializable)) {
+            throw new IllegalArgumentException("Object must implement " +
+                    "Serializable interface.");
+        }
     }
 }
