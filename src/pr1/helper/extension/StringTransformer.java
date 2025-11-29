@@ -23,6 +23,10 @@ public class StringTransformer {
         return applyReplacements(s, languageInterface, true);
     }
 
+    public static String normalize(String s) {
+        return convert("_", " ", s);
+    }
+
     private static String applyReplacements(String s, Class<?
             extends ReplacementRuleInterface> languageInterface,
                                             boolean reverse) {

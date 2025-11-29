@@ -4,6 +4,7 @@ import pr1.helper.core.AbstractApplication;
 import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.Range;
+import pr1.helper.extension.StringTransformer;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.*;
 
@@ -73,21 +74,18 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static Adresse createAdresse(Scanner in) {
-        return transformToAdresseStream(in)
-                .findFirst()
-                .orElse(null);
+        return transformToAdresseStream(in).findFirst().orElse(null);
     }
 
     public static Adresse createAdresse(String[] parts) {
         return new Adresse(Integer.parseInt(parts[0]),
-                parts[1].replaceAll("_", " "),
-                parts[2].replaceAll("_", " "),
+                StringTransformer.normalize(parts[1]),
+                StringTransformer.normalize(parts[2]),
                 Integer.parseInt(parts[3]));
     }
 
     public static ArrayList<Adresse> createAdressen(Scanner in) {
-        return transformToAdresseStream(in)
-                .collect(Collectors.toCollection(ArrayList::new));
+        return transformToAdresseStream(in).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public static ArrayList<Adresse> createAdressen(String filename) {
@@ -130,13 +128,9 @@ public class AddressPlay extends AbstractApplication {
         list.forEach(out::println);
     }
 
+
     private static Stream<Adresse> transformToAdresseStream(Scanner in) {
-        return in.useDelimiter("\\n").tokens()
-                .map(String::trim)
-                .filter(line -> !line.isEmpty())
-                .map(line -> line.split("\\s+"))
-                .filter(sections -> sections.length == 4)
-                .map(AddressPlay::createAdresse);
+        return in.useDelimiter("\\n").tokens().map(String::trim).filter(line -> !line.isEmpty()).map(line -> line.split("\\s+")).filter(sections -> sections.length == 4).map(AddressPlay::createAdresse);
     }
 
     /**
@@ -189,8 +183,8 @@ public class AddressPlay extends AbstractApplication {
                 scanner -> printListObjects(printWriter,
                         createAdressen(scanner)));
         decorator.printHeadline("Adressen aus Datei (B):");
-        printListObjects(printWriter, createAdressen("./data/a05/addresses" +
-                ".txt"));
+        printListObjects(printWriter,
+                createAdressen("./data/a05/addresses" + ".txt"));
 
         // Einwohner umziehen lassen
         umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05" +
