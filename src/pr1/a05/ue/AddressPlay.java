@@ -56,18 +56,14 @@ public class AddressPlay extends AbstractApplication {
         printListObjects(printWriter, inhabitants);
 
         // Die ersten drei Personen umziehen lassen
-        for (int inhabitantIndex : new Range(3)) {
-            Einwohner inhabitant = inhabitants.get(inhabitantIndex);
+        for (int i = 0; i < 3 && i < inhabitants.size(); i++) {
+            Einwohner original = inhabitants.get(i);
+            Adresse newAddress;
 
-            while (true) {
-                int index = BetterRandom.indexOf(addresses);
-
-                if (!inhabitant.getAdresse().equals(addresses.get(index))) {
-                    inhabitants.set(inhabitantIndex, new Einwohner(inhabitant
-                            , addresses.get(index)));
-                    break;
-                }
-            }
+            do {
+                newAddress = BetterRandom.pick(addresses);
+            } while (newAddress.equals(original.getAdresse()));
+            inhabitants.set(i, new Einwohner(original.getPerson(), newAddress));
         }
         decorator.printHeadline("NACH UMZUG:");
         printListObjects(printWriter, inhabitants);

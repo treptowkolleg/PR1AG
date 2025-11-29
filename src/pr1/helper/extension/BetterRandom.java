@@ -1,11 +1,29 @@
 package pr1.helper.extension;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BetterRandom {
+    private static final Random random = new Random();
 
     public static int indexOf(ArrayList<?> list) {
         return get(list.size() - 1);
+    }
+
+    /**
+     * Wählt zufällig ein Element aus der gegebenen Liste aus.
+     *
+     * @param list die Liste, aus der ein Element gewählt werden soll
+     * @param <T>  der Typ der Elemente
+     * @return ein zufälliges Element aus der Liste
+     * @throws IllegalArgumentException wenn die Liste leer ist
+     */
+    public static <T> T pick(List<T> list) {
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("Cannot pick from empty list");
+        }
+        return list.get(random.nextInt(list.size()));
     }
 
     public static int get(int upperBound) {
