@@ -43,15 +43,13 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static void someInhabitants() {
-        PersonList persons = Factory.createTestPersonliste();
+        PersonList personList = Factory.createTestPersonliste();
         ArrayList<Adresse> addresses = createTestAddresses();
-        EinwohnerList inhabitants = new EinwohnerList();
+        EinwohnerList inhabitants = personList.stream()
+                .map(person -> new Einwohner(person,
+                        BetterRandom.pick(addresses)))
+                .collect(Collectors.toCollection(EinwohnerList::new));
 
-        for (Person person : persons) {
-            int index = BetterRandom.indexOf(addresses);
-
-            inhabitants.add(new Einwohner(person, addresses.get(index)));
-        }
         decorator.printHeadline("VOR UMZUG:");
         printListObjects(printWriter, inhabitants);
 

@@ -21,7 +21,7 @@ public class BetterRandom {
      */
     public static <T> T pick(List<T> list) {
         if (list.isEmpty()) {
-            throw new IllegalArgumentException("Cannot pick from empty list");
+            throw new IllegalArgumentException("Can not pick from empty list");
         }
         return list.get(random.nextInt(list.size()));
     }
