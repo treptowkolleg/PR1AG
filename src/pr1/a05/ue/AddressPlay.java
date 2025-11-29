@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class AddressPlay extends AbstractApplication {
@@ -90,16 +91,15 @@ public class AddressPlay extends AbstractApplication {
                                String addressFileStartAdressen,
                                String addressFileZielAdressen) {
         PersonList personList = Factory.createTestPersonliste();
-        EinwohnerList einwohnerList = new EinwohnerList();
         ArrayList<Adresse> oldAddressList =
                 createAdressen(addressFileStartAdressen);
         ArrayList<Adresse> newAddressList =
                 createAdressen(addressFileZielAdressen);
-
-        for (int i : new Range(oldAddressList)) {
-            einwohnerList.add(new Einwohner(personList.get(i),
-                    oldAddressList.get(i)));
-        }
+        int minSize = Math.min(personList.size(), oldAddressList.size());
+        ArrayList<Einwohner> einwohnerList = IntStream.range(0, minSize)
+                .mapToObj(i -> new Einwohner(personList.get(i),
+                        oldAddressList.get(i)))
+                .collect(Collectors.toCollection(EinwohnerList::new));
 
         // Ausgabe der Einwohner
         out.println();
@@ -107,21 +107,21 @@ public class AddressPlay extends AbstractApplication {
         printListObjects(out, einwohnerList);
 
         // nun alle umziehen lassen
-        for (int i : new Range(newAddressList)) {
-            einwohnerList.set(i, new Einwohner(personList.get(i),
-                    newAddressList.get(i)));
-        }
+        minSize = Math.min(einwohnerList.size(), newAddressList.size());
+        ArrayList<Einwohner> newEinwohnerList = IntStream.range(0, minSize)
+                .mapToObj(i -> new Einwohner(einwohnerList.get(i).getPerson()
+                        , newAddressList.get(i)))
+                .collect(Collectors.toCollection(EinwohnerList::new));
 
         // Ausgabe der Einwohner
         out.println();
         out.println("Einwohner (neue Adresse):");
-        printListObjects(out, einwohnerList);
+        printListObjects(out, newEinwohnerList);
     }
 
     public static void printListObjects(PrintWriter out, ArrayList<?> list) {
         list.forEach(out::println);
     }
-
 
     private static Stream<Adresse> transformToAdresseStream(Scanner in) {
         return in.useDelimiter("\\R").tokens()
@@ -134,17 +134,16 @@ public class AddressPlay extends AbstractApplication {
 
     /**
      * {@link AdresseList} wurde in {@link ArrayList<Adresse>} geändert. Es
-     * ändert sich auch hier nichts, weil
-     * hier dieselbe Situation stattfindet wie bei {@link DoubleList} und
-     * {@link ArrayList<Double>}.
+     * ändert sich auch hier nichts, weil hier dieselbe Situation stattfindet
+     * wie bei {@link DoubleList} und {@link ArrayList<Double>}.
      * <p>
      * Die für die Ausgaben relevanten Objektmethoden werden gleichermaßen
-     * durch {@link Adresse} bzw. {@link Double}
-     * umgesetzt. Gleichzeitig kann {@link AdresseList} aber auch
-     * <i>polymorph</i> zu {@link ArrayList<Adresse>}
-     * betrachtet werden. Aus diesem Grund funktioniert die Methode
-     * {@link #printListObjects(PrintWriter, ArrayList)}
-     * auch für sämtliche ArrayList-Container.
+     * durch {@link Adresse} bzw. {@link Double} umgesetzt. Gleichzeitig kann
+     * {@link AdresseList} aber auch <i>polymorph</i> zu
+     * {@link ArrayList<Adresse>} betrachtet werden. Aus diesem Grund
+     * funktioniert die Methode
+     * {@link #printListObjects(PrintWriter, ArrayList)} auch für sämtliche
+     * ArrayList-Container.
      * </p>
      */
     @Override
