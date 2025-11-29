@@ -73,7 +73,7 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static Adresse createAdresse(Scanner in) {
-        return transformToAdresseStream(in, 4)
+        return transformToAdresseStream(in)
                 .findFirst()
                 .orElse(null);
     }
@@ -86,7 +86,7 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static ArrayList<Adresse> createAdressen(Scanner in) {
-        return transformToAdresseStream(in, 4)
+        return transformToAdresseStream(in)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -130,13 +130,12 @@ public class AddressPlay extends AbstractApplication {
         list.forEach(out::println);
     }
 
-    private static Stream<Adresse> transformToAdresseStream(Scanner in,
-                                                            int parts) {
+    private static Stream<Adresse> transformToAdresseStream(Scanner in) {
         return in.useDelimiter("\\n").tokens()
                 .map(String::trim)
                 .filter(line -> !line.isEmpty())
                 .map(line -> line.split("\\s+"))
-                .filter(sections -> sections.length == parts)
+                .filter(sections -> sections.length == 4)
                 .map(AddressPlay::createAdresse);
     }
 
