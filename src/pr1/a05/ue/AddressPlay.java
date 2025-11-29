@@ -72,15 +72,6 @@ public class AddressPlay extends AbstractApplication {
         printListObjects(printWriter, inhabitants);
     }
 
-    public static Stream<Adresse> transformToAdresseStream(Scanner in, int parts) {
-        return in.useDelimiter("\\n").tokens()
-                .map(String::trim)
-                .filter(line -> !line.isEmpty())
-                .map(line -> line.split("\\s+"))
-                .filter(sections -> sections.length == parts)
-                .map(AddressPlay::createAdresse);
-    }
-
     public static Adresse createAdresse(Scanner in) {
         return transformToAdresseStream(in, 4)
                 .findFirst()
@@ -137,6 +128,16 @@ public class AddressPlay extends AbstractApplication {
 
     public static void printListObjects(PrintWriter out, ArrayList<?> list) {
         list.forEach(out::println);
+    }
+
+    private static Stream<Adresse> transformToAdresseStream(Scanner in,
+                                                            int parts) {
+        return in.useDelimiter("\\n").tokens()
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .map(line -> line.split("\\s+"))
+                .filter(sections -> sections.length == parts)
+                .map(AddressPlay::createAdresse);
     }
 
     /**
