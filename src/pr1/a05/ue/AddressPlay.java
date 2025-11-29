@@ -130,7 +130,12 @@ public class AddressPlay extends AbstractApplication {
 
 
     private static Stream<Adresse> transformToAdresseStream(Scanner in) {
-        return in.useDelimiter("\\n").tokens().map(String::trim).filter(line -> !line.isEmpty()).map(line -> line.split("\\s+")).filter(sections -> sections.length == 4).map(AddressPlay::createAdresse);
+        return in.useDelimiter("\\R").tokens()
+                .map(String::trim)
+                .filter(line -> !line.isEmpty())
+                .map(line -> line.split("\\s+"))
+                .filter(sections -> sections.length == 4)
+                .map(AddressPlay::createAdresse);
     }
 
     /**
@@ -187,7 +192,7 @@ public class AddressPlay extends AbstractApplication {
                 createAdressen("./data/a05/addresses" + ".txt"));
 
         // Einwohner umziehen lassen
-        umzuege(printWriter, "./data/a05/addresses.txt", "./data/a05" +
-                "/addresses_new.txt");
+        umzuege(printWriter, "./data/a05/addresses.txt",
+                "./data/a05/addresses_new.txt");
     }
 }
