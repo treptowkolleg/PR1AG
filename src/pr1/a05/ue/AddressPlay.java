@@ -1,7 +1,6 @@
 package pr1.a05.ue;
 
 import pr1.helper.core.AbstractApplication;
-import pr1.helper.core.Delimiter;
 import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.Range;
@@ -73,13 +72,17 @@ public class AddressPlay extends AbstractApplication {
         printListObjects(printWriter, inhabitants);
     }
 
-    public static Adresse createAdresse(Scanner in) {
+    public static Stream<Adresse> transformToAdresseStream(Scanner in, int parts) {
         return in.useDelimiter("\\n").tokens()
                 .map(String::trim)
-                .filter(s -> !s.isEmpty())
+                .filter(line -> !line.isEmpty())
                 .map(line -> line.split("\\s+"))
-                .filter(parts -> parts.length == 4)
-                .map(AddressPlay::createAdresse)
+                .filter(sections -> sections.length == parts)
+                .map(AddressPlay::createAdresse);
+    }
+
+    public static Adresse createAdresse(Scanner in) {
+        return transformToAdresseStream(in, 4)
                 .findFirst()
                 .orElse(null);
     }
@@ -92,13 +95,7 @@ public class AddressPlay extends AbstractApplication {
     }
 
     public static ArrayList<Adresse> createAdressen(Scanner in) {
-        in.useDelimiter("\\n");
-        return in.tokens()
-                .map(String::trim)
-                .filter(line -> !line.isEmpty())
-                .map(line -> line.split("\\s+"))
-                .filter(parts -> parts.length == 4)
-                .map(AddressPlay::createAdresse)
+        return transformToAdresseStream(in, 4)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
