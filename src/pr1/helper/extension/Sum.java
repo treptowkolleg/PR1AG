@@ -37,7 +37,7 @@ package pr1.helper.extension;
  * @version 1.0
  * @since 2025
  */
-public class Collector<T extends Number> {
+public class Sum<T extends Number> {
     private Double sum = 0.0;
 
     /**

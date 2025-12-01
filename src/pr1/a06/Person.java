@@ -6,12 +6,12 @@ import java.time.Month;
 public class Person {
     private final String firstName;
     private final String lastName;
-    private final LocalDate birthYear;
+    private final LocalDate birthDate;
 
     public Person(String firstName, String lastName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthYear = birthDate;
+        this.birthDate = birthDate;
     }
 
     public Person(String firstName, String lastName, int birthYear) {
@@ -33,28 +33,28 @@ public class Person {
     }
 
     public LocalDate getBirthDate() {
-        return birthYear;
+        return birthDate;
     }
 
     public int getBirthYear() {
-        return birthYear.getYear();
+        return birthDate.getYear();
     }
 
     public Month getBirthMonth() {
-        return birthYear.getMonth();
+        return birthDate.getMonth();
     }
 
     public int getBirthDayOfMonth() {
-        return birthYear.getDayOfMonth();
+        return birthDate.getDayOfMonth();
     }
 
     @Override
     public String toString() {
         return String.format("%s %s %d", firstName, lastName,
-                birthYear.getYear());
+                birthDate.getYear());
     }
 
     public String toStringFullBirthDate() {
-        return String.format("%s %s %s", firstName, lastName, birthYear);
+        return String.format("%s %s %s", firstName, lastName, birthDate);
     }
 }

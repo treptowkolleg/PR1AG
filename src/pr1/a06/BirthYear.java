@@ -1,5 +1,6 @@
 package pr1.a06;
 
+@Deprecated
 public class BirthYear {
     private final int value;
 

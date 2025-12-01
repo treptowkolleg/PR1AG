@@ -7,7 +7,7 @@ import pr1.a03.SomeFormats;
 import pr1.helper.core.AbstractApplication;
 import pr1.helper.core.Delimiter;
 import pr1.helper.core.MatchPattern;
-import pr1.helper.extension.Collector;
+import pr1.helper.extension.Sum;
 import pr1.helper.extension.Counter;
 import pr1.helper.extension.PrintDecorator;
 
@@ -52,7 +52,7 @@ public class FirstInput extends AbstractApplication {
      * @return summed numbers as double
      */
     public double sumOfNumbersIn(Scanner scanner) {
-        Collector<Double> sum = new Collector<>();
+        Sum<Double> sum = new Sum<>();
 
         while (scanner.hasNext()) {
             if (scanner.hasNextInt() || scanner.hasNextDouble()) {
@@ -71,7 +71,7 @@ public class FirstInput extends AbstractApplication {
      * @return summed numbers as double
      */
     public double sumOfNumbersIn(String filename) {
-        final Collector<Double> sum = new Collector<>();
+        final Sum<Double> sum = new Sum<>();
 
         withFileScanner(filename, scanner -> sum.set(sumOfNumbersIn(scanner)));
         return sum.getSum();
