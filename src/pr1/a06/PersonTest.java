@@ -71,7 +71,7 @@ public class PersonTest extends AbstractApplication {
         // Test: Maschinentext aus Datei dekodieren und auf Konsole ausgeben.
         withFileScanner("import_person_List.txt", s -> {
             // Tokens an Zeilenumbruch trennen
-            s.useDelimiter("\\n");
+            s.useDelimiter("\\R");
             ArrayList<Person> personList = s.tokens()
                     // Stream<String>
                     .map(String::trim)
