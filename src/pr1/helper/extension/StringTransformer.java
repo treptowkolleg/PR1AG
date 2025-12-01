@@ -18,7 +18,7 @@ public class StringTransformer {
     public static String humanize(Object obj, Class<?
             extends ReplacementRuleInterface> languageInterface) {
         checkIfIsSerializable(obj);
-        String s = convert("_", " ", obj.toString());
+        String s = normalize(obj.toString());
 
         return applyReplacements(s, languageInterface, true);
     }
