@@ -1,13 +1,12 @@
 package pr1.helper.extension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class BetterRandom {
     private static final Random random = new Random();
 
-    public static int indexOf(ArrayList<?> list) {
+    public static int indexOf(List<?> list) {
         return get(list.size() - 1);
     }
 
