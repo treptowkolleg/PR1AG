@@ -43,8 +43,7 @@ public class PersonFactory {
      * Erzeugt Rohdaten für Personenobjekte. Testweise werden Namen mit
      * Sonderzeichen erstellt.
      * <p>
-     * {@link WesternReplacementRule} für weitere
-     * Informationen.
+     * {@link WesternReplacementRule} für weitere Informationen.
      * </p>
      *
      * @return Mehrdimensionales Array mit Vorname, Name und Geburtsjahr.
