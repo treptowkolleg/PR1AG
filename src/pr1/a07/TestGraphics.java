@@ -23,7 +23,6 @@ public class TestGraphics {
                 .setDx(1.0)
                 .setDy(1.5)
                 .createTrigoPlot();
-
         TrigoPlot plot2 = TrigoFactory.createDefaultTrigoPlot();
         plot2.setScaleX(scaleX);
         plot2.setScaleY(scaleY);
