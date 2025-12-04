@@ -26,7 +26,11 @@ public class Muster extends CustomShape implements Drawable {
     @Override
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+
         g2d.setColor(color);
-        rectangles.forEach(g2d::fill);
+        rectangles.stream()
+                // nur vollständig sichtbare Rechtecke zeichnen.
+                .filter(r -> r.getMinX() >= 0 && r.getMinY() >= 0)
+                .forEach(g2d::fill);
     }
 }

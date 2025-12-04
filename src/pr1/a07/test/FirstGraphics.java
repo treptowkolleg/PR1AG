@@ -53,7 +53,7 @@ public class FirstGraphics implements Drawable {
                 BasicStroke.JOIN_ROUND, 10.0f, dash, 0));
         g2d.setPaint(Color.CYAN);
         g2d.draw(new Line2D.Double(50, 500, 750, 500));
-        g2d.setStroke(new BasicStroke()); // zurücksetzen
+        // optional Stroke zurücksetzen: g2d.setStroke(new BasicStroke());
 
         // 7. Gelbes Dreieck (via Path2D)
         Path2D triangle = new Path2D.Double();
