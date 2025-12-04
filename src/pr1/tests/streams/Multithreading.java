@@ -26,7 +26,7 @@ public class Multithreading extends AbstractApplication {
             return lines
                     .skip(1)
                     .parallel()
-                    .map(Log::parseLine)
+                    .map(LogFactory::newLogClassInstance)
                     .filter(log -> log.status() == responseCode)
                     .collect(groupingBy(
                             log -> log.timestamp().getDayOfMonth(),
@@ -39,17 +39,19 @@ public class Multithreading extends AbstractApplication {
     public void run() {
         File f = new File("./data/testfiles/url_tracking_2025-11.csv");
         try {
-            int responseCode = 302;
+            int responseCode = 200;
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             Map<Integer, Long> result = countResponseByDayOfMonth(f,
                     responseCode);
+
+            // Anzahl der Response-Codes je Tag ausgeben.
             result.entrySet().stream()
                     .sorted(Map.Entry.comparingByKey())
                     .forEach(e -> printf("%2d.: %3d x %d-Response.%n",
                             e.getKey(), e.getValue(), responseCode));
             stopWatch.stop();
-            printf("Dauer: %d ms", stopWatch.getElapsedMillis());
+            printf("Dauer: %d ms%n", stopWatch.getElapsedMillis());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
