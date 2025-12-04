@@ -36,6 +36,10 @@ public class TrigoGrid implements Drawable {
         double yMinusOne = centerY + scaleY;
         double pixelsPerPi = Math.PI * scaleX;
 
+        if (pixelsPerPi <= 0) {
+            return;
+        }
+
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setPaint(Color.GRAY);
@@ -48,24 +52,21 @@ public class TrigoGrid implements Drawable {
         ));
         g2d.draw(new Line2D.Double(0, yPlusOne, width, yPlusOne));
         g2d.draw(new Line2D.Double(0, yMinusOne, width, yMinusOne));
-        if (pixelsPerPi <= 0) {
-            return;
-        }
         kMin = (int) Math.floor((0 - width / 2.0) / pixelsPerPi) - 1;
         kMax = (int) Math.ceil((width - width / 2.0) / pixelsPerPi) + 1;
         g2d.setStroke(new BasicStroke(1.0f));
         g2d.setPaint(Color.GRAY);
         for (int k = kMin; k <= kMax; k++) {
             double xPixel = width / 2.0 + k * Math.PI * scaleX;
+            if (xPixel < 0 || xPixel > width) {
+                continue;
+            }
             String label = switch (k) {
                 case 0 -> "0";
                 case 1 -> "π";
                 case -1 -> "-π";
                 default -> k + "π";
             };
-            if (xPixel < 0 || xPixel > width) {
-                continue;
-            }
             g2d.draw(new Line2D.Double(xPixel, centerY, xPixel, centerY + 10));
             g2d.setPaint(Color.DARK_GRAY);
             g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
