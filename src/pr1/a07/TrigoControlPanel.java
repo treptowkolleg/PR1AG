@@ -3,7 +3,9 @@ package pr1.a07;
 import pr1.helper.core.GraphicsApplication;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeListener;
@@ -13,6 +15,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class TrigoControlPanel extends JFrame {
     private final TrigoPlot plot;
@@ -38,8 +42,17 @@ public class TrigoControlPanel extends JFrame {
         int startValue = plot.intervalStart;
         int endValue = plot.intervalEnd;
 
+        Dictionary<Integer, JComponent> labelTable = new Hashtable<>();
+        labelTable.put(-200, new JLabel("-2"));
+        labelTable.put(-100, new JLabel("-1"));
+        labelTable.put(0, new JLabel("0"));
+        labelTable.put(100, new JLabel("1"));
+        labelTable.put(200, new JLabel("2"));
+
+
         setTitle("Trigonometry Control");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
         setAlwaysOnTop(true);
         setLayout(new GridBagLayout());
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -47,16 +60,20 @@ public class TrigoControlPanel extends JFrame {
         gbc.weightx = 1.0;
         ampValue = Math.max(-200, Math.min(200, ampValue));
         amplitudeSlider = createSlider(-200, 200, ampValue, "Amplitude");
-        freqValue = Math.max(0, Math.min(400, freqValue));
-        frequencySlider = createSlider(0, 400, freqValue, "Frequenz");
+        amplitudeSlider.setLabelTable(labelTable);
+        freqValue = Math.max(-200, Math.min(200, freqValue));
+        frequencySlider = createSlider(-200, 200, freqValue, "Frequenz");
+        frequencySlider.setLabelTable(labelTable);
         phaseValue = Math.max(-200, Math.min(200, phaseValue));
         phaseSlider = createSlider(-200, 200, phaseValue, "Phase (dx)");
+        phaseSlider.setLabelTable(labelTable);
         vertValue = Math.max(-200, Math.min(200, vertValue));
         verticalSlider = createSlider(-200, 200, vertValue, "Vertikal (dy)");
+        verticalSlider.setLabelTable(labelTable);
         resValue = Math.max(1, Math.min(100, resValue));
-        resolutionSlider = createSlider(1, 100, resValue, "Auflösung");
-        startSlider = createSlider(-12, 12, startValue, "Intervall Start");
-        endSlider = createSlider(-12, 12, endValue, "Intervall Ende");
+        resolutionSlider = createResolutionSlider(1, 100, resValue, "Auflösung");
+        startSlider = createSlider(-9, 9, startValue, "Intervall Start");
+        endSlider = createSlider(-9, 9, endValue, "Intervall Ende");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -74,9 +91,13 @@ public class TrigoControlPanel extends JFrame {
         gbc.gridy = 6;
         add(endSlider, gbc);
         amplitudeSlider.addChangeListener(listener);
+        amplitudeSlider.setSnapToTicks(true);
         frequencySlider.addChangeListener(listener);
+        frequencySlider.setSnapToTicks(true);
         phaseSlider.addChangeListener(listener);
+        phaseSlider.setSnapToTicks(true);
         verticalSlider.addChangeListener(listener);
+        verticalSlider.setSnapToTicks(true);
         resolutionSlider.addChangeListener(listener);
         startSlider.addChangeListener(listener);
         endSlider.addChangeListener(listener);
@@ -102,12 +123,27 @@ public class TrigoControlPanel extends JFrame {
         });
     }
 
+    private JSlider createResolutionSlider(int min, int max, int value, String title) {
+        JSlider slider = new JSlider(min, max, value);
+        Dictionary<Integer, JComponent> labelTable = new Hashtable<>();
+
+        slider.setSnapToTicks(false);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        labelTable.put(1, new JLabel("high"));
+        labelTable.put(50, new JLabel("medium"));
+        labelTable.put(100, new JLabel("low"));
+        slider.setLabelTable(labelTable);
+        slider.setBorder(BorderFactory.createTitledBorder(title));
+        return slider;
+    }
+
     private JSlider createSlider(int min, int max, int value, String title) {
         JSlider slider = new JSlider(min, max, value);
 
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.setMajorTickSpacing((max - min) / 10);
+        slider.setMajorTickSpacing((max - min) / 16);
         slider.setBorder(BorderFactory.createTitledBorder(title));
         return slider;
     }
