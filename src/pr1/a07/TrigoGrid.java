@@ -39,7 +39,6 @@ public class TrigoGrid implements Drawable {
         if (pixelsPerPi <= 0) {
             return;
         }
-
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setPaint(Color.GRAY);
