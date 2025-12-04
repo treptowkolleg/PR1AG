@@ -24,8 +24,8 @@ public class TestGraphics {
                 .createTrigoPlot();
 
         g.setTitle("Übungsaufgabe A07 + Zusatz");
-        //g.add(new Gitter());
-        //g.add(new Muster(Color.RED));
+        g.add(new Gitter());
+        g.add(new Muster(Color.RED));
         g.add(new TrigoGrid(scaleX, scaleY));
         g.add(plot);
         g.showDrawing();
