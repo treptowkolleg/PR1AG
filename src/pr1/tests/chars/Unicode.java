@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package pr1.tests;
+package pr1.tests.chars;
 
 public class Unicode {
 

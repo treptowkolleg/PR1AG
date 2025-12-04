@@ -1,6 +1,4 @@
-package pr1.tests;
-
-import pr1.tests.maze.MazeFieldState;
+package pr1.tests.maze;
 
 public class Maze {
 

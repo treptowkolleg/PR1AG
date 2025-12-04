@@ -1,4 +1,4 @@
-package pr1.tests;
+package pr1.tests.chars;
 
 import java.io.PrintWriter;
 

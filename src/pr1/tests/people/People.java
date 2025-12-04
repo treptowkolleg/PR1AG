@@ -1,7 +1,6 @@
-package pr1.tests;
+package pr1.tests.people;
 
 
-import pr1.tests.people.PopulationList;
 import pr1.tests.people.entity.Person;
 
 public class People {
