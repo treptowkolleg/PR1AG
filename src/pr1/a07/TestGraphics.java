@@ -18,14 +18,14 @@ public class TestGraphics {
                 .setIntervalEnd(4)
                 .setScaleX(scaleX)
                 .setScaleY(scaleY)
-                .setWidth(2.0)
-                .setDx(0.0)
-                .setDy(0.5)
+                .setWidth(1.0)
+                .setDx(1.0)
+                .setDy(0.0)
                 .createTrigoPlot();
 
         g.setTitle("Übungsaufgabe A07 + Zusatz");
-        g.add(new Gitter());
-        g.add(new Muster(Color.RED));
+        //g.add(new Gitter());
+        //g.add(new Muster(Color.RED));
         g.add(new TrigoGrid(scaleX, scaleY));
         g.add(plot);
         g.showDrawing();

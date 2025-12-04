@@ -51,7 +51,7 @@ public class TrigoControlPanel extends JFrame {
 
 
         setTitle("Trigonometry Control");
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setAlwaysOnTop(true);
         setLayout(new GridBagLayout());
@@ -65,7 +65,7 @@ public class TrigoControlPanel extends JFrame {
         frequencySlider = createSlider(-200, 200, freqValue, "Frequenz");
         frequencySlider.setLabelTable(labelTable);
         phaseValue = Math.max(-200, Math.min(200, phaseValue));
-        phaseSlider = createSlider(-200, 200, phaseValue, "Phase (dx)");
+        phaseSlider = createSlider(-200, 200, phaseValue, "Phase (π)");
         phaseSlider.setLabelTable(labelTable);
         vertValue = Math.max(-200, Math.min(200, vertValue));
         verticalSlider = createSlider(-200, 200, vertValue, "Vertikal (dy)");
@@ -130,9 +130,9 @@ public class TrigoControlPanel extends JFrame {
         slider.setSnapToTicks(false);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        labelTable.put(1, new JLabel("high"));
-        labelTable.put(50, new JLabel("medium"));
-        labelTable.put(100, new JLabel("low"));
+        labelTable.put(1, new JLabel("hoch"));
+        labelTable.put(50, new JLabel("mittel"));
+        labelTable.put(100, new JLabel("gering"));
         slider.setLabelTable(labelTable);
         slider.setBorder(BorderFactory.createTitledBorder(title));
         return slider;

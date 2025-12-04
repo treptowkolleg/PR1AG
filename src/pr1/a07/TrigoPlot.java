@@ -49,7 +49,7 @@ public class TrigoPlot implements Drawable {
         double xMax = intervalEnd * Math.PI;
 
         for (double x = xMin; x <= xMax; x += resolution) {
-            double y = amplitude * Math.sin(this.width * (x - dx)) + dy;
+            double y = amplitude * Math.sin(this.width  * (x - dx * Math.PI)) + dy;
             int px = (int) ((double) width / 2 + x * scaleX);
             int py = (int) (centerY - y * scaleY);
 
