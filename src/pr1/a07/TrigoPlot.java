@@ -28,14 +28,22 @@ public class TrigoPlot implements Drawable {
                      Double dx, Double dy, Double scaleX, Double scaleY) {
         this.color = null != color ? color : Color.RED;
         this.resolution = null != resolution ? resolution : 1;
-        this.intervalStart = null != intervalStart ? intervalStart : -4;
-        this.intervalEnd = null != intervalEnd ? intervalEnd : 4;
+        this.intervalStart = null != intervalStart ? intervalStart : -9;
+        this.intervalEnd = null != intervalEnd ? intervalEnd : 9;
         this.amplitude = null != amplitude ? amplitude : 1.0;
         this.width = null != width ? width : 1.0;
         this.dx = null != dx ? dx : 0;
         this.dy = null != dy ? dy : 0;
         this.scaleX = null != scaleX ? scaleX : 50;
         this.scaleY = null != scaleY ? scaleY : 50;
+    }
+
+    public void setScaleX(double scaleX) {
+        this.scaleX = scaleX;
+    }
+
+    public void setScaleY(double scaleY) {
+        this.scaleY = scaleY;
     }
 
     @Override
@@ -49,7 +57,8 @@ public class TrigoPlot implements Drawable {
         double xMax = intervalEnd * Math.PI;
 
         for (double x = xMin; x <= xMax; x += resolution) {
-            double y = amplitude * Math.sin(this.width  * (x - dx * Math.PI)) + dy;
+            double y =
+                    amplitude * Math.sin(this.width * (x - dx * Math.PI)) + dy;
             int px = (int) ((double) width / 2 + x * scaleX);
             int py = (int) (centerY - y * scaleY);
 
@@ -57,7 +66,7 @@ public class TrigoPlot implements Drawable {
                 points.add(new Point2D.Double(px, py));
             }
         }
-        g2d.setPaint(Color.BLUE);
+        g2d.setPaint(color);
         g2d.setStroke(new BasicStroke(2.0f));
         for (int i = 1; i < points.size(); i++) {
             Point2D p1 = points.get(i - 1);
