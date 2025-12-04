@@ -1,6 +1,6 @@
 package pr1.a05.vb;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.extension.PrintDecorator;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.Adresse;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.AdresseList;
@@ -9,7 +9,7 @@ import schimkat.berlin.lernhilfe2025ws.objectPlay.PersonList;
 
 import java.io.PrintWriter;
 
-public class VorbereitungOOP extends AbstractApplication {
+public class VorbereitungOOP extends IOApplication {
     public static void main(String[] args) {
         new VorbereitungOOP();
     }

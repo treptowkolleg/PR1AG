@@ -2,12 +2,12 @@ package pr1.a04.vb;
 
 import java.util.Scanner;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.core.Delimiter;
 import pr1.helper.core.MatchPattern;
 import pr1.helper.extension.PrintDecorator;
 
-public class VorbereitungInput extends AbstractApplication {
+public class VorbereitungInput extends IOApplication {
     public static void main(String[] args) {
         new VorbereitungInput();
     }

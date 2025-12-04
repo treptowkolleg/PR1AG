@@ -30,7 +30,7 @@ import java.nio.file.FileSystems;
  * subdirectories are created automatically.
  * </p>
  * <p>
- * Typical usage is through {@link pr1.helper.core.AbstractApplication}, which
+ * Typical usage is through {@link IOApplication}, which
  * provides higher-level lifecycle and error management for file output streams.
  * </p>
  *
@@ -38,7 +38,7 @@ import java.nio.file.FileSystems;
  * @version 1.0
  * @see FileTarget
  * @see PrintWriter
- * @see AbstractApplication
+ * @see IOApplication
  * @since 2025
  */
 public class FileWriter {

@@ -1,6 +1,6 @@
 package pr1.tests.streams;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.core.StopWatch;
 
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
-public class Multithreading extends AbstractApplication {
+public class Multithreading extends IOApplication {
 
     public static void main(String[] args) {
         new Multithreading();

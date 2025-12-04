@@ -1,6 +1,6 @@
 package pr1.a06;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.StringTransformer;
 import pr1.helper.extension.WesternReplacementRule;
@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class PersonTest extends AbstractApplication {
+public class PersonTest extends IOApplication {
     public static int TEST_PERSON_AMOUNT = 7;
 
     public static void main(String[] args) {

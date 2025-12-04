@@ -1,13 +1,13 @@
 package pr1.a04;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.core.Delimiter;
 import pr1.helper.core.MatchPattern;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Demo extends AbstractApplication {
+public class Demo extends IOApplication {
 	public static void main(String[] args) {
 		new Demo();
 	}

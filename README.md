@@ -20,9 +20,9 @@ Um bequem auf nützliche Helfer zugreifen zu können, erben wir von ``AbstractAp
 ````java
 package pr1.a04;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 
-public class Demo extends AbstractApplication {
+public class Demo extends IOApplication {
     public static void main(String[] args) {
         // neue Instanz dieser Klasse erzeugen.
         new Demo();
@@ -36,14 +36,14 @@ dass wir die Methode ``public void run()`` implementieren. Das tun wir also:
 ````java
 package pr1.a04;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 
-public class Demo extends AbstractApplication {
+public class Demo extends IOApplication {
     public static void main(String[] args) {
         // neue Instanz dieser Klasse erzeugen.
         new Demo();
     }
-    
+
     @override
     public void run() {
         // hier erfolgen unsere Anweisungen.

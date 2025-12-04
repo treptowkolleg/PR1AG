@@ -4,14 +4,14 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 import pr1.a03.SomeFormats;
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.core.Delimiter;
 import pr1.helper.core.MatchPattern;
 import pr1.helper.extension.Sum;
 import pr1.helper.extension.Counter;
 import pr1.helper.extension.PrintDecorator;
 
-public class FirstInput extends AbstractApplication {
+public class FirstInput extends IOApplication {
 
     public static void main(String[] args) {
         new FirstInput();

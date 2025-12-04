@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.core.Delimiter;
 import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
@@ -18,7 +18,7 @@ import schimkat.berlin.lernhilfe2025ws.objectPlay.Factory;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.Person;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.PersonList;
 
-public class AddressPlay extends AbstractApplication {
+public class AddressPlay extends IOApplication {
     public static PrintWriter printWriter;
     public static PrintDecorator decorator;
 

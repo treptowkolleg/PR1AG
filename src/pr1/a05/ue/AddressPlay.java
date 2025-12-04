@@ -1,6 +1,6 @@
 package pr1.a05.ue;
 
-import pr1.helper.core.AbstractApplication;
+import pr1.helper.core.IOApplication;
 import pr1.helper.extension.BetterRandom;
 import pr1.helper.extension.PrintDecorator;
 import pr1.helper.extension.Range;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class AddressPlay extends AbstractApplication {
+public class AddressPlay extends IOApplication {
     public static PrintWriter printWriter;
     public static PrintDecorator decorator;
 
