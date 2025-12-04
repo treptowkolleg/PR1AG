@@ -1,38 +1,30 @@
 package pr1.helper.core;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.ArrayList;
 
-public abstract class GraphicsApplication extends JFrame {
-    private final ArrayList<Drawable> drawings;
+public class GraphicsApplication extends JFrame {
+    protected final DrawingPanel panel;
 
     public GraphicsApplication() {
-        drawings = new ArrayList<>();
-        setTitle("GraphicsApplication");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
-        setResizable(false);
-        pack();
-        setLocationRelativeTo(null);
-        add(new DrawingPanel());
+        this(800, 600);
     }
 
+    public GraphicsApplication(int width, int height) {
+        panel = new DrawingPanel();
+        setTitle("GraphicsApplication");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(width, height));
+        add(panel);
+    }
+    
     public void add(Drawable object) {
-        drawings.add(object);
+        panel.add(object);
     }
 
     public void showDrawing() {
+        pack();
+        setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-    private class DrawingPanel extends JPanel {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            drawings.forEach(drawable -> drawable.draw(g));
-        }
     }
 }
