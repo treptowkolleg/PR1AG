@@ -1,3 +1,4 @@
+// pr1.a07.Muster.java
 package pr1.a07;
 
 import pr1.helper.core.Drawable;
@@ -10,27 +11,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Muster extends CustomShape implements Drawable {
-    protected List<Rectangle> rectangles;
+    private final double xMin;
+    private final double xMax;
+    private final double step;
+    private final List<Rectangle> rects;
+
+    public Muster(Color color,
+                  double xMin, double xMax, double step) {
+        super(color, 0);
+        this.xMin = xMin;
+        this.xMax = xMax;
+        this.step = step;
+        this.rects = new ArrayList<>();
+    }
 
     public Muster(Color color) {
-        super(color, 0);
-        this.rectangles = new ArrayList<>();
-        int b;
-
-        for (int x = 0; x <= 300; x = x + 50) {
-            b = CMath.b(x);
-            rectangles.add(new Rectangle(x, CMath.y(x), b, b));
-        }
+        this(color, 0, 300, 50);
     }
 
     @Override
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        int panelWidth = g2d.getClipBounds().width;
+        int panelHeight = g2d.getClipBounds().height;
+        int centerX = panelWidth / 2;
+        int centerY = panelHeight / 2;
 
+        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(color);
-        rectangles.stream()
-                // nur vollständig sichtbare Rechtecke zeichnen.
-                .filter(r -> r.getMinX() >= 0 && r.getMinY() >= 0)
-                .forEach(g2d::fill);
+        rects.clear();
+        for (double x = xMin; x <= xMax; x += step) {
+            double b = CMath.b(x);
+            double y = CMath.y(x);
+            int rectWidth = (int) Math.abs(b);
+            int rectHeight = (int) Math.abs(b);
+            int px = (int) (centerX + x);
+            int py = (int) (centerY + y);
+
+            if (rectWidth > 0 && rectHeight > 0) {
+                Rectangle rect = new Rectangle(px, py, rectWidth, rectHeight);
+                rects.add(rect);
+            }
+        }
+        rects.forEach(g2d::fill);
     }
 }
