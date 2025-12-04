@@ -49,6 +49,12 @@ public class Muster extends CustomShape implements Drawable {
             int px = (int) (centerX + x);
             int py = (int) (centerY + y);
 
+            /*
+            Ohne direkte Manipulation über die Attribute war die Anpassung
+            an die Fenstergröße nicht möglich. Ich hätte den Datentyp von
+            rects ändern müssen. Über eine eigene Hilfsklasse zum Beispiel,
+            die dann erstmal nur die Koordinaten und Breite enthält.
+             */
             if (rectWidth > 0 && rectHeight > 0) {
                 Rectangle rect = new Rectangle(px, py, rectWidth, rectHeight);
                 rects.add(rect);
