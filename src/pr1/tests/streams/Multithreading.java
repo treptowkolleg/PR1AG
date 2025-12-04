@@ -40,10 +40,11 @@ public class Multithreading extends AbstractApplication {
         File f = new File("./data/testfiles/url_tracking_2025-11.csv");
         try {
             int responseCode = 200;
+            Map<Integer, Long> result;
             StopWatch stopWatch = new StopWatch();
+
             stopWatch.start();
-            Map<Integer, Long> result = countResponseByDayOfMonth(f,
-                    responseCode);
+            result = countResponseByDayOfMonth(f, responseCode);
 
             // Anzahl der Response-Codes je Tag ausgeben.
             result.entrySet().stream()
