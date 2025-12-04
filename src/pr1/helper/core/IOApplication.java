@@ -18,6 +18,7 @@ package pr1.helper.core;
 
 import pr1.helper.extension.PrintDecorator;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Scanner;
@@ -546,5 +547,5 @@ public abstract class IOApplication {
      * Abstract entry point method that must be implemented by subclasses.
      * It is automatically called by the constructor after initialization.
      */
-    public abstract void run();
+    public abstract void run() throws IOException;
 }

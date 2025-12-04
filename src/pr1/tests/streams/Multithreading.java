@@ -5,8 +5,11 @@ import pr1.helper.core.StopWatch;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -35,9 +38,20 @@ public class Multithreading extends IOApplication {
         }
     }
 
+    public static File downloadTo(String urlString, String targetPath) throws IOException {
+        URL url = new URL(urlString);
+        File targetFile = new File(targetPath);
+        targetFile.getParentFile().mkdirs();
+
+        try (InputStream in = url.openStream()) {
+            Files.copy(in, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+        return targetFile;
+    }
+
     @Override
-    public void run() {
-        File f = new File("./data/testfiles/url_tracking_2025-11.csv");
+    public void run() throws IOException {
+        File f = downloadTo("https://dev.alumni-portal.org/url_tracking_2025-11.csv", "./data/testfiles/log.csv");
         try {
             int responseCode = 200;
             Map<Integer, Long> result;
