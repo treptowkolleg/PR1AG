@@ -6,8 +6,8 @@ import javax.swing.SwingUtilities;
 import java.awt.Color;
 
 public class TestGraphics {
-    public static double scaleX = 50;
-    public static double scaleY = 50;
+    public static double scaleX = 25;
+    public static double scaleY = 100;
 
     public static void main(String[] args) {
         GraphicsApplication g = new GraphicsApplication(1440, 920);
