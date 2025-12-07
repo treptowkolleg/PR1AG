@@ -1,9 +1,11 @@
 package pr1.a07;
 
+import pr1.helper.core.Drawable;
 import pr1.helper.core.GraphicsApplication;
 
 import javax.swing.SwingUtilities;
 import java.awt.Color;
+import java.util.List;
 
 public class TestGraphics {
     public static double scaleX = 50;
@@ -23,12 +25,12 @@ public class TestGraphics {
                 .setDx(1.0)
                 .setDy(1.5)
                 .createTrigoPlot();
+        List<Drawable> plotSet1 = List.of(new Gitter(), new Muster(Color.RED));
+        List<Drawable> plotSet2 = List.of(new TrigoGrid(scaleX, scaleY), plot);
 
         g.setTitle("Übungsaufgabe A07 + Zusatz");
-        //g.add(new Gitter());
-        //g.add(new Muster(Color.RED));
-        g.add(new TrigoGrid(scaleX, scaleY));
-        g.add(plot);
+        g.addPlotList(plotSet1);
+        g.addPlotList(plotSet2);
         g.showDrawing();
         SwingUtilities.invokeLater(() -> new TrigoControlPanel(plot, g).setVisible(true));
     }

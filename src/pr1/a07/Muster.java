@@ -1,4 +1,3 @@
-// pr1.a07.Muster.java
 package pr1.a07;
 
 import pr1.helper.core.Drawable;
