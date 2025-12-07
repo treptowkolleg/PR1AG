@@ -49,7 +49,6 @@ public class TrigoControlPanel extends JFrame {
         labelTable.put(100, new JLabel("1"));
         labelTable.put(200, new JLabel("2"));
 
-
         setTitle("Trigonometry Control");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);

@@ -23,18 +23,13 @@ public class TestGraphics {
                 .setDx(1.0)
                 .setDy(1.5)
                 .createTrigoPlot();
-        TrigoPlot plot2 = TrigoFactory.createDefaultTrigoPlot();
-        plot2.setScaleX(scaleX);
-        plot2.setScaleY(scaleY);
 
         g.setTitle("Übungsaufgabe A07 + Zusatz");
         //g.add(new Gitter());
         //g.add(new Muster(Color.RED));
         g.add(new TrigoGrid(scaleX, scaleY));
         g.add(plot);
-        g.add(plot2);
         g.showDrawing();
-
-        //SwingUtilities.invokeLater(() -> new TrigoControlPanel(plot, g).setVisible(true));
+        SwingUtilities.invokeLater(() -> new TrigoControlPanel(plot, g).setVisible(true));
     }
 }
