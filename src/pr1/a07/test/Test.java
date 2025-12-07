@@ -10,6 +10,7 @@ public class Test {
         GraphicsApplication app = new GraphicsApplication();
 
         app.setTitle("Test");
+        app.setResizable(false);
         app.addPlotList(List.of(new FirstGraphics()));
         app.showDrawing();
     }
