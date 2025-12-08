@@ -21,7 +21,7 @@ public class TestGraphics {
                 .setColor(Color.BLUE)
                 .setScaleX(scaleX)
                 .setScaleY(scaleY)
-                .setWidth(1.0)
+                .setWidth(.5)
                 .setDx(1.0)
                 .setDy(1.5)
                 .createTrigoPlot();
