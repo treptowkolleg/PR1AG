@@ -33,6 +33,10 @@ import java.util.function.Function;
  * plot graph instance. Sliders are automatically synchronized with the active
  * graph when the selection changes.
  *
+ * <p><strong>Future enhancements:</strong> Additional control types such as
+ * choice fields, text fields, checkboxes, and color pickers will be added
+ * in upcoming versions to support richer parameter customization.</p>
+ *
  * @param <T> the concrete subclass of {@link PlotGraph} that this builder configures
  */
 public class ControlBuilder<T extends PlotGraph<T>> {
@@ -50,10 +54,11 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      *
      * @param control the plot control that manages repaint and active graph state
      * @param graphs  the non-empty list of graphs to manage; must not be null
+     * @throws IllegalArgumentException if the graph list is null or empty
      */
     public ControlBuilder(PlotControl<T> control, PlotGraphList<T> graphs) {
         if (graphs == null || graphs.isEmpty()) {
-            throw new IllegalArgumentException("GraphListe darf nicht null oder leer sein!");
+            throw new IllegalArgumentException("Graph list must not be null or empty");
         }
         this.control = control;
         this.graphs = graphs;
