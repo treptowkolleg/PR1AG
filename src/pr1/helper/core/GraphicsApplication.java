@@ -80,10 +80,10 @@ public class GraphicsApplication extends JFrame {
         panel = new DrawingPanel();
         controlPanel = new JPanel();
         controlPanel.setBackground(Color.LIGHT_GRAY);
-        nextBtn = new JButton("Nächster Plot");
+        nextBtn = new JButton("Nächster PlotGraph");
         nextBtn.setPreferredSize(new Dimension(200, 30));
         nextBtn.addActionListener(this::nextPlot);
-        prevBtn = new JButton("Vorheriger Plot");
+        prevBtn = new JButton("Vorheriger PlotGraph");
         prevBtn.setPreferredSize(new Dimension(200, 30));
         prevBtn.addActionListener(this::prevPlot);
         controlPanel.add(prevBtn);
@@ -114,7 +114,7 @@ public class GraphicsApplication extends JFrame {
      * Advances to the next plot in the sequence, wrapping around to the first
      * plot if the end is reached.
      * <p>
-     * This method is typically triggered by the "Next Plot" button and updates
+     * This method is typically triggered by the "Next PlotGraph" button and updates
      * the currently displayed drawings accordingly.
      *
      * @param e the {@link ActionEvent} that triggered this navigation
@@ -137,7 +137,7 @@ public class GraphicsApplication extends JFrame {
      * Navigates to the previous plot in the sequence, wrapping around to the
      * last plot if the beginning is reached.
      * <p>
-     * This method is typically triggered by the "Previous Plot" button and
+     * This method is typically triggered by the "Previous PlotGraph" button and
      * updates the currently displayed drawings accordingly.
      *
      * @param e the {@link ActionEvent} that triggered this navigation

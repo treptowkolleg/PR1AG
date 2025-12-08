@@ -1,0 +1,31 @@
+package pr1.a07.plot.demo;
+
+import pr1.a07.plot.PlotGraph;
+
+import java.awt.Graphics2D;
+
+public class TestGraph extends PlotGraph<TestGraph> {
+    private int x = 0;
+    private int y = 0;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public void configureGraphics2D(Graphics2D g) {
+        g.drawRect(centerX - 50 + x, centerY - 50 + y, 100, 100);
+    }
+}
