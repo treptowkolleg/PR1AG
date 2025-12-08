@@ -1,15 +1,15 @@
 package pr1.a07.plot.demo;
 
 import pr1.a07.plot.ControlBuilder;
+import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotControl;
 import pr1.a07.plot.PlotGraphList;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class TestControl extends PlotControl<TestGraph> {
 
-    public TestControl(JFrame application, PlotGraphList<TestGraph> graphs) {
+    public TestControl(PlotApplication application, PlotGraphList<TestGraph> graphs) {
         super(application, graphs);
     }
 

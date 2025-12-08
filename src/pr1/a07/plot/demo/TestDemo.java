@@ -8,7 +8,6 @@ public class TestDemo {
     public static void main(String[] args) {
         PlotApplication app = new PlotApplication();
         TestSet set = new TestSet();
-        set.setGrid(new PlotGrid());
         app.addPlotSet(set);
         app.setVisible(true);
     }

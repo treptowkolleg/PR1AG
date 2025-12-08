@@ -1,6 +1,7 @@
 package pr1.a07.plot.demo;
 
 import pr1.a07.plot.PlotControl;
+import pr1.a07.plot.PlotGrid;
 import pr1.a07.plot.PlotSet;
 import pr1.a07.plot.PlotApplication;
 
@@ -12,6 +13,7 @@ public class TestSet extends PlotSet<TestGraph> {
         customGraph.setY(-100);
         addGraph(new TestGraph());
         addGraph(customGraph);
+        setGrid(new PlotGrid());
     }
 
     @Override
