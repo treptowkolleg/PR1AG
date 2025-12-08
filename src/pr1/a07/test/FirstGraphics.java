@@ -1,5 +1,6 @@
 package pr1.a07.test;
 
+import pr1.helper.core.ControlPanel;
 import pr1.helper.core.Drawable;
 
 import java.awt.BasicStroke;
@@ -63,5 +64,20 @@ public class FirstGraphics implements Drawable {
         triangle.closePath();
         g2d.setPaint(Color.YELLOW);
         g2d.fill(triangle);
+    }
+
+    @Override
+    public void setControlPanel(ControlPanel controlPanel) {
+
+    }
+
+    @Override
+    public void showControlPanel() {
+
+    }
+
+    @Override
+    public void hideControlPanel() {
+
     }
 }

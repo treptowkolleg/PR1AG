@@ -32,6 +32,6 @@ public class TestGraphics {
         g.addPlotList(plotSet1);
         g.addPlotList(plotSet2);
         g.showDrawing();
-        SwingUtilities.invokeLater(() -> new TrigoControlPanel(plot, g).setVisible(true));
+        SwingUtilities.invokeLater(() -> new TrigoControlPanel(plot, g));
     }
 }

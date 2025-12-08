@@ -1,5 +1,6 @@
 package pr1.a07;
 
+import pr1.helper.core.ControlPanel;
 import pr1.helper.core.GraphicsApplication;
 
 import javax.swing.BorderFactory;
@@ -18,7 +19,7 @@ import java.awt.Rectangle;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-public class TrigoControlPanel extends JFrame {
+public class TrigoControlPanel extends ControlPanel {
     private final TrigoPlot plot;
     private final GraphicsApplication app;
     private final JSlider amplitudeSlider;
@@ -32,6 +33,7 @@ public class TrigoControlPanel extends JFrame {
     public TrigoControlPanel(TrigoPlot plot, GraphicsApplication app) {
         this.plot = plot;
         this.app = app;
+        plot.setControlPanel(this);
         ChangeListener listener = e -> onParameterChange();
         GridBagConstraints gbc = new GridBagConstraints();
         int ampValue = (int) Math.round(plot.amplitude * 100);
@@ -122,7 +124,8 @@ public class TrigoControlPanel extends JFrame {
         });
     }
 
-    private JSlider createResolutionSlider(int min, int max, int value, String title) {
+    private JSlider createResolutionSlider(int min, int max, int value,
+                                           String title) {
         JSlider slider = new JSlider(min, max, value);
         Dictionary<Integer, JComponent> labelTable = new Hashtable<>();
 

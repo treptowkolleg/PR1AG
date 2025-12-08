@@ -16,6 +16,7 @@ public class GraphicsApplication extends JFrame {
     protected final JButton nextBtn;
     protected final JButton prevBtn;
     protected ArrayList<List<Drawable>> plotLists;
+    protected int lastPlot = 0;
     protected int currentPlot = 0;
 
     public GraphicsApplication() {
@@ -44,13 +45,15 @@ public class GraphicsApplication extends JFrame {
     }
 
     public void addPlotList(List<Drawable> drawings) {
-        plotLists.add(drawings);
+        this.plotLists.add(drawings);
     }
 
     public void nextPlot(ActionEvent e) {
         if (currentPlot < plotLists.size() - 1) {
+            lastPlot = currentPlot;
             currentPlot++;
         } else {
+            lastPlot = plotLists.size() - 1;
             currentPlot = 0;
         }
         setDrawings(plotLists.get(currentPlot));
@@ -59,8 +62,10 @@ public class GraphicsApplication extends JFrame {
 
     public void prevPlot(ActionEvent e) {
         if (currentPlot > 0) {
+            lastPlot = currentPlot;
             currentPlot--;
         } else {
+            lastPlot = 0;
             currentPlot = plotLists.size() - 1;
         }
         setDrawings(plotLists.get(currentPlot));
@@ -72,13 +77,20 @@ public class GraphicsApplication extends JFrame {
     }
 
     public void setDrawings(List<Drawable> drawings) {
+        toggleControlPanels();
         panel.setDrawings(drawings);
     }
 
     public void showDrawing() {
+        plotLists.get(lastPlot).forEach(Controllable::hideControlPanel);
         plotLists.get(currentPlot).forEach(this::add);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public void toggleControlPanels() {
+        plotLists.get(lastPlot).forEach(Controllable::hideControlPanel);
+        plotLists.get(currentPlot).forEach(Controllable::showControlPanel);
     }
 }

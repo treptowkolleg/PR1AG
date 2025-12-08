@@ -53,4 +53,6 @@ public class Gitter extends CustomShape implements Drawable {
         g2d.drawString("0", centerX + 5, centerY + 10);
 
     }
+
+
 }

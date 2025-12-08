@@ -1,5 +1,6 @@
 package pr1.a07;
 
+import pr1.helper.core.ControlPanel;
 import pr1.helper.core.Drawable;
 
 import java.awt.BasicStroke;
@@ -77,5 +78,17 @@ public class TrigoGrid implements Drawable {
         g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
         g2d.drawString("+1", centerX + 5, (int) (yPlusOne - 2));
         g2d.drawString("-1", centerX + 5, (int) (yMinusOne + 12));
+    }
+
+    @Override
+    public void setControlPanel(ControlPanel controlPanel) {
+    }
+
+    @Override
+    public void showControlPanel() {
+    }
+
+    @Override
+    public void hideControlPanel() {
     }
 }

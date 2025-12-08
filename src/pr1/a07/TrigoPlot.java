@@ -1,5 +1,7 @@
 package pr1.a07;
 
+import pr1.helper.core.ControlPanel;
+import pr1.helper.core.Controllable;
 import pr1.helper.core.Drawable;
 
 import java.awt.BasicStroke;
@@ -11,7 +13,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrigoPlot implements Drawable {
+public class TrigoPlot implements Drawable, Controllable {
+    protected ControlPanel controlPanel;
     protected Color color;
     protected double resolution;
     protected int intervalStart;
@@ -84,5 +87,24 @@ public class TrigoPlot implements Drawable {
         this.width = width;
         this.dx = dx;
         this.dy = dy;
+    }
+
+    @Override
+    public void setControlPanel(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
+    }
+
+    @Override
+    public void showControlPanel() {
+        if (null != this.controlPanel) {
+            this.controlPanel.setVisible(true);
+        }
+    }
+
+    @Override
+    public void hideControlPanel() {
+        if (null != this.controlPanel) {
+            this.controlPanel.setVisible(false);
+        }
     }
 }
