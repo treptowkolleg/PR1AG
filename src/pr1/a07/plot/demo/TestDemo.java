@@ -6,8 +6,7 @@ public class TestDemo {
 
     public static void main(String[] args) {
         PlotApplication app = new PlotApplication();
-        TestSet set = new TestSet();
-        app.addPlotSet(set);
+        app.addPlotSet(new TestSet());
         app.setVisible(true);
     }
 }
