@@ -1,6 +1,5 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.plot.PlotGrid;
 import pr1.a07.plot.PlotApplication;
 
 public class TestDemo {
