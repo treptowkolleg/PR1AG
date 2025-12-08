@@ -68,16 +68,13 @@ public class FirstGraphics implements Drawable {
 
     @Override
     public void setControlPanel(ControlPanel controlPanel) {
-
     }
 
     @Override
     public void showControlPanel() {
-
     }
 
     @Override
     public void hideControlPanel() {
-
     }
 }
