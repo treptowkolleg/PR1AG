@@ -42,9 +42,10 @@ import java.util.List;
  *
  * <p>For examples of the new architecture in action, see the classes in the
  * {@code pr1.a07.plot.demo} package, which demonstrate how to create,
- * configure, and interact with plot sets using the modern API.</p>
+ * configure, and interact with plot sets using my new API.</p>
  *
- * <p>This class remains for comparison and transition purposes only.</p>
+ * <p>This class remains for comparison and transition purposes only. The new
+ * approach is work in progress, though.</p>
  */
 public class TestGraphics {
     public static double scaleX = 50;
