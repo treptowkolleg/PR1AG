@@ -18,6 +18,6 @@ public class TestSet extends PlotSet<TestGraph> {
 
     @Override
     public PlotControl<TestGraph> createControl(PlotApplication app) {
-        return new TestControl(app, getGraphs());
+        return new TestControl(app, this);
     }
 }

@@ -45,10 +45,11 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
      * added to the window, and the window is made visible.
      *
      * @param application the parent {@link PlotApplication} used for repaint coordination
-     * @param graphs      the non-empty list of plot graphs to manage; must not be null
+     * @param plotSet     the corresponding {@link PlotSet} holding the plots
      * @throws IllegalArgumentException if the graph list is null or empty
      */
-    public PlotControl(PlotApplication application, PlotGraphList<T> graphs) {
+    public PlotControl(PlotApplication application, PlotSet<T> plotSet) {
+        PlotGraphList<T> graphs = plotSet.getGraphs();
         if (graphs == null || graphs.isEmpty()) {
             throw new IllegalArgumentException("Graph list must not be null or empty");
         }

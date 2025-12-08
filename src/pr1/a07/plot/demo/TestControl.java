@@ -4,13 +4,14 @@ import pr1.a07.plot.ControlBuilder;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotControl;
 import pr1.a07.plot.PlotGraphList;
+import pr1.a07.plot.PlotSet;
 
 import javax.swing.JPanel;
 
 public class TestControl extends PlotControl<TestGraph> {
 
-    public TestControl(PlotApplication application, PlotGraphList<TestGraph> graphs) {
-        super(application, graphs);
+    public TestControl(PlotApplication application, PlotSet<TestGraph> plotSet) {
+        super(application, plotSet);
     }
 
     @Override
