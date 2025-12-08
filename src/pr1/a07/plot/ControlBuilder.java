@@ -104,7 +104,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      * in the list should be actively controlled. When a new graph is selected,
      * all associated sliders are updated to reflect that graph's current parameter values.
      *
-     * @param label the base label used to generate item names (e.g., "Plot" → "Plot 1", "Plot 2")
+     * @param label the base label used to generate item names (e.g., "Plot" -> "Plot 1", "Plot 2")
      * @return this builder instance for method chaining
      */
     public ControlBuilder<T> selector(String label) {
