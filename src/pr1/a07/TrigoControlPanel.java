@@ -53,7 +53,7 @@ public class TrigoControlPanel extends ControlPanel {
 
         setTitle("Trigonometry Control");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
         setAlwaysOnTop(true);
         setLayout(new GridBagLayout());
         gbc.insets = new Insets(5, 5, 5, 5);

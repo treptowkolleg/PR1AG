@@ -18,6 +18,7 @@ package pr1.a07.plot;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.Dimension;
 
 /**
  * An abstract base class for plot control windows that manage user interaction
@@ -64,10 +65,16 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
         if (null != controlPanel) {
             add(controlPanel);
         }
+        setDefaultTitle();
         pack();
+        setMinimumSize(new Dimension(400, 1));
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
         setVisible(true);
+    }
+
+    public void setDefaultTitle() {
+        super.setTitle("Plot-Steuerung");
     }
 
     /**

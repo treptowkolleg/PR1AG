@@ -20,7 +20,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SpringLayout;
+import javax.swing.border.EmptyBorder;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -45,7 +52,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     private final T activeGraph;
     private final List<JSlider> sliders = new ArrayList<>();
     private final List<Function<T, Integer>> getters = new ArrayList<>();
-    private final JPanel panel = new JPanel(new GridLayout(0, 1));
+    private final JPanel panel = new JPanel(new GridBagLayout());
+    private final GridBagConstraints constraints = new GridBagConstraints();
 
     /**
      * Constructs a new control builder associated with the given plot control
@@ -63,6 +71,11 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         this.control = control;
         this.graphs = graphs;
         this.activeGraph = graphs.get(0);
+        this.constraints.fill = GridBagConstraints.HORIZONTAL;
+        this.constraints.insets = new Insets(5, 5, 5, 5);
+        this.constraints.weightx = 1.0;
+        this.constraints.gridx = 0;
+        this.constraints.gridy = 0;
     }
 
     /**
@@ -95,7 +108,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         });
         sliders.add(slider);
         getters.add(getter);
-        panel.add(slider);
+        add(slider);
         return this;
     }
 
@@ -107,7 +120,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      * @param label the base label used to generate item names (e.g., "Plot" -> "Plot 1", "Plot 2")
      * @return this builder instance for method chaining
      */
-    public ControlBuilder<T> selector(String label) {
+    public ControlBuilder<T> selector(String title, String label) {
         String[] items = new String[graphs.size()];
         JComboBox<String> combo;
 
@@ -124,8 +137,14 @@ public class ControlBuilder<T extends PlotGraph<T>> {
                 control.application.repaint();
             }
         });
-        panel.add(combo);
+        combo.setBorder(BorderFactory.createTitledBorder(new EmptyBorder(0, 0, 0, 0), title));
+        add(combo);
         return this;
+    }
+
+    private void add(Component component) {
+        panel.add(component, constraints);
+        constraints.gridy++;
     }
 
     /**

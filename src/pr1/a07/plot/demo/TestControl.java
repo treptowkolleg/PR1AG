@@ -11,12 +11,13 @@ public class TestControl extends PlotControl<TestGraph> {
 
     public TestControl(PlotApplication application, PlotSet<TestGraph> plotSet) {
         super(application, plotSet);
+        setTitle("Test-Control");
     }
 
     @Override
     public JPanel configureControls(ControlBuilder<TestGraph> build) {
         return build
-                .selector("Plot")
+                .selector("Plot-Auswahl", "Plot")
                 .slider("X-Wert", -200, 200, TestGraph::getX, TestGraph::setX)
                 .slider("Y-Wert", -200, 200, TestGraph::getY, TestGraph::setY)
                 .getPanel();
