@@ -11,10 +11,11 @@ public class TestSet extends PlotSet<TestGraph> {
 
     public TestSet() {
         TestGraph customGraph = new TestGraph();
+
+        customGraph.setTitle("Blue Box");
+        customGraph.setColor(Color.BLUE);
         customGraph.setX(200);
         customGraph.setY(-100);
-        customGraph.setColor(Color.BLUE);
-        customGraph.setTitle("Blue Box");
         addGraph(new TestGraph("Red Box", Color.RED));
         addGraph(customGraph);
         setGrid(new PlotGrid());
