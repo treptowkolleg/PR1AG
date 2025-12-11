@@ -8,12 +8,13 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
+
 package pr1.a07.plot;
 
 import schimkat.berlin.lernhilfe2025ws.graphics.Drawable;
@@ -25,6 +26,17 @@ import java.awt.Graphics2D;
  * An abstract base class for drawable objects that provides common rendering infrastructure.
  * This class automatically computes the drawing area dimensions and center coordinates
  * from the graphics context before invoking custom drawing logic.
+ *
+ * <p><strong>Important licensing notice:</strong> This class implements the
+ * {@link schimkat.berlin.lernhilfe2025ws.graphics.Drawable} interface, which is provided
+ * exclusively for use within the courses taught by Dr. Schimkat at the Berlin University
+ * of Applied Sciences (Berliner Hochschule für Technik, BHT). Redistribution, public release,
+ * or use outside this educational context is not permitted under Dr. Schimkat’s license terms.</p>
+ *
+ * <p>For any reuse beyond the original course setting (e.g., in personal projects, open-source
+ * repositories, or other educational contexts), you <em>must</em> create a project-local
+ * alternative interface (e.g., {@code your.package.Drawable}) and refactor all implementing
+ * classes to depend on that instead.</p>
  */
 public abstract class DrawableObject implements Drawable, CustomDrawable {
     protected int panelWidth;

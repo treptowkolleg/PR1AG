@@ -26,6 +26,17 @@ import java.util.ArrayList;
  * A custom JPanel that manages and renders a list of drawable objects.
  * This panel automatically redraws all registered DrawableObject instances
  * during its paint cycle.
+ *
+ * <p><strong>Important licensing notice:</strong> This class implements the
+ * {@link schimkat.berlin.lernhilfe2025ws.graphics.Drawable} interface, which is provided
+ * exclusively for use within the courses taught by Dr. Schimkat at the Berlin University
+ * of Applied Sciences (Berliner Hochschule für Technik, BHT). Redistribution, public release,
+ * or use outside this educational context is not permitted under Dr. Schimkat’s license terms.</p>
+ *
+ * <p>For any reuse beyond the original course setting (e.g., in personal projects, open-source
+ * repositories, or other educational contexts), you <em>must</em> create a project-local
+ * alternative interface (e.g., {@code your.package.Drawable}) and refactor all implementing
+ * classes to depend on that instead.</p>
  */
 public class DrawablePanel extends JPanel {
     private final ArrayList<Drawable> drawableObjects = new ArrayList<>();
