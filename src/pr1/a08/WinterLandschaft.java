@@ -24,8 +24,8 @@ public class WinterLandschaft extends Landschaft {
         drawForeground(g);
         drawHorizon(g);
         drawHills(g);
-        drawTrees(g);
         drawSnowman(g);
+        drawTrees(g);
         drawSnow(g);
     }
 
