@@ -92,6 +92,13 @@ public class PlotApplication extends JFrame {
     }
 
     /**
+     * Starts the application by setting the main frame visible.
+     */
+    public void start() {
+        setVisible(true);
+    }
+
+    /**
      * Delegates control creation to the plot set itself.
      * This method is called only once per plot set, when first needed.
      *
