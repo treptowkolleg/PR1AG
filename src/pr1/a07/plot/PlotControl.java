@@ -8,11 +8,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
 package pr1.a07.plot;
 
@@ -73,6 +73,10 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Sets the default window title for this control.
+     * Subclasses may override this method to provide a custom title.
+     */
     public void setDefaultTitle() {
         super.setTitle("Plot-Steuerung");
     }

@@ -12,7 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
 package pr1.a07.plot;
 
@@ -48,6 +48,9 @@ public class DrawablePanel extends JPanel {
         drawableObjects.addAll(objects);
     }
 
+    /**
+     * Removes all currently registered drawable objects from this panel.
+     */
     public void clearDrawables() {
         drawableObjects.clear();
     }

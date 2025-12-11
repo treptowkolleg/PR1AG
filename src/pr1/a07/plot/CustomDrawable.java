@@ -22,7 +22,7 @@ import java.awt.Graphics2D;
 /**
  * Defines the contract for objects that can be drawn on a graphics context.
  * Implementing classes must provide custom drawing logic by overriding
- * the configure methods, while the draw method handles the rendering workflow.
+ * the configure methods.
  */
 public interface CustomDrawable {
 

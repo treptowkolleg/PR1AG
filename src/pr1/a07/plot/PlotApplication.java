@@ -2,17 +2,17 @@
  * Copyright (C) 2025 Benjamin Wagner
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms ol the GNU Lesser General Public License as published by
+ * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
 package pr1.a07.plot;
 
@@ -49,14 +49,32 @@ public class PlotApplication extends JFrame {
         this(800, 600);
     }
 
+    /**
+     * Constructs a new plot application window with the specified title and default size.
+     *
+     * @param title the title to display in the window's title bar
+     */
     public PlotApplication(String title) {
         this(title, 800, 600);
     }
 
+    /**
+     * Constructs a new plot application window with the specified dimensions and a default title.
+     *
+     * @param width  the initial width of the window in pixels
+     * @param height the initial height of the window in pixels
+     */
     public PlotApplication(int width, int height) {
         this("Plot Application", width, height);
     }
 
+    /**
+     * Constructs a new plot application window with the specified title and dimensions.
+     *
+     * @param title  the title to display in the window's title bar
+     * @param width  the initial width of the window in pixels
+     * @param height the initial height of the window in pixels
+     */
     public PlotApplication(String title, int width, int height) {
         setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,6 +115,7 @@ public class PlotApplication extends JFrame {
         panel.addDrawable(set.getGrid());
         panel.addDrawables(set.getGraphs());
         PlotControl<?> control = controlMap.computeIfAbsent(set, this::createControl);
+
         if (control != null) {
             control.setVisible(true);
         }

@@ -8,11 +8,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
 package pr1.a07.plot;
 
@@ -20,13 +20,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +114,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      * in the list should be actively controlled. When a new graph is selected,
      * all associated sliders are updated to reflect that graph's current parameter values.
      *
-     * @param label the base label used to generate item names (e.g., "Plot" -> "Plot 1", "Plot 2")
+     * @param title the title displayed above the combo box (e.g., "Active graph")
+     * @param label the base label used to generate fallback item names (e.g., "Plot" → "Plot 1", "Plot 2")
      * @return this builder instance for method chaining
      */
     public ControlBuilder<T> selector(String title, String label) {
@@ -125,7 +123,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         JComboBox<String> combo;
 
         for (int i = 0; i < items.length; i++) {
-            if(graphs.get(i).hasTitle()) {
+            if (graphs.get(i).hasTitle()) {
                 items[i] = graphs.get(i).getTitle();
             } else {
                 items[i] = label + " " + (i + 1);
@@ -146,6 +144,12 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    /**
+     * Adds a component to the internal control panel using the current layout constraints,
+     * and increments the grid Y position for the next component.
+     *
+     * @param component the component to add to the panel
+     */
     private void add(Component component) {
         panel.add(component, constraints);
         constraints.gridy++;

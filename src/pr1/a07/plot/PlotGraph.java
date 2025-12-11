@@ -8,11 +8,11 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
 package pr1.a07.plot;
 
@@ -27,7 +27,7 @@ import java.awt.Graphics2D;
  * that are adjustable via a linked PlotControl instance.
  *
  * @param <T> the concrete subclass type (enables fluent and type-safe method
- *          chaining)
+ *            chaining)
  */
 public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
     protected PlotControl<T> plotControl;
@@ -45,22 +45,48 @@ public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
         plotControl = control;
     }
 
+    /**
+     * Checks whether this graph has a user-defined title.
+     *
+     * @return {@code true} if a title has been set, {@code false} otherwise
+     */
     public boolean hasTitle() {
         return null != title;
     }
 
+    /**
+     * Returns the title of this graph, or {@code null} if no title has been set.
+     *
+     * @return the graph's title, or {@code null}
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets a descriptive title for this graph.
+     * The title may be displayed in UI elements such as graph selectors.
+     *
+     * @param title the new title; may be {@code null}
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Returns the primary drawing color used by this graph.
+     *
+     * @return the current color; never {@code null} (defaults to {@link Color#BLACK})
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Sets the primary drawing color for this graph.
+     *
+     * @param color the new color; must not be {@code null}
+     */
     public void setColor(Color color) {
         this.color = color;
     }
