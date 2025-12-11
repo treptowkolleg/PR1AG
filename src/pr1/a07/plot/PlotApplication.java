@@ -46,10 +46,22 @@ public class PlotApplication extends JFrame {
      * behavior, and centers the window on the screen.
      */
     public PlotApplication() {
-        setTitle("Plot Application");
+        this(800, 600);
+    }
+
+    public PlotApplication(String title) {
+        this(title, 800, 600);
+    }
+
+    public PlotApplication(int width, int height) {
+        this("Plot Application", width, height);
+    }
+
+    public PlotApplication(String title, int width, int height) {
+        setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(panel);
-        setSize(800, 600);
+        setSize(width, height);
         setLocationRelativeTo(null);
     }
 

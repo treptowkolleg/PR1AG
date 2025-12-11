@@ -10,5 +10,6 @@
     <orderEntry type="library" name="schimkat_berlin_lernhilfe2025ws_objectPlay" level="project" />
     <orderEntry type="library" name="schimkat_berlin_lernhilfe2025ws_welcome" level="project" />
     <orderEntry type="library" name="schimkat_berlin_lernhilfe2025ws_io" level="project" />
+    <orderEntry type="library" name="schimkat_berlin_lernhilfe2025ws_graphics" level="project" />
   </component>
 </module>

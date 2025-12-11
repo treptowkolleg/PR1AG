@@ -16,6 +16,8 @@
  */
 package pr1.a07.plot;
 
+import schimkat.berlin.lernhilfe2025ws.graphics.Drawable;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -24,7 +26,7 @@ import java.awt.Graphics2D;
  * This class automatically computes the drawing area dimensions and center coordinates
  * from the graphics context before invoking custom drawing logic.
  */
-public abstract class DrawableObject implements Drawable {
+public abstract class DrawableObject implements Drawable, CustomDrawable {
     protected int panelWidth;
     protected int panelHeight;
     protected int centerX;

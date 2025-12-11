@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/schimkat_berlin_lernhilfe2025ws_welcome.jar"/>
 	<classpathentry kind="lib" path="lib/schimkat_berlin_lernhilfe2025ws_io.jar"/>
 	<classpathentry kind="lib" path="lib/schimkat_berlin_lernhilfe2025ws_objectPlay.jar"/>
+	<classpathentry kind="lib" path="lib/schimkat_berlin_lernhilfe2025ws_graphics.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

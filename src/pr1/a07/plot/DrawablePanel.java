@@ -16,6 +16,8 @@
  */
 package pr1.a07.plot;
 
+import schimkat.berlin.lernhilfe2025ws.graphics.Drawable;
+
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class DrawablePanel extends JPanel {
      *
      * @param object the drawable object to add
      */
-    public void addDrawable(DrawableObject object) {
+    public void addDrawable(Drawable object) {
         drawableObjects.add(object);
     }
 
@@ -42,7 +44,7 @@ public class DrawablePanel extends JPanel {
      *
      * @param objects the list of drawable objects to add
      */
-    public void addDrawables(ArrayList<? extends DrawableObject> objects) {
+    public void addDrawables(ArrayList<? extends Drawable> objects) {
         drawableObjects.addAll(objects);
     }
 

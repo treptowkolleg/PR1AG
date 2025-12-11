@@ -24,16 +24,7 @@ import java.awt.Graphics2D;
  * Implementing classes must provide custom drawing logic by overriding
  * the configure methods, while the draw method handles the rendering workflow.
  */
-public interface Drawable {
-
-    /**
-     * Renders this drawable object using the provided graphics context.
-     * This method typically sets up the drawing environment and delegates
-     * to the configure methods for custom rendering logic.
-     *
-     * @param g the graphics context used for drawing
-     */
-    void draw(Graphics g);
+public interface CustomDrawable {
 
     /**
      * Customizes the rendering using the basic Graphics context.
