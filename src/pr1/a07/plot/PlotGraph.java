@@ -32,7 +32,7 @@ import java.awt.Graphics2D;
 public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
     protected PlotControl<T> plotControl;
     protected String title;
-    protected Color color = Color.BLACK;
+    protected Color color;
 
     /**
      * Associates this graph with a plot control window.

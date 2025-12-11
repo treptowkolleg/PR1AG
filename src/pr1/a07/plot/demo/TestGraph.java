@@ -2,11 +2,25 @@ package pr1.a07.plot.demo;
 
 import pr1.a07.plot.PlotGraph;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class TestGraph extends PlotGraph<TestGraph> {
     private int x = 0;
     private int y = 0;
+
+    public TestGraph() {
+        this(null);
+    }
+
+    public TestGraph(String title) {
+        this(title, Color.BLACK);
+    }
+
+    public TestGraph(String title, Color color) {
+        this.title = title;
+        this.color = color;
+    }
 
     public int getX() {
         return x;
