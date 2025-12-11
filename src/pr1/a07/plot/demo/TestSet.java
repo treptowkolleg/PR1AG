@@ -5,12 +5,16 @@ import pr1.a07.plot.PlotGrid;
 import pr1.a07.plot.PlotSet;
 import pr1.a07.plot.PlotApplication;
 
+import java.awt.Color;
+
 public class TestSet extends PlotSet<TestGraph> {
 
     public TestSet() {
         TestGraph customGraph = new TestGraph();
         customGraph.setX(200);
         customGraph.setY(-100);
+        customGraph.setColor(Color.BLUE);
+        customGraph.setTitle("Blue Box");
         addGraph(new TestGraph());
         addGraph(customGraph);
         setGrid(new PlotGrid());

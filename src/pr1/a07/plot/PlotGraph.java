@@ -16,6 +16,7 @@
  */
 package pr1.a07.plot;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -25,10 +26,13 @@ import java.awt.Graphics2D;
  * Subclasses can define custom rendering logic and expose parameters
  * that are adjustable via a linked PlotControl instance.
  *
- * @param <T> the concrete subclass type (enables fluent and type-safe method chaining)
+ * @param <T> the concrete subclass type (enables fluent and type-safe method
+ *          chaining)
  */
 public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
     protected PlotControl<T> plotControl;
+    protected String title;
+    protected Color color = Color.BLACK;
 
     /**
      * Associates this graph with a plot control window.
@@ -39,6 +43,26 @@ public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
      */
     public void setPlotControl(PlotControl<T> control) {
         plotControl = control;
+    }
+
+    public boolean hasTitle() {
+        return null != title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     /**

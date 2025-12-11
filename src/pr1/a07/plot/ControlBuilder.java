@@ -125,7 +125,11 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         JComboBox<String> combo;
 
         for (int i = 0; i < items.length; i++) {
-            items[i] = label + " " + (i + 1);
+            if(graphs.get(i).hasTitle()) {
+                items[i] = graphs.get(i).getTitle();
+            } else {
+                items[i] = label + " " + (i + 1);
+            }
         }
         combo = new JComboBox<>(items);
         combo.setSelectedIndex(0);

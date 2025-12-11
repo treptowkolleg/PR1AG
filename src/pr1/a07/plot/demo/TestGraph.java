@@ -26,6 +26,7 @@ public class TestGraph extends PlotGraph<TestGraph> {
 
     @Override
     public void configureGraphics2D(Graphics2D g) {
+        g.setColor(color);
         g.drawRect(centerX - 50 + x, centerY - 50 + y, 100, 100);
     }
 }
