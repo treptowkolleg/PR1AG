@@ -1,6 +1,5 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.Colors;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotControl;
 import pr1.a07.plot.PlotSet;
@@ -14,6 +13,8 @@ public class TrigonometrieSet extends PlotSet<TrigonometrieGraph> {
         setGrid(new TrigonometrieGrid(scale));
         addGraph(GraphFactory.sinus(scale));
         addGraph(GraphFactory.cosinus(scale));
+        addGraph(GraphFactory.sinusSquared(scale));
+        addGraph(GraphFactory.sinusMalCosinus(scale));
     }
 
     @Override
