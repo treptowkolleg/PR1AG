@@ -23,8 +23,8 @@ public class TrigonometrieControl extends PlotControl<TrigonometrieGraph> {
                 .sliderDouble("dX", -2, 2, .1, TrigonometrieGraph::getDx, TrigonometrieGraph::setDx)
                 .sliderDouble("dY", -2, 2, .1, TrigonometrieGraph::getDy, TrigonometrieGraph::setDy)
                 .sliderDouble("Auflösung", .1, 1, .1, TrigonometrieGraph::getResolution, TrigonometrieGraph::setResolution)
-                .sliderDouble("Intervall-Start", -12, 12, .5, TrigonometrieGraph::getIntervalStart, TrigonometrieGraph::setIntervalStart)
-                .sliderDouble("Intervall-Ende", -12, 12, .5, TrigonometrieGraph::getIntervalEnd, TrigonometrieGraph::setIntervalEnd)
+                .sliderDouble("Intervall-Start", -12, 12, .25, TrigonometrieGraph::getIntervalStart, TrigonometrieGraph::setIntervalStart)
+                .sliderDouble("Intervall-Ende", -12, 12, .25, TrigonometrieGraph::getIntervalEnd, TrigonometrieGraph::setIntervalEnd)
                 .getPanel();
     }
 }
