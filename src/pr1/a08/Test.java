@@ -30,6 +30,7 @@ public class Test {
 
     public static void testLandschaft() {
         FunnyFirstPainter painter = new FunnyFirstPainter();
+
         painter.add(new Landschaft(3, 12));
         painter.showDrawing();
     }
