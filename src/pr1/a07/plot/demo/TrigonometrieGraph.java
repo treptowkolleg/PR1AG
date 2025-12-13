@@ -24,7 +24,7 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
     public TrigonometrieGraph(Color color, Double resolution,
                               Double intervalStart,
                               Double intervalEnd, Double amplitude,
-                              Double width,
+                              Double waveLength,
                               Double dx, Double dy, Integer scale,
                               String title) {
         this.color = null != color ? color : Colors.RED;
@@ -32,7 +32,7 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
         this.intervalStart = null != intervalStart ? intervalStart : -9;
         this.intervalEnd = null != intervalEnd ? intervalEnd : 9;
         this.amplitude = null != amplitude ? amplitude : 1.0;
-        this.waveLength = null != width ? width : 1.0;
+        this.waveLength = null != waveLength ? waveLength : 1.0;
         this.dx = null != dx ? dx : 0;
         this.dy = null != dy ? dy : 0;
         this.scale = null != scale ? scale : 50;

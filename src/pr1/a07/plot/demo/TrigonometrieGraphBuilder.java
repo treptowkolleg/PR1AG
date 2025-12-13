@@ -8,7 +8,7 @@ public class TrigonometrieGraphBuilder {
     private Double intervalStart;
     private Double intervalEnd;
     private Double amplitude;
-    private Double width;
+    private Double waveLength;
     private Double dx;
     private Double dy;
     private Integer scale;
@@ -39,8 +39,8 @@ public class TrigonometrieGraphBuilder {
         return this;
     }
 
-    public TrigonometrieGraphBuilder setWidth(Double width) {
-        this.width = width;
+    public TrigonometrieGraphBuilder setWaveLength(Double waveLength) {
+        this.waveLength = waveLength;
         return this;
     }
 
@@ -65,6 +65,6 @@ public class TrigonometrieGraphBuilder {
     }
 
     public TrigonometrieGraph build() {
-        return new TrigonometrieGraph(color, resolution, intervalStart, intervalEnd, amplitude, width, dx, dy, scale, title);
+        return new TrigonometrieGraph(color, resolution, intervalStart, intervalEnd, amplitude, waveLength, dx, dy, scale, title);
     }
 }
