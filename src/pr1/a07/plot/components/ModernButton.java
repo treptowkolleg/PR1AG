@@ -52,11 +52,15 @@ public class ModernButton extends JButton {
 
         Color buttonColor = baseColor;
         if (!isEnabled()) {
-            buttonColor = new Color(142, 142, 147);
+            buttonColor = Colors.GRAY4;
+            setForeground(Colors.GRAY2);
         } else if (getModel().isPressed()) {
             buttonColor = adjustBrightness(buttonColor, -0.2f);
         } else if (getModel().isRollover()) {
             buttonColor = adjustBrightness(buttonColor, -0.1f);
+        }
+        if (isEnabled()) {
+            setForeground(Colors.WHITE);
         }
 
         RoundRectangle2D shape = new RoundRectangle2D.Float(

@@ -22,6 +22,7 @@ public class Test {
         PlotApplication app = new PlotApplication("Einfache Landschaft", 600, 600);
         PlotSet<EinfacheLandschaft> set = new PlotSet<>() {
         };
+        set.setTitle("Einfach");
         set.setGrid(new EmptyGrid());
         set.addGraph(new EinfacheLandschaft());
         app.addPlotSet(set);
@@ -39,6 +40,7 @@ public class Test {
         PlotApplication app = new PlotApplication("Winterlandschaft", 600, 600);
         PlotSet<EinfacheLandschaft> set = new PlotSet<>() {
         };
+        set.setTitle("Winter");
         set.setGrid(new EmptyGrid());
         set.addGraph(new WinterLandschaft());
         app.addPlotSet(set);

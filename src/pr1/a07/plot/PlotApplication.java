@@ -47,13 +47,25 @@ import java.util.Map;
  * {@link PlotControl} windows.
  *
  * <p><strong>Note:</strong> This class is a work in progress. Future
- * enhancements
- * may include support for UI navigation (e.g., menus or toolbars to select
+ * enhancements may include support for UI navigation (e.g., menus or
+ * toolbars to select
  * active plot sets), persistence of plot configurations, and improved lifecycle
  * management of controls.</p>
  */
 public class PlotApplication extends JFrame {
+
+    /**
+     * Horizontal offset (in pixels) applied to the origin of all drawings.
+     * This value is shared globally across all drawable objects to enable
+     * panning of the entire coordinate system.
+     */
     public static double X_DELTA = 0;
+
+    /**
+     * Vertical offset (in pixels) applied to the origin of all drawings.
+     * This value is shared globally across all drawable objects to enable
+     * panning of the entire coordinate system.
+     */
     public static double Y_DELTA = 0;
 
     private final DrawablePanel panel = new DrawablePanel();
@@ -63,7 +75,8 @@ public class PlotApplication extends JFrame {
     private final JButton resetBtn = new ModernButton("Reset", Colors.BLUE);
     private final JButton nextBtn = new ModernButton(">>");
     private final JButton prevBtn = new ModernButton("<<");
-    private final ModernButton toggleControlBtn = new ModernButton("Steuerung", Colors.BLUE);
+    private final ModernButton toggleControlBtn = new ModernButton("Steuerung"
+            , Colors.BLUE);
     private Point dragStart = null;
     private PlotSet<?> activeSet = null;
     private int currentPlot = 0;
@@ -111,14 +124,14 @@ public class PlotApplication extends JFrame {
         JPanel btnContainer = new JPanel();
         JPanel infoContainer = new JPanel();
 
-
         btnContainer.setLayout(new BoxLayout(btnContainer, BoxLayout.X_AXIS));
         btnContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         btnContainer.setBackground(Colors.GRAY5);
         infoContainer.setLayout(new BoxLayout(infoContainer, BoxLayout.X_AXIS));
         infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         infoContainer.setBackground(Colors.GRAY5);
-        infoContainer.add(new JLabel("Sie können das Koordinatensystem per Drag-and-Drop verschieben."));
+        infoContainer.add(new JLabel("Sie können das Koordinatensystem per " +
+                "Drag-and-Drop verschieben."));
         panel.setBackground(Colors.GRAY6);
         setMinimumSize(new Dimension(800, 600));
         setTitle(title);
@@ -147,6 +160,12 @@ public class PlotApplication extends JFrame {
         setupMouseListener();
     }
 
+    /**
+     * Sets up mouse listeners on the drawing panel to enable drag-and-drop
+     * panning of the coordinate system. The offset values {@link #X_DELTA}
+     * and {@link #Y_DELTA} are updated in real time during dragging,
+     * and the reset button state is refreshed when dragging ends.
+     */
     public void setupMouseListener() {
         panel.addMouseListener(new MouseAdapter() {
             @Override
@@ -198,7 +217,7 @@ public class PlotApplication extends JFrame {
      * and shows the associated control window.
      *
      * @param set the plot set to activate; must be registered via
-     * {@link #addPlotSet}
+     *            {@link #addPlotSet}
      */
     public void switchToSet(PlotSet<?> set) {
         if (activeSet != null) {
@@ -215,50 +234,72 @@ public class PlotApplication extends JFrame {
         if (control != null) {
             control.setVisible(true);
             toggleControlBtn.setBaseColor(Colors.BLUE);
+            toggleControlBtn.setEnabled(true);
         } else {
             toggleControlBtn.setEnabled(false);
         }
         if (set.getGraphs().size() == 1) {
             nextBtn.setEnabled(false);
             prevBtn.setEnabled(false);
+        } else {
+            nextBtn.setEnabled(true);
+            prevBtn.setEnabled(true);
         }
         panel.repaint();
     }
 
+    /**
+     * Toggles the visibility of the currently active plot control window.
+     * Updates the button color to reflect the current state (blue = visible,
+     * gray = hidden).
+     *
+     * @param e the action event triggering this method (ignored)
+     */
     public void toggleControl(ActionEvent e) {
         if (null != control) {
-            control.setVisible(!control.isVisible());
-            if (control.isVisible()) {
-                toggleControlBtn.setBaseColor(Colors.BLUE);
-            } else {
-                toggleControlBtn.setBaseColor(Colors.GRAY3);
-            }
+            boolean willBeVisible = !control.isVisible();
+            control.setVisible(willBeVisible);
+            toggleControlBtn.setBaseColor(willBeVisible ? Colors.BLUE :
+                    Colors.GRAY2);
         }
-
     }
 
+    /**
+     * Cycles to the next registered plot set in a circular manner.
+     * If the last set is active, it wraps around to the first one.
+     *
+     * @param e the action event triggering this method (ignored)
+     */
     public void nextPlotSet(ActionEvent e) {
         if (currentPlot < plotSets.size() - 1) {
-
             currentPlot++;
         } else {
-
             currentPlot = 0;
         }
         switchToSet(plotSets.get(currentPlot));
     }
 
+    /**
+     * Cycles to the previous registered plot set in a circular manner.
+     * If the first set is active, it wraps around to the last one.
+     *
+     * @param e the action event triggering this method (ignored)
+     */
     public void prevPlotSet(ActionEvent e) {
         if (currentPlot > 0) {
-
             currentPlot--;
         } else {
-
             currentPlot = plotSets.size() - 1;
         }
         switchToSet(plotSets.get(currentPlot));
     }
 
+    /**
+     * Resets the coordinate system offset to zero (centered view).
+     * Disables the reset button afterward and triggers a repaint.
+     *
+     * @param e the action event triggering this method (ignored)
+     */
     public void resetMove(ActionEvent e) {
         X_DELTA = 0;
         Y_DELTA = 0;
@@ -267,14 +308,15 @@ public class PlotApplication extends JFrame {
     }
 
     /**
-     * Starts the application by setting the main frame visible.
+     * Starts the application by making the main window visible.
      */
     public void start() {
         setVisible(true);
     }
 
     /**
-     * Delegates control creation to the plot set itself.
+     * Delegates control creation to the plot set itself via its
+     * {@link PlotSet#createControl(PlotApplication)} method.
      * This method is called only once per plot set, when first needed.
      *
      * @param set the plot set for which to create a control
@@ -285,6 +327,13 @@ public class PlotApplication extends JFrame {
         return set.createControl(this);
     }
 
+    /**
+     * Updates the enabled state of the reset button based on whether the
+     * coordinate system has been moved from its origin (0,0).
+     * The button is enabled only if at least one of {@link #X_DELTA} or
+     * {@link #Y_DELTA} differs from zero (within a small tolerance to
+     * account for floating-point precision).
+     */
     private void updateResetButtonState() {
         boolean isAtOrigin =
                 (Math.abs(X_DELTA) < 1e-9) && (Math.abs(Y_DELTA) < 1e-9);
