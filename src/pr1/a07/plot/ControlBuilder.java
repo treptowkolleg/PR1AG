@@ -37,18 +37,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
- * A builder class for creating UI control panels for plot graphs.
- * This class provides a fluent API to add interactive controls such as sliders
- * and graph selectors that dynamically update properties of the currently
- * active plot graph instance. Sliders are automatically synchronized with
- * the active graph when the selection changes.
+ * Builder class for plot control panels.
  *
- * <p><strong>Future enhancements:</strong> Additional control types such as
- * choice fields, text fields, checkboxes, and color pickers will be added
- * in upcoming versions to support richer parameter customization.</p>
- *
- * @param <T> the concrete subclass of {@link PlotGraph} that this builder
- *            configures
+ * @param <T> concrete PlotGraph type
  */
 public class ControlBuilder<T extends PlotGraph<T>> {
     private final PlotControl<T> control;
@@ -60,166 +51,242 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     private final GridBagConstraints constraints = new GridBagConstraints();
 
     /**
-     * Constructs a new control builder associated with the given plot control
-     * and list of graphs. The first graph in the list is used as the initial
-     * active graph.
+     * Constructs a new control builder for the given plot control and graph list.
      *
-     * @param control the plot control that manages repaint and active graph
-     *                state
-     * @param graphs  the non-empty list of graphs to manage; must not be null
+     * @param control the associated plot control instance
+     * @param graphs  the list of plot graphs to manage; must not be null or empty
      * @throws IllegalArgumentException if the graph list is null or empty
      */
     public ControlBuilder(PlotControl<T> control, PlotGraphList<T> graphs) {
         if (graphs == null || graphs.isEmpty()) {
-            throw new IllegalArgumentException("Graph list must not be null or empty");
+            throw new IllegalArgumentException("Graph list must not be null " +
+                    "or empty");
         }
         this.control = control;
         this.graphs = graphs;
         this.activeGraph = graphs.get(0);
-        this.constraints.fill = GridBagConstraints.HORIZONTAL;
-        this.constraints.insets = new Insets(5, 5, 5, 5);
-        this.constraints.weightx = 1.0;
-        this.constraints.gridx = 0;
-        this.constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 5, 5, 5);
+        constraints.weightx = 1.0;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
         panel.setBackground(Colors.GRAY5);
     }
 
     /**
-     * Adds a labeled slider to the control panel for integer values.
+     * Ensures that the minimum and maximum values are always present as labels
+     * in the slider's label table.
      *
-     * @param label  the label displayed on the slider border
-     * @param min    the minimum value of the slider
-     * @param max    the maximum value of the slider
-     * @param getter a function that retrieves the current integer value from a graph
-     * @param setter a bi-consumer that accepts a graph and an integer value to update it
+     * @param labels      the label table to update
+     * @param min         the minimum value
+     * @param max         the maximum value
+     * @param keyMapper   function to map value to integer slider key
+     * @param formatter   function to format value as display string
+     * @param <V>         the type of the min/max values (e.g., Integer or Double)
+     */
+    private static <V> void ensureMinAndMaxLabels(
+            Dictionary<Integer, JComponent> labels,
+            V min,
+            V max,
+            Function<V, Integer> keyMapper,
+            Function<V, String> formatter
+    ) {
+        labels.put(keyMapper.apply(min), new JLabel(formatter.apply(min)));
+        labels.put(keyMapper.apply(max), new JLabel(formatter.apply(max)));
+    }
+
+    /**
+     * Computes a preferred number of ticks for a slider based on the value range
+     * and step size. Small ranges show all discrete values; larger ranges use
+     * a logarithmic heuristic to yield 4–8 readable ticks.
+     *
+     * @param min   the minimum value of the range
+     * @param max   the maximum value of the range
+     * @param step  the smallest increment (must be positive)
+     * @return a target number of ticks between 3 and 8
+     */
+    private static int computePreferredTickCount(double min, double max,
+                                                 double step) {
+        if (step <= 0 || min >= max) {
+            return 5;
+        }
+        double range = max - min;
+        long values = (long) Math.ceil(range / step) + 1;
+        double logRange = Math.log10(range);
+        int ticks = (int) Math.round(6.0 - 0.7 * Math.abs(logRange));
+
+        if (values <= 6) {
+            return (int) values;
+        }
+        return Math.max(4, Math.min(8, ticks));
+    }
+
+    /**
+     * Computes a "nice" (human-readable) tick spacing such as 1, 2, 5, 10, etc.,
+     * based on the value range and desired number of ticks.
+     *
+     * @param range           the total range (max - min)
+     * @param preferredTicks  the approximate number of desired ticks
+     * @return a rounded, user-friendly tick interval
+     */
+    private static double computeNiceTickSpacing(double range,
+                                                 int preferredTicks) {
+        if (range <= 0) {
+            return 1.0;
+        }
+        double raw = range / preferredTicks;
+        double exponent = Math.floor(Math.log10(raw));
+        double fraction = raw / Math.pow(10, exponent);
+        double niceFraction = fraction <= 1 ? 1 : fraction <= 2 ? 2 :
+                fraction <= 5 ? 5 : 10;
+
+        return niceFraction * Math.pow(10, exponent);
+    }
+
+    /**
+     * Formats a double value for display by omitting unnecessary decimal places.
+     * Examples: 2.0 → "2", 1.5 → "1.5", 0.75 → "0.75".
+     *
+     * @param value the numeric value to format
+     * @return a compact string representation
+     */
+    private static String formatDouble(double value) {
+        if (Math.abs(value - Math.round(value)) < 1e-9) {
+            return String.format("%.0f", value);
+        } else if (Math.abs(value * 10 - Math.round(value * 10)) < 1e-9) {
+            return String.format("%.1f", value);
+        }
+        return String.format("%.2f", value);
+    }
+
+    /**
+     * Returns the constructed control panel containing all added UI components.
+     *
+     * @return the control panel ready for embedding in a window
+     */
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    /**
+     * Adds a labeled integer slider to the control panel.
+     *
+     * @param label  the slider label
+     * @param min    the minimum integer value (inclusive)
+     * @param max    the maximum integer value (inclusive)
+     * @param getter function to retrieve the current value from a graph
+     * @param setter function to update the graph with a new integer value
      * @return this builder instance for method chaining
      */
-    public ControlBuilder<T> slider(String label, int min, int max,
-                                    Function<T, Integer> getter,
-                                    BiConsumer<T, Integer> setter) {
+    public ControlBuilder<T> slider(
+            String label,
+            int min,
+            int max,
+            Function<T, Integer> getter,
+            BiConsumer<T, Integer> setter
+    ) {
         int initialValue = getter.apply(activeGraph);
         JSlider slider = createIntSlider(min, max, initialValue, label);
 
         slider.setBackground(Colors.GRAY5);
-        sliders.add(slider);
-        getters.add(getter);
         add(slider);
-
-        slider.addChangeListener(e -> {
-            int value = slider.getValue();
-            T currentGraph = control.getActiveGraph();
-            setter.accept(currentGraph, value);
-            control.application.repaint();
-        });
-
+        attachSliderListener(slider, getter, Function.identity(), setter);
         return this;
     }
 
     /**
-     * Adds a labeled slider for double-valued parameters.
-     * Tick count is automatically determined based on min, max, and step.
-     * Labels appear at every tick, always at 0 (if in range),
-     * and always at min and max.
+     * Adds a labeled double slider to the control panel.
+     * Internally uses integer-based JSlider scaled by 1/step.
      *
-     * @param label  the label displayed on the slider border
+     * @param label  the slider label
      * @param min    the minimum double value (inclusive)
      * @param max    the maximum double value (inclusive)
-     * @param step   the smallest incremental change (e.g., 0.01)
-     * @param getter a function that retrieves the current double value from a graph
-     * @param setter a bi-consumer that updates the graph with a double value
+     * @param step   the smallest increment (e.g., 0.01); must be positive
+     * @param getter function to retrieve the current double value from a graph
+     * @param setter function to update the graph with a new double value
      * @return this builder instance for method chaining
+     * @throws IllegalArgumentException if step is not positive or min >= max
      */
-    public ControlBuilder<T> sliderDouble(String label, double min, double max, double step,
-                                          Function<T, Double> getter,
-                                          BiConsumer<T, Double> setter) {
-        if (step <= 0) {
-            throw new IllegalArgumentException("Step must be positive");
+    public ControlBuilder<T> sliderDouble(
+            String label,
+            double min,
+            double max,
+            double step,
+            Function<T, Double> getter,
+            BiConsumer<T, Double> setter
+    ) {
+        if (step <= 0 || min >= max) {
+            throw new IllegalArgumentException("Invalid min/max/step " +
+                    "configuration");
         }
-        if (min >= max) {
-            throw new IllegalArgumentException("min must be less than max");
-        }
-
-        double range = max - min;
-        int preferredTicks = computePreferredTickCount(min, max, step);
-        double tickSpacing = computeNiceTickSpacing(range, preferredTicks);
         double scale = 1.0 / step;
         int intMin = (int) Math.round(min * scale);
         int intMax = (int) Math.round(max * scale);
-        double initialDouble = getter.apply(activeGraph);
-        int initialInt = (int) Math.round(initialDouble * scale);
-        int intTickSpacing = (int) Math.round(tickSpacing * scale);
-        double tickStart = Math.floor(min / tickSpacing) * tickSpacing;
-        JSlider slider = new JSlider(intMin, intMax, initialInt);
-        Dictionary<Integer, JComponent> labelTable = new Hashtable<>();
-
-        if (intTickSpacing < 1) {
-            intTickSpacing = 1;
-        }
+        int initial = (int) Math.round(getter.apply(activeGraph) * scale);
+        double range = max - min;
+        int preferredTicks = computePreferredTickCount(min, max, step);
+        int tickSpacing = (int) Math.max(1,
+                Math.round(computeNiceTickSpacing(range, preferredTicks) * scale));
+        JSlider slider = new JSlider(intMin, intMax, initial);
+        Dictionary<Integer, JComponent> labels = new Hashtable<>();
 
         slider.setBackground(Colors.GRAY5);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.setMajorTickSpacing(intTickSpacing);
-        add(slider);
-
-        for (double v = tickStart; v <= max + 1e-9; v += tickSpacing)
-            if (v >= min - 1e-9) {
-                int key = (int) Math.round(v * scale);
-                labelTable.put(key, new JLabel(formatDouble(v)));
-            }
-
-        if (min <= 0.0 && 0.0 <= max) {
-            int zeroKey = (int) Math.round(0.0 * scale);
-            labelTable.put(zeroKey, new JLabel("0"));
-        }
-
-        // Always show min and max labels
-        int minKey = (int) Math.round(min * scale);
-        int maxKey = (int) Math.round(max * scale);
-        labelTable.put(minKey, new JLabel(formatDouble(min)));
-        labelTable.put(maxKey, new JLabel(formatDouble(max)));
-
-        slider.setLabelTable(labelTable);
+        slider.setMajorTickSpacing(tickSpacing);
         slider.setBorder(BorderFactory.createTitledBorder(label));
 
-        slider.addChangeListener(e -> {
-            int intValue = slider.getValue();
-            double doubleValue = intValue / scale;
-            T currentGraph = control.getActiveGraph();
-            setter.accept(currentGraph, doubleValue);
-            control.application.repaint();
-        });
+        double tickStart =
+                Math.floor(min / (tickSpacing / scale)) * (tickSpacing / scale);
 
-        sliders.add(slider);
-        getters.add(g -> (int) Math.round(getter.apply(g) * scale));
-
+        for (double v = tickStart; v <= max + 1e-9; v += tickSpacing / scale) {
+            if (v >= min - 1e-9) {
+                labels.put((int) Math.round(v * scale),
+                        new JLabel(formatDouble(v)));
+            }
+        }
+        if (min <= 0 && max >= 0) {
+            labels.put(0, new JLabel("0"));
+        }
+        ensureMinAndMaxLabels(
+                labels,
+                min, max,
+                v -> (int) Math.round(v * scale),
+                ControlBuilder::formatDouble
+        );
+        slider.setLabelTable(labels);
+        add(slider);
+        attachSliderListener(
+                slider,
+                g -> (int) Math.round(getter.apply(g) * scale),
+                i -> i / scale,
+                setter
+        );
         return this;
     }
 
     /**
-     * Adds a drop-down selector that allows the user to choose which graph
-     * in the list should be actively controlled.
+     * Adds a graph selector combo box to switch the active graph.
      *
      * @param title the title displayed above the combo box
-     * @param label the base label used to generate fallback item names
+     * @param label the base label for fallback item names (e.g., "Graph")
      * @return this builder instance for method chaining
      */
     public ControlBuilder<T> selector(String title, String label) {
         String[] items = new String[graphs.size()];
 
-        for (int i = 0; i < items.length; i++)
-            if (graphs.get(i).hasTitle()) {
-                items[i] = graphs.get(i).getTitle();
-            } else {
-                items[i] = label + " " + (i + 1);
-            }
-
+        for (int i = 0; i < items.length; i++) {
+            items[i] = graphs.get(i).hasTitle()
+                    ? graphs.get(i).getTitle()
+                    : label + " " + (i + 1);
+        }
         JComboBox<String> combo = new JComboBox<>(items);
 
         combo.setBackground(Colors.GRAY5);
         combo.setSelectedIndex(0);
+        combo.setBorder(BorderFactory.createTitledBorder(new EmptyBorder(0, 0
+                , 0, 0), title));
         add(combo);
-
         combo.addActionListener(e -> {
             int index = combo.getSelectedIndex();
             if (index >= 0 && index < graphs.size()) {
@@ -228,132 +295,95 @@ public class ControlBuilder<T extends PlotGraph<T>> {
                 control.application.repaint();
             }
         });
-
-        combo.setBorder(BorderFactory.createTitledBorder(new EmptyBorder(0, 0, 0, 0), title));
-
         return this;
     }
 
-    private void add(Component component) {
-        panel.add(component, constraints);
-        constraints.gridy++;
+    /**
+     * Attaches a change listener to a slider that updates the active graph
+     * and triggers a repaint.
+     *
+     * @param slider     the slider to attach the listener to
+     * @param intGetter  function to extract integer state from a graph (for sync)
+     * @param mapper     function to convert slider integer value to parameter type
+     * @param setter     function to apply the new value to the graph
+     * @param <V>        the parameter type (Integer or Double)
+     */
+    private <V> void attachSliderListener(
+            JSlider slider,
+            Function<T, Integer> intGetter,
+            Function<Integer, V> mapper,
+            BiConsumer<T, V> setter
+    ) {
+        sliders.add(slider);
+        getters.add(intGetter);
+        slider.addChangeListener(e -> {
+            V value = mapper.apply(slider.getValue());
+
+            setter.accept(control.getActiveGraph(), value);
+            control.application.repaint();
+        });
     }
 
-    public JPanel getPanel() {
-        return panel;
-    }
-
-    private JSlider createIntSlider(int min, int max, int value, String title) {
-        if (min >= max) {
-            throw new IllegalArgumentException("min must be less than max");
-        }
-
-        int range = max - min;
-        int preferredTicks = computePreferredTickCount(min, max, 1.0);
-        int tickSpacing = computeNiceIntTickSpacing(range, preferredTicks);
-        int tickStart = (int) Math.floor((double) min / tickSpacing) * tickSpacing;
-        JSlider slider = new JSlider(min, max, value);
-        Dictionary<Integer, JComponent> labelTable = new Hashtable<>();
-
-        if (tickSpacing < 1) {
-            tickSpacing = 1;
-        }
-
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-        slider.setMajorTickSpacing(tickSpacing);
-        slider.setBorder(BorderFactory.createTitledBorder(title));
-
-        for (int v = tickStart; v <= max; v += tickSpacing)
-            if (v >= min) {
-                labelTable.put(v, new JLabel(String.valueOf(v)));
-            }
-
-        if (min <= 0 && 0 <= max) {
-            labelTable.put(0, new JLabel("0"));
-        }
-
-        // Always show min and max labels
-        labelTable.put(min, new JLabel(String.valueOf(min)));
-        labelTable.put(max, new JLabel(String.valueOf(max)));
-
-        slider.setLabelTable(labelTable);
-
-        return slider;
-    }
-
+    /**
+     * Synchronizes all sliders to reflect the current state of the active graph.
+     */
     private void syncSlidersToActiveGraph() {
         T active = control.getActiveGraph();
 
         for (int i = 0; i < sliders.size(); i++) {
-            JSlider slider = sliders.get(i);
-            Function<T, Integer> getter = getters.get(i);
-            int value = getter.apply(active);
-            slider.setValue(value);
+            sliders.get(i).setValue(getters.get(i).apply(active));
         }
     }
 
-    private static int computePreferredTickCount(double min, double max, double step) {
-        if (step <= 0 || min >= max) {
-            return 5;
+    /**
+     * Creates and configures a JSlider for integer values with automatic,
+     * human-readable ticks and labels.
+     *
+     * @param min   the minimum value (inclusive)
+     * @param max   the maximum value (inclusive)
+     * @param value the initial slider value
+     * @param title the border title for the slider
+     * @return a fully configured JSlider
+     * @throws IllegalArgumentException if min >= max
+     */
+    private JSlider createIntSlider(int min, int max, int value, String title) {
+        if (min >= max) {
+            throw new IllegalArgumentException("min must be less than max");
         }
-        double range = max - min;
-        long possibleValues = (long) Math.ceil(range / step) + 1;
-        if (possibleValues <= 6) {
-            return (int) possibleValues;
+        int range = max - min;
+        int preferredTicks = computePreferredTickCount(min, max, 1.0);
+        int tickSpacing = (int) Math.max(1,
+                computeNiceTickSpacing(range, preferredTicks));
+        JSlider slider = new JSlider(min, max, value);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setMajorTickSpacing(tickSpacing);
+        slider.setBorder(BorderFactory.createTitledBorder(title));
+        Dictionary<Integer, JComponent> labels = new Hashtable<>();
+        int start = (int) Math.floor((double) min / tickSpacing) * tickSpacing;
+
+        for (int v = start; v <= max; v += tickSpacing) {
+            if (v >= min) {
+                labels.put(v, new JLabel(String.valueOf(v)));
+            }
         }
-        double logRange = Math.log10(range);
-        int ticks = (int) Math.round(6.0 - 0.7 * Math.abs(logRange));
-        return Math.max(4, Math.min(8, ticks));
+        if (min <= 0 && max >= 0) {
+            labels.put(0, new JLabel("0"));
+        }
+        ensureMinAndMaxLabels(labels, min, max, Function.identity(),
+                String::valueOf);
+        slider.setLabelTable(labels);
+        return slider;
     }
 
-    private static double computeNiceTickSpacing(double range, int preferredTicks) {
-        if (range <= 0) {
-            return 1.0;
-        }
-        double raw = range / preferredTicks;
-        double exponent = Math.floor(Math.log10(raw));
-        double fraction = raw / Math.pow(10, exponent);
-        double niceFraction;
-        if (fraction <= 1.0) {
-            niceFraction = 1.0;
-        } else if (fraction <= 2.0) {
-            niceFraction = 2.0;
-        } else if (fraction <= 5.0) {
-            niceFraction = 5.0;
-        } else {
-            niceFraction = 10.0;
-        }
-        return niceFraction * Math.pow(10, exponent);
-    }
-
-    private static int computeNiceIntTickSpacing(int range, int preferredTicks) {
-        if (range <= 0) {
-            return 1;
-        }
-        double raw = (double) range / preferredTicks;
-        double exponent = Math.floor(Math.log10(raw));
-        double fraction = raw / Math.pow(10, exponent);
-        int niceFraction;
-        if (fraction <= 1.0) {
-            niceFraction = 1;
-        } else if (fraction <= 2.0) {
-            niceFraction = 2;
-        } else if (fraction <= 5.0) {
-            niceFraction = 5;
-        } else {
-            niceFraction = 10;
-        }
-        return (int) Math.max(1, niceFraction * Math.pow(10, exponent));
-    }
-
-    private static String formatDouble(double value) {
-        if (Math.abs(value - Math.round(value)) < 1e-9) {
-            return String.format("%.0f", value);
-        } else if (Math.abs(value * 10 - Math.round(value * 10)) < 1e-9) {
-            return String.format("%.1f", value);
-        } else {
-            return String.format("%.2f", value);
-        }
+    /**
+     * Adds a component to the internal control panel using the current layout
+     * constraints and increments the grid Y position.
+     *
+     * @param component the UI component to add
+     */
+    private void add(Component component) {
+        panel.add(component, constraints);
+        constraints.gridy++;
     }
 }
