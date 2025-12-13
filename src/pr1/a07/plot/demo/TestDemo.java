@@ -6,6 +6,7 @@ public class TestDemo {
 
     public static void main(String[] args) {
         PlotApplication app = new PlotApplication();
+
         app.addPlotSet(new TestSet());
         app.start();
     }
