@@ -16,6 +16,8 @@
  */
 package pr1.a07.plot;
 
+import pr1.a07.Colors;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -35,6 +37,15 @@ import java.awt.geom.Line2D;
  * implementation should be used.</p>
  */
 public class PlotGrid extends DrawableObject {
+    protected int gap;
+
+    public PlotGrid() {
+        this(10);
+    }
+
+    public PlotGrid(int gap) {
+        this.gap = gap;
+    }
 
     /**
      * Configures basic rendering using the Graphics context.
@@ -56,7 +67,22 @@ public class PlotGrid extends DrawableObject {
      */
     @Override
     public void configureGraphics2D(Graphics2D g) {
-        g.setPaint(Color.GRAY);
+        if (gap > 0) {
+            g.setPaint(Colors.GRAY4);
+            for (int x = centerX; x >= 0; x -= gap) {
+                g.drawLine(x, 0, x, panelHeight);
+            }
+            for (int x = centerX + gap; x < panelWidth; x += gap) {
+                g.drawLine(x, 0, x, panelHeight);
+            }
+            for (int y = centerY; y >= 0; y -= gap) {
+                g.drawLine(0, y, panelWidth, y);
+            }
+            for (int y = centerY + gap; y < panelHeight; y += gap) {
+                g.drawLine(0, y, panelWidth, y);
+            }
+        }
+        g.setPaint(Colors.GRAY);
         g.setStroke(new BasicStroke(1.0f));
         g.draw(new Line2D.Double(0, centerY, panelWidth, centerY));
         g.draw(new Line2D.Double(centerX, 0, centerX, panelHeight));

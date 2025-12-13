@@ -5,9 +5,10 @@ import pr1.a07.plot.PlotApplication;
 public class TestDemo {
 
     public static void main(String[] args) {
-        PlotApplication app = new PlotApplication();
+        PlotApplication app = new PlotApplication("Demo-Plotter", 1280, 720);
 
         app.addPlotSet(new TestSet());
+        app.addPlotSet(new TrigonometrieSet());
         app.start();
     }
 }

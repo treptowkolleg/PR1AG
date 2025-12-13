@@ -25,6 +25,10 @@ import java.awt.Graphics2D;
  */
 public class EmptyGrid extends PlotGrid {
 
+    public EmptyGrid() {
+        super(0);
+    }
+
     @Override
     public void configureGraphics2D(Graphics2D g) {
     }

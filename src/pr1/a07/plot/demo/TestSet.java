@@ -18,7 +18,8 @@ public class TestSet extends PlotSet<TestGraph> {
         customGraph.setY(-100);
         addGraph(new TestGraph("Red Box", Color.RED));
         addGraph(customGraph);
-        setGrid(new PlotGrid());
+        setGrid(new PlotGrid(25));
+        setTitle("Blaue und rote Box");
     }
 
     @Override

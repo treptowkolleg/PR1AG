@@ -12,7 +12,8 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
+ * .0.html>.
  */
 package pr1.a07.plot;
 
@@ -23,8 +24,10 @@ import java.awt.Dimension;
 /**
  * An abstract base class for plot control windows that manage user interaction
  * with a homogeneous list of plot graphs of the same concrete type.
- * This class provides a framework for creating embedded UI controls (e.g., sliders,
- * selectors) that update the properties of the currently active graph in real time.
+ * This class provides a framework for creating embedded UI controls (e.g.,
+ * sliders,
+ * selectors) that update the properties of the currently active graph in
+ * real time.
  *
  * <p>Each control window is associated with a {@link PlotApplication} instance,
  * which provides the central rendering context and repaint coordination for all
@@ -37,22 +40,27 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
     protected PlotGraphList<T> graphs;
     protected T activeGraph;
     protected JPanel controlPanel;
+    private boolean locationSet = false;
 
     /**
-     * Constructs a new plot control window associated with the given application
+     * Constructs a new plot control window associated with the given
+     * application
      * and a list of plot graphs. The first graph in the list is set as the
      * initially active graph. All graphs are linked to this control instance.
-     * The control panel is created via {@link #configureControls(ControlBuilder)},
+     * The control panel is created via
+     * {@link #configureControls(ControlBuilder)},
      * added to the window, and the window is made visible.
      *
-     * @param application the parent {@link PlotApplication} used for repaint coordination
+     * @param application the parent {@link PlotApplication} used for repaint
+     *                   coordination
      * @param plotSet     the corresponding {@link PlotSet} holding the plots
      * @throws IllegalArgumentException if the graph list is null or empty
      */
     public PlotControl(PlotApplication application, PlotSet<T> plotSet) {
         PlotGraphList<T> graphs = plotSet.getGraphs();
         if (graphs == null || graphs.isEmpty()) {
-            throw new IllegalArgumentException("Graph list must not be null or empty");
+            throw new IllegalArgumentException("Graph list must not be null " +
+                    "or empty");
         }
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.application = application;
@@ -82,6 +90,16 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
     }
 
     /**
+     * Returns the currently active graph whose parameters are controlled
+     * by the UI elements (e.g., sliders).
+     *
+     * @return the active graph instance
+     */
+    public T getActiveGraph() {
+        return activeGraph;
+    }
+
+    /**
      * Switches the active graph to the one at the specified index.
      * This triggers a repaint of the application view to reflect changes
      * in the newly selected graph.
@@ -92,16 +110,6 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
     public void setActiveGraph(int index) {
         this.activeGraph = graphs.get(index);
         application.repaint();
-    }
-
-    /**
-     * Returns the currently active graph whose parameters are controlled
-     * by the UI elements (e.g., sliders).
-     *
-     * @return the active graph instance
-     */
-    public T getActiveGraph() {
-        return activeGraph;
     }
 
     /**
@@ -121,6 +129,26 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
      */
     @Override
     public void setVisible(boolean visible) {
+        if (visible && !locationSet && controlPanel != null) {
+            java.awt.GraphicsConfiguration gc =
+                    application.getGraphicsConfiguration();
+            java.awt.Rectangle screenBounds = gc.getBounds();
+            java.awt.Insets screenInsets = java.awt.Toolkit.getDefaultToolkit().getScreenInsets(gc);
+            int usableRight = screenBounds.x + screenBounds.width - screenInsets.right;
+            int usableTop = screenBounds.y + screenInsets.top;
+            int proposedX = application.getX() + application.getWidth() + 10;
+            int proposedY = application.getY();
+            int controlWidth = getWidth();
+
+            if (proposedY < usableTop) {
+                proposedY = usableTop + 10;
+            }
+            if (proposedX + controlWidth > usableRight) {
+                proposedX = usableRight - controlWidth - 10;
+            }
+            setLocation(proposedX, proposedY);
+            locationSet = true;
+        }
         if (null != controlPanel) {
             super.setVisible(visible);
         }

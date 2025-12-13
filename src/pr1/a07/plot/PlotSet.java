@@ -26,6 +26,15 @@ package pr1.a07.plot;
 public abstract class PlotSet<T extends PlotGraph<T>> {
     protected PlotGrid grid;
     protected PlotGraphList<T> graphs = new PlotGraphList<>();
+    protected String title = "unbenannt";
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     /**
      * Sets the coordinate grid used for this plot set.

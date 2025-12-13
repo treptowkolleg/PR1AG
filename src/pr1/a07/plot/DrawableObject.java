@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
-
 package pr1.a07.plot;
 
 import schimkat.berlin.lernhilfe2025ws.graphics.Drawable;
@@ -54,9 +53,9 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
     public void draw(Graphics g) {
         panelWidth = g.getClipBounds().width;
         panelHeight = g.getClipBounds().height;
-        centerX = panelWidth / 2;
-        centerY = panelHeight / 2;
+        centerX = (int) (PlotApplication.X_DELTA + (double) panelWidth / 2);
+        centerY = (int) (PlotApplication.Y_DELTA + (double) panelHeight / 2);
         configureGraphics(g);
-        configureGraphics2D((Graphics2D) g);
+        configureGraphics2D((Graphics2D) g.create());
     }
 }
