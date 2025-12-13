@@ -19,7 +19,7 @@ public class TrigonometrieControl extends PlotControl<TrigonometrieGraph> {
         return build
                 .selector("Plot-Auswahl", "Graph")
                 .sliderDouble("Amplitude", -2, 2, .1, TrigonometrieGraph::getAmplitude, TrigonometrieGraph::setAmplitude)
-                .sliderDouble("Frequenz", -2, 2, .1, TrigonometrieGraph::getWaveLength, TrigonometrieGraph::setWaveLength)
+                .sliderDouble("Frequenz", -2, 2, .1, TrigonometrieGraph::getFrequency, TrigonometrieGraph::setFrequency)
                 .sliderDouble("dX", -2, 2, .1, TrigonometrieGraph::getDx, TrigonometrieGraph::setDx)
                 .sliderDouble("dY", -2, 2, .1, TrigonometrieGraph::getDy, TrigonometrieGraph::setDy)
                 .sliderDouble("Auflösung", .1, 1, .1, TrigonometrieGraph::getResolution, TrigonometrieGraph::setResolution)

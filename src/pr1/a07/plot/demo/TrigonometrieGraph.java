@@ -17,14 +17,14 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
     protected double intervalStart;
     protected double intervalEnd;
     protected double amplitude;
-    protected double waveLength;
+    protected double frequency;
     protected double dx;
     protected double dy;
 
     public TrigonometrieGraph(Color color, Double resolution,
                               Double intervalStart,
                               Double intervalEnd, Double amplitude,
-                              Double waveLength,
+                              Double frequency,
                               Double dx, Double dy, Integer scale,
                               String title) {
         this.color = null != color ? color : Colors.RED;
@@ -32,7 +32,7 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
         this.intervalStart = null != intervalStart ? intervalStart : -9;
         this.intervalEnd = null != intervalEnd ? intervalEnd : 9;
         this.amplitude = null != amplitude ? amplitude : 1.0;
-        this.waveLength = null != waveLength ? waveLength : 1.0;
+        this.frequency = null != frequency ? frequency : 1.0;
         this.dx = null != dx ? dx : 0;
         this.dy = null != dy ? dy : 0;
         this.scale = null != scale ? scale : 50;
@@ -73,12 +73,12 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
         this.amplitude = amplitude;
     }
 
-    public double getWaveLength() {
-        return waveLength;
+    public double getFrequency() {
+        return frequency;
     }
 
-    public void setWaveLength(double waveLength) {
-        this.waveLength = waveLength;
+    public void setFrequency(double frequency) {
+        this.frequency = frequency;
     }
 
     public double getDx() {
@@ -105,7 +105,7 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
 
         for (double x = xMin; x <= xMax; x += resolution) {
             double y =
-                    amplitude * Math.sin(this.waveLength * (x - dx * Math.PI)) + dy;
+                    amplitude * Math.sin(this.frequency * (x - dx * Math.PI)) + dy;
             int px = (int) ((double) centerX + x * scale);
             int py = (int) (centerY - y * scale);
 
