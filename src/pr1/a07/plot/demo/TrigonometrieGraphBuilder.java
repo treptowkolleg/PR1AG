@@ -1,0 +1,70 @@
+package pr1.a07.plot.demo;
+
+import java.awt.Color;
+
+public class TrigonometrieGraphBuilder {
+    private Color color;
+    private Double resolution;
+    private Integer intervalStart;
+    private Integer intervalEnd;
+    private Double amplitude;
+    private Double width;
+    private Double dx;
+    private Double dy;
+    private Integer scale;
+    private String title;
+
+    public TrigonometrieGraphBuilder setColor(Color color) {
+        this.color = color;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setResolution(Double resolution) {
+        this.resolution = resolution;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setIntervalStart(Integer intervalStart) {
+        this.intervalStart = intervalStart;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setIntervalEnd(Integer intervalEnd) {
+        this.intervalEnd = intervalEnd;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setAmplitude(Double amplitude) {
+        this.amplitude = amplitude;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setWidth(Double width) {
+        this.width = width;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setDx(Double dx) {
+        this.dx = dx;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setDy(Double dy) {
+        this.dy = dy;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setScale(Integer scale) {
+        this.scale = scale;
+        return this;
+    }
+
+    public TrigonometrieGraphBuilder setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public TrigonometrieGraph build() {
+        return new TrigonometrieGraph(color, resolution, intervalStart, intervalEnd, amplitude, width, dx, dy, scale, title);
+    }
+}

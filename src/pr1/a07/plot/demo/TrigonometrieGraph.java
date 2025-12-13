@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
+    private final int scale;
     protected double resolution;
     protected double intervalStart;
     protected double intervalEnd;
@@ -19,11 +20,13 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
     protected double waveLength;
     protected double dx;
     protected double dy;
-    private final int scale;
 
-    public TrigonometrieGraph(Color color, Double resolution, Integer intervalStart,
-                              Integer intervalEnd, Double amplitude, Double width,
-                              Double dx, Double dy, Integer scale) {
+    public TrigonometrieGraph(Color color, Double resolution,
+                              Integer intervalStart,
+                              Integer intervalEnd, Double amplitude,
+                              Double width,
+                              Double dx, Double dy, Integer scale,
+                              String title) {
         this.color = null != color ? color : Colors.RED;
         this.resolution = null != resolution ? resolution : 1;
         this.intervalStart = null != intervalStart ? intervalStart : -9;
@@ -33,6 +36,9 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
         this.dx = null != dx ? dx : 0;
         this.dy = null != dy ? dy : 0;
         this.scale = null != scale ? scale : 50;
+        if (null != title) {
+            setTitle(title);
+        }
     }
 
     public double getResolution() {

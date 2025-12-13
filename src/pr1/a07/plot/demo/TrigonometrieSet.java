@@ -9,15 +9,11 @@ public class TrigonometrieSet extends PlotSet<TrigonometrieGraph> {
 
     public TrigonometrieSet() {
         int scale = 50;
-        TrigonometrieGraph g2 = new TrigonometrieGraph(Colors.DARKER_GREEN,
-                .1, -12, 12, .5, 2., .0, 2., scale);
 
-        g2.setTitle("Grüner Graph");
         setTitle("Trigonometrie-Funktionen");
         setGrid(new TrigonometrieGrid(scale));
-        addGraph(new TrigonometrieGraph(null, .1, -4, 4, 1., 1., .0, .0,
-                scale));
-        addGraph(g2);
+        addGraph(GraphFactory.sinus(scale));
+        addGraph(GraphFactory.cosinus(scale));
     }
 
     @Override
