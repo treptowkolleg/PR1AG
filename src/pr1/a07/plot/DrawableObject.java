@@ -34,8 +34,17 @@ import java.awt.Graphics2D;
  *
  * <p>For any reuse beyond the original course setting (e.g., in personal projects, open-source
  * repositories, or other educational contexts), you <em>must</em> create a project-local
- * alternative interface (e.g., {@code your.package.Drawable#void draw(Graphics g);}) and refactor all implementing
- * classes to depend on that instead.</p>
+ * alternative interface such as:</p>
+ * <pre><code>
+ * package your.package;
+ *
+ * import java.awt.Graphics;
+ *
+ * public interface Drawable {
+ *     void draw(Graphics g);
+ * }
+ * </code></pre>
+ * <p>and refactor all implementing classes to depend on that instead.</p>
  */
 public abstract class DrawableObject implements Drawable, CustomDrawable {
     protected int panelWidth;
