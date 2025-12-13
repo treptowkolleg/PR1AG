@@ -22,8 +22,8 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
     protected double dy;
 
     public TrigonometrieGraph(Color color, Double resolution,
-                              Integer intervalStart,
-                              Integer intervalEnd, Double amplitude,
+                              Double intervalStart,
+                              Double intervalEnd, Double amplitude,
                               Double width,
                               Double dx, Double dy, Integer scale,
                               String title) {

@@ -5,8 +5,8 @@ import java.awt.Color;
 public class TrigonometrieGraphBuilder {
     private Color color;
     private Double resolution;
-    private Integer intervalStart;
-    private Integer intervalEnd;
+    private Double intervalStart;
+    private Double intervalEnd;
     private Double amplitude;
     private Double width;
     private Double dx;
@@ -24,12 +24,12 @@ public class TrigonometrieGraphBuilder {
         return this;
     }
 
-    public TrigonometrieGraphBuilder setIntervalStart(Integer intervalStart) {
+    public TrigonometrieGraphBuilder setIntervalStart(Double intervalStart) {
         this.intervalStart = intervalStart;
         return this;
     }
 
-    public TrigonometrieGraphBuilder setIntervalEnd(Integer intervalEnd) {
+    public TrigonometrieGraphBuilder setIntervalEnd(Double intervalEnd) {
         this.intervalEnd = intervalEnd;
         return this;
     }
