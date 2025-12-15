@@ -18,6 +18,8 @@ public class Test {
         Da die Landschaften sowohl von PlotGraph erben, als auch Drawable
         implementieren, können wir deren Instanzen sowohl der PlotApplication
         als auch dem FunnyFirstPainter hinzufügen.
+        Zoom funktioniert nur, wenn der Graph dies implementiert, was hier
+        nicht der Fall ist.
          */
         PlotApplication app = new PlotApplication("Einfache Landschaft", 600, 600);
         PlotSet<EinfacheLandschaft> set = new PlotSet<>() {
