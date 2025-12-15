@@ -17,8 +17,8 @@
  */
 package pr1.a07.plot;
 
+import pr1.a07.Colors;
 import pr1.a07.plot.components.ModernButton;
-import pr1.a08.Colors;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -27,7 +27,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -53,21 +55,15 @@ import java.util.Map;
  * management of controls.</p>
  */
 public class PlotApplication extends JFrame {
-
-    /**
-     * Horizontal offset (in pixels) applied to the origin of all drawings.
-     * This value is shared globally across all drawable objects to enable
-     * panning of the entire coordinate system.
-     */
     public static double X_DELTA = 0;
-
-    /**
-     * Vertical offset (in pixels) applied to the origin of all drawings.
-     * This value is shared globally across all drawable objects to enable
-     * panning of the entire coordinate system.
-     */
     public static double Y_DELTA = 0;
-
+    public static double X_SCALE = 1;
+    public static double Y_SCALE = 1;
+    private Timer zoomTimer = null;
+    private double targetXScale = 1.0;
+    private double targetYScale = 1.0;
+    private static final double MIN_SCALE = 1;
+    private static final double MAX_SCALE = 6;
     private final DrawablePanel panel = new DrawablePanel();
     private final List<PlotSet<?>> plotSets = new ArrayList<>();
     private final Map<PlotSet<?>, PlotControl<?>> controlMap = new HashMap<>();
@@ -75,8 +71,7 @@ public class PlotApplication extends JFrame {
     private final JButton resetBtn = new ModernButton("Reset", Colors.BLUE);
     private final JButton nextBtn = new ModernButton(">>");
     private final JButton prevBtn = new ModernButton("<<");
-    private final ModernButton toggleControlBtn = new ModernButton("Steuerung"
-            , Colors.BLUE);
+    private final ModernButton toggleControlBtn = new ModernButton("Steuerung", Colors.BLUE);
     private Point dragStart = null;
     private PlotSet<?> activeSet = null;
     private int currentPlot = 0;
@@ -131,7 +126,7 @@ public class PlotApplication extends JFrame {
         infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         infoContainer.setBackground(Colors.GRAY5);
         infoContainer.add(new JLabel("Sie können das Koordinatensystem per " +
-                "Drag-and-Drop verschieben."));
+                "Drag-and-Drop verschieben. Mausrad: y-Zoom, Strg + Mausrad: x-Zoom"));
         panel.setBackground(Colors.GRAY6);
         setMinimumSize(new Dimension(800, 600));
         setTitle(title);
@@ -171,12 +166,14 @@ public class PlotApplication extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 dragStart = e.getPoint();
+                setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 dragStart = null;
                 updateResetButtonState();
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             }
         });
         panel.addMouseMotionListener(new MouseMotionAdapter() {
@@ -193,6 +190,24 @@ public class PlotApplication extends JFrame {
                 dragStart = current;
                 panel.repaint();
             }
+        });
+        panel.addMouseWheelListener(e -> {
+            int notches = e.getWheelRotation();
+            double sensitivity = 0.55;
+            double exponent = Math.abs(notches) * sensitivity;
+            double factor = notches < 0
+                    ? Math.pow(1.2, exponent)
+                    : Math.pow(1.0 / 1.2, exponent);
+
+            if (e.isControlDown()) {
+                targetXScale *= factor;
+                targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetXScale));
+            } else {
+                targetYScale *= factor;
+                targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetYScale));
+            }
+            updateResetButtonState();
+            startZoomAnimation();
         });
     }
 
@@ -238,13 +253,7 @@ public class PlotApplication extends JFrame {
         } else {
             toggleControlBtn.setEnabled(false);
         }
-        if (set.getGraphs().size() == 1) {
-            nextBtn.setEnabled(false);
-            prevBtn.setEnabled(false);
-        } else {
-            nextBtn.setEnabled(true);
-            prevBtn.setEnabled(true);
-        }
+        // resetMove(new ActionEvent(set, ActionEvent.ACTION_PERFORMED, "Reset"));
         panel.repaint();
     }
 
@@ -303,6 +312,8 @@ public class PlotApplication extends JFrame {
     public void resetMove(ActionEvent e) {
         X_DELTA = 0;
         Y_DELTA = 0;
+        X_SCALE = 1;
+        Y_SCALE = 1;
         updateResetButtonState();
         panel.repaint();
     }
@@ -311,6 +322,13 @@ public class PlotApplication extends JFrame {
      * Starts the application by making the main window visible.
      */
     public void start() {
+        if (plotSets.size() == 1) {
+            nextBtn.setEnabled(false);
+            prevBtn.setEnabled(false);
+        } else {
+            nextBtn.setEnabled(true);
+            prevBtn.setEnabled(true);
+        }
         setVisible(true);
     }
 
@@ -335,8 +353,33 @@ public class PlotApplication extends JFrame {
      * account for floating-point precision).
      */
     private void updateResetButtonState() {
+        final double EPSILON = 1e-9;
+
         boolean isAtOrigin =
-                (Math.abs(X_DELTA) < 1e-9) && (Math.abs(Y_DELTA) < 1e-9);
+                Math.abs(X_DELTA) < EPSILON &&
+                        Math.abs(Y_DELTA) < EPSILON &&
+                        Math.abs(X_SCALE - 1.0) < EPSILON &&
+                        Math.abs(Y_SCALE - 1.0) < EPSILON;
+
         resetBtn.setEnabled(!isAtOrigin);
+    }
+
+    private void startZoomAnimation() {
+        if (zoomTimer != null) {
+            zoomTimer.stop();
+        }
+        zoomTimer = new Timer(10, e -> {
+            X_SCALE += (targetXScale - X_SCALE) * 0.2;
+            Y_SCALE += (targetYScale - Y_SCALE) * 0.2;
+            if (Math.abs(X_SCALE - targetXScale) < 1e-4 &&
+                    Math.abs(Y_SCALE - targetYScale) < 1e-4) {
+                X_SCALE = targetXScale;
+                Y_SCALE = targetYScale;
+                zoomTimer.stop();
+                zoomTimer = null;
+            }
+            panel.repaint();
+        });
+        zoomTimer.start();
     }
 }

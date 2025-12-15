@@ -9,6 +9,7 @@ public class TestDemo {
 
         app.addPlotSet(new TestSet());
         app.addPlotSet(new TrigonometrieSet());
+        app.addPlotSet(new MusterSet());
         app.start();
     }
 }

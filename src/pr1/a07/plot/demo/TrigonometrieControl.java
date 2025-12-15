@@ -18,10 +18,11 @@ public class TrigonometrieControl extends PlotControl<TrigonometrieGraph> {
     public JPanel configureControls(ControlBuilder<TrigonometrieGraph> build) {
         return build
                 .selector("Plot-Auswahl", "Graph")
-                .sliderDouble("Amplitude", -2, 2, .1, TrigonometrieGraph::getAmplitude, TrigonometrieGraph::setAmplitude)
-                .sliderDouble("Frequenz", -2, 2, .1, TrigonometrieGraph::getFrequency, TrigonometrieGraph::setFrequency)
-                .sliderDouble("dX", -2, 2, .25, TrigonometrieGraph::getDx, TrigonometrieGraph::setDx)
-                .sliderDouble("dY", -2, 2, .25, TrigonometrieGraph::getDy, TrigonometrieGraph::setDy)
+                .checkbox("Sichtbar", TrigonometrieGraph::isVisible, TrigonometrieGraph::setVisible)
+                .sliderDouble("Amplitude", -2, 2, .05, TrigonometrieGraph::getAmplitude, TrigonometrieGraph::setAmplitude)
+                .sliderDouble("Frequenz", -2, 2, .05, TrigonometrieGraph::getFrequency, TrigonometrieGraph::setFrequency)
+                .sliderDouble("dX", -2, 2, .1, TrigonometrieGraph::getDx, TrigonometrieGraph::setDx)
+                .sliderDouble("dY", -2, 2, .1, TrigonometrieGraph::getDy, TrigonometrieGraph::setDy)
                 .sliderDouble("Auflösung", .1, 1, .1, TrigonometrieGraph::getResolution, TrigonometrieGraph::setResolution)
                 .sliderDouble("Intervall-Start", -12, 12, .25, TrigonometrieGraph::getIntervalStart, TrigonometrieGraph::setIntervalStart)
                 .sliderDouble("Intervall-Ende", -12, 12, .25, TrigonometrieGraph::getIntervalEnd, TrigonometrieGraph::setIntervalEnd)

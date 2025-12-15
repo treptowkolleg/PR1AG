@@ -33,6 +33,7 @@ public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
     protected PlotControl<T> plotControl;
     protected String title;
     protected Color color = Color.BLACK;
+    protected boolean isVisible = true;
 
     /**
      * Associates this graph with a plot control window.
@@ -89,6 +90,14 @@ public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
      */
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 
     /**

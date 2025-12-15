@@ -1,12 +1,12 @@
 package pr1.a07.plot.demo;
 
+import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGrid;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 
 public class TrigonometrieGrid extends PlotGrid {
@@ -24,15 +24,13 @@ public class TrigonometrieGrid extends PlotGrid {
     public void configureGraphics2D(Graphics2D g) {
         int kMin;
         int kMax;
-        double yPlusOne = centerY - scale;
-        double yMinusOne = centerY + scale;
-        double pixelsPerPi = Math.PI * scale;
+        double yPlusOne = centerY - scale * PlotApplication.Y_SCALE;
+        double yMinusOne = centerY + scale * PlotApplication.Y_SCALE;
+        double pixelsPerPi = Math.PI * scale * PlotApplication.X_SCALE;
 
         if (pixelsPerPi <= 0) {
             return;
         }
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
         g.setPaint(Color.GRAY);
         g.setStroke(new BasicStroke(1.0f));
         g.draw(new Line2D.Double(0, centerY, panelWidth, centerY));
@@ -48,7 +46,7 @@ public class TrigonometrieGrid extends PlotGrid {
         g.setStroke(new BasicStroke(1.0f));
         g.setPaint(Color.GRAY);
         for (int k = kMin; k <= kMax; k++) {
-            double xPixel = centerX + k * Math.PI * scale;
+            double xPixel = centerX + k * Math.PI * scale * PlotApplication.X_SCALE;
             if (xPixel < 0 || xPixel > panelWidth) {
                 continue;
             }

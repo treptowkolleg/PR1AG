@@ -64,7 +64,10 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         panelHeight = g.getClipBounds().height;
         centerX = (int) (PlotApplication.X_DELTA + (double) panelWidth / 2);
         centerY = (int) (PlotApplication.Y_DELTA + (double) panelHeight / 2);
+        Graphics2D g2d = (Graphics2D) g.create();
         configureGraphics(g);
-        configureGraphics2D((Graphics2D) g.create());
+        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+                java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        configureGraphics2D(g2d);
     }
 }

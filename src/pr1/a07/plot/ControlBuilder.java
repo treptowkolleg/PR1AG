@@ -19,6 +19,7 @@ package pr1.a07.plot;
 import pr1.a07.Colors;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -47,6 +48,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     private final T activeGraph;
     private final List<JSlider> sliders = new ArrayList<>();
     private final List<Function<T, Integer>> getters = new ArrayList<>();
+    private final List<JCheckBox> checkBoxes = new ArrayList<>();
+    private final List<Function<T, Boolean>> checkBoxGetters = new ArrayList<>();
     private final JPanel panel = new JPanel(new GridBagLayout());
     private final GridBagConstraints constraints = new GridBagConstraints();
 
@@ -166,6 +169,27 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      */
     public JPanel getPanel() {
         return panel;
+    }
+
+    public ControlBuilder<T> checkbox(
+            String label,
+            Function<T, Boolean> getter,
+            BiConsumer<T, Boolean> setter
+    ) {
+        boolean initialValue = getter.apply(activeGraph);
+        JCheckBox checkBox = new JCheckBox(label, initialValue);
+
+        checkBox.setBackground(Colors.GRAY5);
+        checkBox.setFocusPainted(false);
+        add(checkBox);
+        checkBox.addActionListener(e -> {
+            boolean newValue = checkBox.isSelected();
+            setter.accept(control.getActiveGraph(), newValue);
+            control.application.repaint();
+        });
+        checkBoxes.add(checkBox);
+        checkBoxGetters.add(getter);
+        return this;
     }
 
     /**
@@ -291,6 +315,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             int index = combo.getSelectedIndex();
             if (index >= 0 && index < graphs.size()) {
                 control.setActiveGraph(index);
+                syncCheckBoxesToActiveGraph();
                 syncSlidersToActiveGraph();
                 control.application.repaint();
             }
@@ -322,6 +347,17 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             setter.accept(control.getActiveGraph(), value);
             control.application.repaint();
         });
+    }
+
+    /**
+     * Synchronizes all checkboxes to reflect the current state of the active graph.
+     */
+    private void syncCheckBoxesToActiveGraph() {
+        T active = control.getActiveGraph();
+        for (int i = 0; i < checkBoxes.size(); i++) {
+            boolean modelValue = checkBoxGetters.get(i).apply(active);
+            checkBoxes.get(i).setSelected(modelValue);
+        }
     }
 
     /**
