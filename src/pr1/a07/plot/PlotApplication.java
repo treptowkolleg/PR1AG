@@ -19,14 +19,17 @@ package pr1.a07.plot;
 
 import pr1.a07.Colors;
 import pr1.a07.plot.components.ModernButton;
+import pr1.a07.plot.components.ModernIconButton;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -40,6 +43,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The main application window that coordinates rendering and user interaction
@@ -55,23 +59,28 @@ import java.util.Map;
  * management of controls.</p>
  */
 public class PlotApplication extends JFrame {
+    private static final double MIN_SCALE = 1;
+    private static final double MAX_SCALE = 6;
     public static double X_DELTA = 0;
     public static double Y_DELTA = 0;
     public static double X_SCALE = 1;
     public static double Y_SCALE = 1;
-    private Timer zoomTimer = null;
-    private double targetXScale = 1.0;
-    private double targetYScale = 1.0;
-    private static final double MIN_SCALE = 1;
-    private static final double MAX_SCALE = 6;
     private final DrawablePanel panel = new DrawablePanel();
     private final List<PlotSet<?>> plotSets = new ArrayList<>();
     private final Map<PlotSet<?>, PlotControl<?>> controlMap = new HashMap<>();
     private final JLabel plotLabel = new JLabel("plot name");
     private final JButton resetBtn = new ModernButton("Reset", Colors.BLUE);
-    private final JButton nextBtn = new ModernButton(">>");
-    private final JButton prevBtn = new ModernButton("<<");
-    private final ModernButton toggleControlBtn = new ModernButton("Steuerung", Colors.BLUE);
+    private final JButton nextBtn = new ModernIconButton("/icons/icons8-doppelt-rechts-16.png");
+    private final JButton prevBtn = new ModernIconButton("/icons/icons8-doppelt-links-16.png");
+    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8-hineinzoomen-16.png");
+    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8-rauszoomen-16.png");
+    private final ModernButton toggleControlBtn = new ModernButton("Steuerung"
+            , Colors.BLUE);
+    private final JLabel infoText = new JLabel();
+    private final JLabel zoomInfoText = new JLabel();
+    private Timer zoomTimer = null;
+    private double targetXScale = 1.0;
+    private double targetYScale = 1.0;
     private Point dragStart = null;
     private PlotSet<?> activeSet = null;
     private int currentPlot = 0;
@@ -125,8 +134,13 @@ public class PlotApplication extends JFrame {
         infoContainer.setLayout(new BoxLayout(infoContainer, BoxLayout.X_AXIS));
         infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         infoContainer.setBackground(Colors.GRAY5);
-        infoContainer.add(new JLabel("Sie können das Koordinatensystem per " +
-                "Drag-and-Drop verschieben. Mausrad: y-Zoom, Strg + Mausrad: x-Zoom"));
+        infoText.setForeground(Colors.GRAY);
+        infoText.setText("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur Mausrad");
+        zoomInfoText.setForeground(Colors.GRAY);
+        infoContainer.add(infoText);
+        infoContainer.add(Box.createHorizontalGlue());
+        updateZoomInfo();
+        infoContainer.add(zoomInfoText);
         panel.setBackground(Colors.GRAY6);
         setMinimumSize(new Dimension(800, 600));
         setTitle(title);
@@ -144,7 +158,11 @@ public class PlotApplication extends JFrame {
         btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
         btnContainer.add(plotLabel);
         btnContainer.add(Box.createHorizontalGlue());
+        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
+        btnContainer.add(zoomOutBtn);
         btnContainer.add(Box.createRigidArea(new Dimension(5, 0)));
+        btnContainer.add(zoomInBtn);
+        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
         btnContainer.add(resetBtn);
         add(panel);
         add(btnContainer, BorderLayout.NORTH);
@@ -201,10 +219,12 @@ public class PlotApplication extends JFrame {
 
             if (e.isControlDown()) {
                 targetXScale *= factor;
-                targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetXScale));
+                targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
+                        targetXScale));
             } else {
                 targetYScale *= factor;
-                targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetYScale));
+                targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
+                        targetYScale));
             }
             updateResetButtonState();
             startZoomAnimation();
@@ -253,7 +273,8 @@ public class PlotApplication extends JFrame {
         } else {
             toggleControlBtn.setEnabled(false);
         }
-        // resetMove(new ActionEvent(set, ActionEvent.ACTION_PERFORMED, "Reset"));
+        // resetMove(new ActionEvent(set, ActionEvent.ACTION_PERFORMED,
+        // "Reset"));
         panel.repaint();
     }
 
@@ -314,6 +335,7 @@ public class PlotApplication extends JFrame {
         Y_DELTA = 0;
         X_SCALE = 1;
         Y_SCALE = 1;
+        updateZoomInfo();
         updateResetButtonState();
         panel.repaint();
     }
@@ -378,8 +400,20 @@ public class PlotApplication extends JFrame {
                 zoomTimer.stop();
                 zoomTimer = null;
             }
+            updateZoomInfo();
             panel.repaint();
         });
         zoomTimer.start();
+    }
+
+    private void updateZoomInfo() {
+        zoomInfoText.setText(String.format("%.0f%% | %.0f%%",
+                scaleFactor(MAX_SCALE, X_SCALE) * 100,
+                scaleFactor(MAX_SCALE, Y_SCALE) * 100
+        ));
+    }
+
+    private double scaleFactor(double maxScale, double axisScale) {
+        return 1.0 + maxScale * (axisScale - 1.0) / axisScale;
     }
 }

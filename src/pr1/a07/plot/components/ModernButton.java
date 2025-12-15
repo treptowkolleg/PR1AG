@@ -43,8 +43,8 @@ import java.awt.geom.RoundRectangle2D;
  * via constructor or {@link #setBaseColor(Color)}.</p>
  */
 public class ModernButton extends JButton {
-    private static final int ARC = 12;
-    private Color baseColor = Colors.BLUE;
+    protected static final int ARC = 12;
+    protected Color baseColor = Colors.BLUE;
 
     /**
      * Constructs a modern button with the specified label and the default base color
@@ -73,7 +73,7 @@ public class ModernButton extends JButton {
      * Initializes common button properties: font, cursor, margins, and disables
      * standard Swing painting to allow full custom rendering.
      */
-    private void init() {
+    protected void init() {
         setFont(new Font("SF Pro Text, Helvetica Neue, Arial", Font.BOLD, 14));
         setForeground(Color.WHITE);
         setFocusPainted(false);
@@ -161,7 +161,7 @@ public class ModernButton extends JButton {
      * @param factor the brightness adjustment factor (e.g., -0.2 for 20% darker)
      * @return a new {@link Color} instance with adjusted RGB values
      */
-    private Color adjustBrightness(Color color, float factor) {
+    protected Color adjustBrightness(Color color, float factor) {
         int r = Math.max(0, Math.min(255, (int) (color.getRed() * (1 + factor))));
         int g = Math.max(0, Math.min(255, (int) (color.getGreen() * (1 + factor))));
         int b = Math.max(0, Math.min(255, (int) (color.getBlue() * (1 + factor))));
