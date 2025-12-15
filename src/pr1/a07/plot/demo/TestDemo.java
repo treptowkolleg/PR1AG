@@ -11,5 +11,7 @@ public class TestDemo {
         app.addPlotSet(new TrigonometrieSet());
         app.addPlotSet(new MusterSet());
         app.start();
+
+        // TODO: Live-Graph zur Anzeige von seriellen Daten (z. B. Arduino)
     }
 }
