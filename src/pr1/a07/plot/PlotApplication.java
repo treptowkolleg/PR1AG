@@ -327,23 +327,6 @@ public class PlotApplication extends JFrame {
     }
 
     /**
-     * Delegates the {@link JComponent#setEnabled(boolean)} call to the given
-     * component. This method exists primarily to allow controlled access
-     * to component enablement from external classes while keeping UI logic
-     * centralized.
-     *
-     * @param component the component whose enabled state should be set
-     * @param enabled   {@code true} to enable the component, {@code false} to disable it
-     * @throws NullPointerException if {@code component} is {@code null}
-     */
-    public void setEnabled(JComponent component, boolean enabled) {
-        if (component == null) {
-            throw new NullPointerException("Component must not be null");
-        }
-        component.setEnabled(enabled);
-    }
-
-    /**
      * Starts the application by making the main window visible.
      * Also configures navigation button states based on the number of
      * registered plot sets (disables next/prev buttons if only one set exists).
