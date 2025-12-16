@@ -12,7 +12,8 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
+ * .0.html>.
  */
 package pr1.a07.plot;
 
@@ -54,23 +55,27 @@ import java.util.Map;
  * and improved lifecycle management of controls.</p>
  */
 public class PlotApplication extends JFrame {
+    private static final double MIN_SCALE = 1;
+    private static final double MAX_SCALE = 6;
     public static double X_DELTA = 0;
     public static double Y_DELTA = 0;
     public static double X_SCALE = 1;
     public static double Y_SCALE = 1;
-    private static final double MIN_SCALE = 1;
-    private static final double MAX_SCALE = 6;
-
     private final DrawablePanel panel = new DrawablePanel();
     private final List<PlotSet<?>> plotSets = new ArrayList<>();
     private final Map<PlotSet<?>, PlotControl<?>> controlMap = new HashMap<>();
     private final JLabel plotLabel = new JLabel("plot name");
     private final JButton resetBtn = new ModernButton("Reset", Colors.BLUE);
-    private final JButton nextBtn = new ModernIconButton("/icons/icons8-doppelt-rechts-16.png");
-    private final JButton prevBtn = new ModernIconButton("/icons/icons8-doppelt-links-16.png");
-    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8-hineinzoomen-16.png");
-    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8-rauszoomen-16.png");
-    private final ModernButton toggleControlBtn = new ModernButton("Steuerung", Colors.BLUE);
+    private final JButton nextBtn = new ModernIconButton("/icons/icons8" +
+            "-doppelt-rechts-16.png");
+    private final JButton prevBtn = new ModernIconButton("/icons/icons8" +
+            "-doppelt-links-16.png");
+    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8" +
+            "-hineinzoomen-16.png");
+    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8" +
+            "-rauszoomen-16.png");
+    private final ModernButton toggleControlBtn = new ModernButton("Steuerung"
+            , Colors.BLUE);
     private final JLabel zoomInfoText = new JLabel();
     private Timer zoomTimer = null;
     private double targetXScale = 1.0;
@@ -119,12 +124,32 @@ public class PlotApplication extends JFrame {
      * @param height the initial height of the window in pixels
      */
     public PlotApplication(String title, int width, int height) {
+        this(title, width, height, false);
+    }
+
+    /**
+     * Constructs a new plot application window with the specified title and
+     * dimensions.
+     *
+     * @param title                    the title to display in the window's
+     *                                 title bar
+     * @param width                    the initial width of the window in pixels
+     * @param height                   the initial height of the window in
+     *                                 pixels
+     * @param disableExtendedFunctions use extended functions or not
+     */
+    public PlotApplication(String title, int width, int height,
+                           boolean disableExtendedFunctions) {
+        if (disableExtendedFunctions) {
+            disableExtendedFunctions();
+        } else {
+            add(createInfoBar(), BorderLayout.SOUTH);
+            setupEventHandlers();
+            setupMouseListener();
+        }
         add(panel, BorderLayout.CENTER);
         add(createButtonBar(), BorderLayout.NORTH);
-        add(createInfoBar(), BorderLayout.SOUTH);
         configureWindowProperties(title, width, height);
-        setupEventHandlers();
-        setupMouseListener();
     }
 
     /**
@@ -243,7 +268,8 @@ public class PlotApplication extends JFrame {
             boolean willBeVisible = !control.isVisible();
 
             control.setVisible(willBeVisible);
-            toggleControlBtn.setBaseColor(willBeVisible ? Colors.BLUE : Colors.GRAY2);
+            toggleControlBtn.setBaseColor(willBeVisible ? Colors.BLUE :
+                    Colors.GRAY2);
         }
     }
 
@@ -315,7 +341,8 @@ public class PlotApplication extends JFrame {
 
     /**
      * Visually disables the toggle control button by changing its color to
-     * gray, indicating that the associated control window is no longer available
+     * gray, indicating that the associated control window is no longer
+     * available
      * (e.g., because it was closed externally).
      * <p>
      * Note: This method does <em>not</em> disable the button's functionality;
@@ -323,6 +350,12 @@ public class PlotApplication extends JFrame {
      */
     public void softDisableToggleControlButton() {
         toggleControlBtn.setBaseColor(Colors.GRAY2);
+    }
+
+    public void disableExtendedFunctions() {
+        zoomInBtn.setEnabled(false);
+        zoomOutBtn.setEnabled(false);
+        resetBtn.setEnabled(false);
     }
 
     /**
@@ -344,7 +377,7 @@ public class PlotApplication extends JFrame {
      *
      * @param set the plot set for which to create a control
      * @return a new {@link PlotControl} instance, or {@code null} if the set
-     *         does not require user interaction
+     * does not require user interaction
      */
     private PlotControl<?> createControl(PlotSet<?> set) {
         return set.createControl(this);
@@ -355,17 +388,19 @@ public class PlotApplication extends JFrame {
      * The resulting scale is clamped between {@link #MIN_SCALE} and
      * {@link #MAX_SCALE}.
      *
-     * @param factor   the zoom factor to apply (greater than 1 for zoom-in,
-     *                 less than 1 for zoom-out)
-     * @param isXAxis  {@code true} to zoom the X axis, {@code false} for Y axis
+     * @param factor  the zoom factor to apply (greater than 1 for zoom-in,
+     *                less than 1 for zoom-out)
+     * @param isXAxis {@code true} to zoom the X axis, {@code false} for Y axis
      */
     private void applyZoom(double factor, boolean isXAxis) {
         if (isXAxis) {
             targetXScale *= factor;
-            targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetXScale));
+            targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
+                    targetXScale));
         } else {
             targetYScale *= factor;
-            targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetYScale));
+            targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
+                    targetYScale));
         }
     }
 
@@ -387,14 +422,18 @@ public class PlotApplication extends JFrame {
     }
 
     /**
-     * Updates the enabled state of the zoom buttons based on current scale limits.
-     * The zoom-in button is disabled at maximum zoom; zoom-out is disabled at minimum.
+     * Updates the enabled state of the zoom buttons based on current scale
+     * limits.
+     * The zoom-in button is disabled at maximum zoom; zoom-out is disabled
+     * at minimum.
      */
     private void updateZoomButtonState() {
         final double EPSILON = 1e-9;
-        boolean isMinimum = scaleFactor(MAX_SCALE, X_SCALE) <= MIN_SCALE + EPSILON &&
+        boolean isMinimum =
+                scaleFactor(MAX_SCALE, X_SCALE) <= MIN_SCALE + EPSILON &&
                 scaleFactor(MAX_SCALE, Y_SCALE) <= MIN_SCALE + EPSILON;
-        boolean isMaximum = scaleFactor(MAX_SCALE, X_SCALE) >= MAX_SCALE - EPSILON &&
+        boolean isMaximum =
+                scaleFactor(MAX_SCALE, X_SCALE) >= MAX_SCALE - EPSILON &&
                 scaleFactor(MAX_SCALE, Y_SCALE) >= MAX_SCALE - EPSILON;
 
         zoomInBtn.setEnabled(!isMaximum);
@@ -428,7 +467,8 @@ public class PlotApplication extends JFrame {
         zoomTimer.start();
     }
 
-    private void configureWindowProperties(String title, int width, int height) {
+    private void configureWindowProperties(String title, int width,
+                                           int height) {
         panel.setBackground(Colors.GRAY6);
         setMinimumSize(new Dimension(800, 600));
         setTitle(title);
@@ -462,7 +502,8 @@ public class PlotApplication extends JFrame {
 
     private JPanel createInfoBar() {
         JPanel infoContainer = new JPanel();
-        JLabel infoText = new JLabel("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur Mausrad");
+        JLabel infoText = new JLabel("Verschieben: Ziehen | Zoomen: " +
+                "Strg+Mausrad bzw. nur Mausrad");
 
         infoContainer.setLayout(new BoxLayout(infoContainer, BoxLayout.X_AXIS));
         infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -504,8 +545,9 @@ public class PlotApplication extends JFrame {
      * in the UI, mapping the internal scale range [1, target] to a more
      * intuitive [100%, ~max%] range.
      *
-     * @param maxScale    the maximum allowed scale factor (used for normalization)
-     * @param axisScale   the current raw scale value for one axis
+     * @param maxScale  the maximum allowed scale factor (used for
+     *                  normalization)
+     * @param axisScale the current raw scale value for one axis
      * @return a normalized scale factor suitable for display as a percentage
      */
     private double scaleFactor(double maxScale, double axisScale) {

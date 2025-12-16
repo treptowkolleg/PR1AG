@@ -21,7 +21,7 @@ public class Test {
         Zoom funktioniert nur, wenn der Graph dies implementiert, was hier
         nicht der Fall ist.
          */
-        PlotApplication app = new PlotApplication("Einfache Landschaft", 600, 600);
+        PlotApplication app = new PlotApplication("Einfache Landschaft", 600, 600, true);
         PlotSet<EinfacheLandschaft> set = new PlotSet<>() {
         };
         set.setTitle("Einfach");
@@ -39,7 +39,7 @@ public class Test {
     }
 
     public static void testWinterLandschaft() {
-        PlotApplication app = new PlotApplication("Winterlandschaft", 600, 600);
+        PlotApplication app = new PlotApplication("Winterlandschaft", 600, 600, true);
         PlotSet<EinfacheLandschaft> set = new PlotSet<>() {
         };
         set.setTitle("Winter");
