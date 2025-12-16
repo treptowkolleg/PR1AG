@@ -24,12 +24,11 @@ import pr1.a07.plot.components.ModernIconButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -43,7 +42,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The main application window that coordinates rendering and user interaction
@@ -59,24 +57,27 @@ import java.util.Objects;
  * management of controls.</p>
  */
 public class PlotApplication extends JFrame {
-    private static final double MIN_SCALE = 1;
-    private static final double MAX_SCALE = 6;
     public static double X_DELTA = 0;
     public static double Y_DELTA = 0;
     public static double X_SCALE = 1;
     public static double Y_SCALE = 1;
+    private static final double MIN_SCALE = 1;
+    private static final double MAX_SCALE = 6;
     private final DrawablePanel panel = new DrawablePanel();
     private final List<PlotSet<?>> plotSets = new ArrayList<>();
     private final Map<PlotSet<?>, PlotControl<?>> controlMap = new HashMap<>();
     private final JLabel plotLabel = new JLabel("plot name");
     private final JButton resetBtn = new ModernButton("Reset", Colors.BLUE);
-    private final JButton nextBtn = new ModernIconButton("/icons/icons8-doppelt-rechts-16.png");
-    private final JButton prevBtn = new ModernIconButton("/icons/icons8-doppelt-links-16.png");
-    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8-hineinzoomen-16.png");
-    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8-rauszoomen-16.png");
+    private final JButton nextBtn = new ModernIconButton("/icons/icons8" +
+            "-doppelt-rechts-16.png");
+    private final JButton prevBtn = new ModernIconButton("/icons/icons8" +
+            "-doppelt-links-16.png");
+    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8" +
+            "-hineinzoomen-16.png");
+    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8" +
+            "-rauszoomen-16.png");
     private final ModernButton toggleControlBtn = new ModernButton("Steuerung"
             , Colors.BLUE);
-    private final JLabel infoText = new JLabel();
     private final JLabel zoomInfoText = new JLabel();
     private Timer zoomTimer = null;
     private double targetXScale = 1.0;
@@ -127,6 +128,7 @@ public class PlotApplication extends JFrame {
     public PlotApplication(String title, int width, int height) {
         JPanel btnContainer = new JPanel();
         JPanel infoContainer = new JPanel();
+        JLabel infoText = new JLabel();
 
         btnContainer.setLayout(new BoxLayout(btnContainer, BoxLayout.X_AXIS));
         btnContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -135,11 +137,13 @@ public class PlotApplication extends JFrame {
         infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         infoContainer.setBackground(Colors.GRAY5);
         infoText.setForeground(Colors.GRAY);
-        infoText.setText("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur Mausrad");
+        infoText.setText("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur" +
+                " Mausrad");
         zoomInfoText.setForeground(Colors.GRAY);
         infoContainer.add(infoText);
         infoContainer.add(Box.createHorizontalGlue());
         updateZoomInfo();
+        updateZoomButtonState();
         infoContainer.add(zoomInfoText);
         panel.setBackground(Colors.GRAY6);
         setMinimumSize(new Dimension(800, 600));
@@ -147,6 +151,8 @@ public class PlotApplication extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         nextBtn.addActionListener(this::nextPlotSet);
         prevBtn.addActionListener(this::prevPlotSet);
+        zoomInBtn.addActionListener(this::zoomIn);
+        zoomOutBtn.addActionListener(this::zoomOut);
         toggleControlBtn.addActionListener(this::toggleControl);
         resetBtn.addActionListener(this::resetMove);
         resetBtn.setEnabled(false);
@@ -167,7 +173,6 @@ public class PlotApplication extends JFrame {
         add(panel);
         add(btnContainer, BorderLayout.NORTH);
         add(infoContainer, BorderLayout.SOUTH);
-
         setSize(width, height);
         setLocationRelativeTo(null);
         setupMouseListener();
@@ -197,7 +202,9 @@ public class PlotApplication extends JFrame {
         panel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (dragStart == null) return;
+                if (dragStart == null) {
+                    return;
+                }
                 Point current = e.getPoint();
                 int dx = current.x - dragStart.x;
                 int dy = current.y - dragStart.y;
@@ -217,16 +224,7 @@ public class PlotApplication extends JFrame {
                     ? Math.pow(1.2, exponent)
                     : Math.pow(1.0 / 1.2, exponent);
 
-            if (e.isControlDown()) {
-                targetXScale *= factor;
-                targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
-                        targetXScale));
-            } else {
-                targetYScale *= factor;
-                targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
-                        targetYScale));
-            }
-            updateResetButtonState();
+            applyZoom(factor, e.isControlDown());
             startZoomAnimation();
         });
     }
@@ -257,6 +255,7 @@ public class PlotApplication extends JFrame {
     public void switchToSet(PlotSet<?> set) {
         if (activeSet != null) {
             PlotControl<?> oldControl = controlMap.get(activeSet);
+
             if (oldControl != null) oldControl.setVisible(false);
         }
         activeSet = set;
@@ -273,8 +272,6 @@ public class PlotApplication extends JFrame {
         } else {
             toggleControlBtn.setEnabled(false);
         }
-        // resetMove(new ActionEvent(set, ActionEvent.ACTION_PERFORMED,
-        // "Reset"));
         panel.repaint();
     }
 
@@ -286,8 +283,9 @@ public class PlotApplication extends JFrame {
      * @param e the action event triggering this method (ignored)
      */
     public void toggleControl(ActionEvent e) {
-        if (null != control) {
+        if (control != null) {
             boolean willBeVisible = !control.isVisible();
+
             control.setVisible(willBeVisible);
             toggleControlBtn.setBaseColor(willBeVisible ? Colors.BLUE :
                     Colors.GRAY2);
@@ -301,11 +299,7 @@ public class PlotApplication extends JFrame {
      * @param e the action event triggering this method (ignored)
      */
     public void nextPlotSet(ActionEvent e) {
-        if (currentPlot < plotSets.size() - 1) {
-            currentPlot++;
-        } else {
-            currentPlot = 0;
-        }
+        currentPlot = (currentPlot + 1) % plotSets.size();
         switchToSet(plotSets.get(currentPlot));
     }
 
@@ -316,11 +310,7 @@ public class PlotApplication extends JFrame {
      * @param e the action event triggering this method (ignored)
      */
     public void prevPlotSet(ActionEvent e) {
-        if (currentPlot > 0) {
-            currentPlot--;
-        } else {
-            currentPlot = plotSets.size() - 1;
-        }
+        currentPlot = (currentPlot - 1 + plotSets.size()) % plotSets.size();
         switchToSet(plotSets.get(currentPlot));
     }
 
@@ -335,22 +325,42 @@ public class PlotApplication extends JFrame {
         Y_DELTA = 0;
         X_SCALE = 1;
         Y_SCALE = 1;
+        targetXScale = 1;
+        targetYScale = 1;
         updateZoomInfo();
+        updateZoomButtonState();
         updateResetButtonState();
         panel.repaint();
+    }
+
+    public void zoomIn(ActionEvent e) {
+        applyZoom(1.2, true);
+        applyZoom(1.2, false);
+        startZoomAnimation();
+    }
+
+    public void zoomOut(ActionEvent e) {
+        applyZoom(.8, true);
+        applyZoom(.8, false);
+        startZoomAnimation();
+    }
+
+    public void softDisableToggleControlButton() {
+        toggleControlBtn.setBaseColor(Colors.GRAY2);
+    }
+
+    public void setEnabled(JComponent component, boolean enabled) {
+        component.setEnabled(enabled);
     }
 
     /**
      * Starts the application by making the main window visible.
      */
     public void start() {
-        if (plotSets.size() == 1) {
-            nextBtn.setEnabled(false);
-            prevBtn.setEnabled(false);
-        } else {
-            nextBtn.setEnabled(true);
-            prevBtn.setEnabled(true);
-        }
+        boolean singleSet = plotSets.size() == 1;
+
+        nextBtn.setEnabled(!singleSet);
+        prevBtn.setEnabled(!singleSet);
         setVisible(true);
     }
 
@@ -367,6 +377,18 @@ public class PlotApplication extends JFrame {
         return set.createControl(this);
     }
 
+    private void applyZoom(double factor, boolean isXAxis) {
+        if (isXAxis) {
+            targetXScale *= factor;
+            targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
+                    targetXScale));
+        } else {
+            targetYScale *= factor;
+            targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
+                    targetYScale));
+        }
+    }
+
     /**
      * Updates the enabled state of the reset button based on whether the
      * coordinate system has been moved from its origin (0,0).
@@ -376,14 +398,23 @@ public class PlotApplication extends JFrame {
      */
     private void updateResetButtonState() {
         final double EPSILON = 1e-9;
-
-        boolean isAtOrigin =
-                Math.abs(X_DELTA) < EPSILON &&
-                        Math.abs(Y_DELTA) < EPSILON &&
-                        Math.abs(X_SCALE - 1.0) < EPSILON &&
-                        Math.abs(Y_SCALE - 1.0) < EPSILON;
+        boolean isAtOrigin = Math.abs(X_DELTA) < EPSILON &&
+                Math.abs(Y_DELTA) < EPSILON &&
+                Math.abs(X_SCALE - 1.0) < EPSILON &&
+                Math.abs(Y_SCALE - 1.0) < EPSILON;
 
         resetBtn.setEnabled(!isAtOrigin);
+    }
+
+    private void updateZoomButtonState() {
+        final double EPSILON = 1e-9;
+        boolean isMinimum = scaleFactor(MAX_SCALE, X_SCALE) == MIN_SCALE &&
+                scaleFactor(MAX_SCALE, Y_SCALE) <= MIN_SCALE + EPSILON;
+        boolean isMaximum = scaleFactor(MAX_SCALE, X_SCALE) == MAX_SCALE &&
+                scaleFactor(MAX_SCALE, Y_SCALE) >= MAX_SCALE - EPSILON;
+
+        zoomInBtn.setEnabled(!isMaximum);
+        zoomOutBtn.setEnabled(!isMinimum);
     }
 
     private void startZoomAnimation() {
@@ -401,6 +432,8 @@ public class PlotApplication extends JFrame {
                 zoomTimer = null;
             }
             updateZoomInfo();
+            updateZoomButtonState();
+            updateResetButtonState();
             panel.repaint();
         });
         zoomTimer.start();
