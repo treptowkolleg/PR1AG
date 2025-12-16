@@ -232,7 +232,6 @@ public class PlotApplication extends JFrame {
         panel.addDrawable(set.getGrid());
         panel.addDrawables(set.getGraphs());
         control = controlMap.computeIfAbsent(set, this::createControl);
-
         if (control != null) {
             control.setVisible(true);
             buttonPanel.setToggleControlButtonColor(Colors.BLUE);
