@@ -14,13 +14,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 
 public class PlotButtonPanel extends JPanel {
-    private final ModernButton nextBtn;
-    private final ModernButton prevBtn;
-    private final ModernButton zoomInBtn;
-    private final ModernButton zoomOutBtn;
-    private final ModernButton resetBtn;
-    private final ModernButton toggleControlBtn;
-    private final JLabel plotLabel = new JLabel("plot name");
+    protected final ModernButton nextBtn;
+    protected final ModernButton prevBtn;
+    protected final ModernButton zoomInBtn;
+    protected final ModernButton zoomOutBtn;
+    protected final ModernButton resetBtn;
+    protected final ModernButton toggleControlBtn;
+    protected final JLabel plotLabel = new JLabel("plot name");
 
     public PlotButtonPanel() {
         nextBtn = new ModernIconButton(Icon.CHEVRON_RIGHT);
