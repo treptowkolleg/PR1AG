@@ -12,7 +12,8 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
+ * .0.html>.
  */
 package pr1.a07.plot.components;
 
@@ -31,8 +32,10 @@ import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * A custom-styled, modern-looking button with rounded corners, dynamic color states,
- * and precise hit detection. Supports hover, pressed, and disabled visual states.
+ * A custom-styled, modern-looking button with rounded corners, dynamic color
+ * states,
+ * and precise hit detection. Supports hover, pressed, and disabled visual
+ * states.
  * Text is always centered both horizontally and vertically.
  *
  * <p>This button uses anti-aliased rendering for smooth edges and text, and
@@ -47,7 +50,8 @@ public class ModernButton extends JButton {
     protected Color baseColor = Colors.BLUE;
 
     /**
-     * Constructs a modern button with the specified label and the default base color
+     * Constructs a modern button with the specified label and the default
+     * base color
      * ({@link Colors#BLUE}).
      *
      * @param text the text to display on the button; must not be null
@@ -60,13 +64,48 @@ public class ModernButton extends JButton {
     /**
      * Constructs a modern button with the specified label and base color.
      *
-     * @param text       the text to display on the button; must not be null
-     * @param baseColor  the primary background color for the enabled state; must not be null
+     * @param text      the text to display on the button; must not be null
+     * @param baseColor the primary background color for the enabled state;
+     *                  must not be null
      */
     public ModernButton(String text, Color baseColor) {
         super(text);
         this.baseColor = baseColor;
         init();
+    }
+
+    /**
+     * Overrides the default hit detection to match the visual rounded shape.
+     * Only points inside the rounded rectangle are considered part of the
+     * button.
+     *
+     * @param x the x-coordinate of the point to test
+     * @param y the y-coordinate of the point to test
+     * @return {@code true} if the point lies within the rounded button area,
+     * {@code false} otherwise
+     */
+    @Override
+    public boolean contains(int x, int y) {
+        Shape shape = new RoundRectangle2D.Float(0, 0, getWidth(),
+                getHeight(), ARC, ARC);
+
+        return shape.contains(x, y);
+    }
+
+    public Color getBaseColor() {
+        return baseColor;
+    }
+
+    /**
+     * Sets a new base color for this button and triggers a repaint.
+     * The new color will be used in the normal (enabled, not hovered) state,
+     * and serves as the basis for hover/pressed variants.
+     *
+     * @param color the new base color; must not be null
+     */
+    public void setBaseColor(Color color) {
+        this.baseColor = color;
+        repaint();
     }
 
     /**
@@ -85,12 +124,49 @@ public class ModernButton extends JButton {
     }
 
     /**
-     * Paints the button with a rounded background, centered text, and state-dependent colors.
+     * Adjusts the brightness of a given color by a multiplicative factor.
+     * Negative factors darken the color, positive factors lighten it.
+     *
+     * @param color  the input color to adjust; must not be null
+     * @param factor the brightness adjustment factor (e.g., -0.2 for 20%
+     *               darker)
+     * @return a new {@link Color} instance with adjusted RGB values
+     */
+    protected Color adjustBrightness(Color color, float factor) {
+        int r = Math.max(0, Math.min(255,
+                (int) (color.getRed() * (1 + factor))));
+        int g = Math.max(0, Math.min(255,
+                (int) (color.getGreen() * (1 + factor))));
+        int b = Math.max(0, Math.min(255,
+                (int) (color.getBlue() * (1 + factor))));
+
+        return new Color(r, g, b);
+    }
+
+    protected Color getEffectiveBackgroundColor() {
+        Color base = getBaseColor();
+
+        if (!isEnabled()) {
+            return Colors.GRAY4;
+        } else if (getModel().isPressed()) {
+            return adjustBrightness(base, -0.2f);
+        } else if (getModel().isRollover()) {
+            return adjustBrightness(base, -0.1f);
+        }
+        return base;
+    }
+
+    /**
+     * Paints the button with a rounded background, centered text, and
+     * state-dependent colors.
      * The following states are supported:
      * <ul>
-     *   <li><strong>Disabled</strong>: background = {@link Colors#GRAY4}, text = {@link Colors#GRAY2}</li>
-     *   <li><strong>Pressed</strong>: background = base color darkened by 20%</li>
-     *   <li><strong>Rollover</strong>: background = base color darkened by 10%</li>
+     *   <li><strong>Disabled</strong>: background = {@link Colors#GRAY4},
+     *   text = {@link Colors#GRAY2}</li>
+     *   <li><strong>Pressed</strong>: background = base color darkened by
+     *   20%</li>
+     *   <li><strong>Rollover</strong>: background = base color darkened by
+     *   10%</li>
      *   <li><strong>Normal</strong>: background = base color, text = white</li>
      * </ul>
      *
@@ -107,8 +183,10 @@ public class ModernButton extends JButton {
         int x = (getWidth() - fm.stringWidth(getText())) / 2;
         int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
 
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         if (!isEnabled()) {
             buttonColor = Colors.GRAY4;
             setForeground(Colors.GRAY2);
@@ -128,7 +206,8 @@ public class ModernButton extends JButton {
     }
 
     /**
-     * Suppresses the default button border. This button draws only a filled shape
+     * Suppresses the default button border. This button draws only a filled
+     * shape
      * with no outline.
      *
      * @param g the graphics context (ignored)
@@ -136,48 +215,5 @@ public class ModernButton extends JButton {
     @Override
     protected void paintBorder(Graphics g) {
         // No border is drawn
-    }
-
-    /**
-     * Overrides the default hit detection to match the visual rounded shape.
-     * Only points inside the rounded rectangle are considered part of the button.
-     *
-     * @param x the x-coordinate of the point to test
-     * @param y the y-coordinate of the point to test
-     * @return {@code true} if the point lies within the rounded button area, {@code false} otherwise
-     */
-    @Override
-    public boolean contains(int x, int y) {
-        Shape shape = new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), ARC, ARC);
-
-        return shape.contains(x, y);
-    }
-
-    /**
-     * Adjusts the brightness of a given color by a multiplicative factor.
-     * Negative factors darken the color, positive factors lighten it.
-     *
-     * @param color  the input color to adjust; must not be null
-     * @param factor the brightness adjustment factor (e.g., -0.2 for 20% darker)
-     * @return a new {@link Color} instance with adjusted RGB values
-     */
-    protected Color adjustBrightness(Color color, float factor) {
-        int r = Math.max(0, Math.min(255, (int) (color.getRed() * (1 + factor))));
-        int g = Math.max(0, Math.min(255, (int) (color.getGreen() * (1 + factor))));
-        int b = Math.max(0, Math.min(255, (int) (color.getBlue() * (1 + factor))));
-
-        return new Color(r, g, b);
-    }
-
-    /**
-     * Sets a new base color for this button and triggers a repaint.
-     * The new color will be used in the normal (enabled, not hovered) state,
-     * and serves as the basis for hover/pressed variants.
-     *
-     * @param color the new base color; must not be null
-     */
-    public void setBaseColor(Color color) {
-        this.baseColor = color;
-        repaint();
     }
 }

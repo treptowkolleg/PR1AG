@@ -17,10 +17,7 @@
  */
 package pr1.a07.plot.components;
 
-import pr1.a07.Colors;
-
 import javax.swing.ImageIcon;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -56,59 +53,23 @@ public class ModernIconButton extends ModernButton {
 
     @Override
     protected void paintComponent(Graphics g) {
-        // Hintergrund exakt wie in ModernButton → nutze dessen Logik!
         super.paintComponent(g);
-
-        // Nur Icon zusätzlich zeichnen (Text wird ignoriert, da "")
         if (iconImage != null) {
+            int w = iconImage.getWidth(this);
+            int h = iconImage.getHeight(this);
             Graphics2D g2 = (Graphics2D) g.create();
+
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-
-            int w = iconImage.getWidth(this);
-            int h = iconImage.getHeight(this);
             if (w > 0 && h > 0) {
                 int x = (getWidth() - w) / 2;
                 int y = (getHeight() - h) / 2;
+
                 g2.drawImage(iconImage, x, y, this);
             }
             g2.dispose();
         }
-    }
-
-    /**
-     * Helper to reuse background color logic (extracted from ModernButton).
-     */
-    private Color getEffectiveBackgroundColor() {
-        Color base = getBaseColor(); // assume getter exists or make field
-        // protected
-        if (!isEnabled()) {
-            return Colors.GRAY4;
-        } else if (getModel().isPressed()) {
-            return adjustBrightness(base, -0.2f);
-        } else if (getModel().isRollover()) {
-            return adjustBrightness(base, -0.1f);
-        }
-        return base;
-    }
-
-    // Expose baseColor if not already accessible
-    public Color getBaseColor() {
-        return baseColor;
-    }
-
-    // Reuse adjustBrightness by making it protected in ModernButton
-    // (recommended)
-    // If not possible, duplicate minimally or refactor to utility
-    protected Color adjustBrightness(Color color, float factor) {
-        int r = Math.max(0, Math.min(255,
-                (int) (color.getRed() * (1 + factor))));
-        int g = Math.max(0, Math.min(255,
-                (int) (color.getGreen() * (1 + factor))));
-        int b = Math.max(0, Math.min(255,
-                (int) (color.getBlue() * (1 + factor))));
-        return new Color(r, g, b);
     }
 }
