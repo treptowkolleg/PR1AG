@@ -20,6 +20,7 @@ import schimkat.berlin.lernhilfe2025ws.graphics.Drawable;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 /**
  * An abstract base class for drawable objects that provides common rendering infrastructure.
@@ -60,14 +61,14 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
      * @param g the graphics context used for rendering
      */
     public void draw(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
+
         panelWidth = g.getClipBounds().width;
         panelHeight = g.getClipBounds().height;
         centerX = (int) (PlotApplication.X_DELTA + (double) panelWidth / 2);
         centerY = (int) (PlotApplication.Y_DELTA + (double) panelHeight / 2);
-        Graphics2D g2d = (Graphics2D) g.create();
         configureGraphics(g);
-        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
-                java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         configureGraphics2D(g2d);
     }
 }
