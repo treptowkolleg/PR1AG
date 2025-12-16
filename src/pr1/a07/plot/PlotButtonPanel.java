@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 
 public class PlotButtonPanel extends JPanel {
     private final ModernButton nextBtn;
@@ -59,39 +60,63 @@ public class PlotButtonPanel extends JPanel {
         return plotLabel;
     }
 
-    void setToggleControlButtonEnabled(boolean enabled) {
+    public void addNextActionListener(ActionListener listener) {
+        nextBtn.addActionListener(listener);
     }
 
-    void setToggleControlButtonColor(Color color) {
+    public void addPrevActionListener(ActionListener listener) {
+        prevBtn.addActionListener(listener);
+    }
+
+    public void addZoomInActionListener(ActionListener listener) {
+        zoomInBtn.addActionListener(listener);
+    }
+
+    public void addZoomOutActionListener(ActionListener listener) {
+        zoomOutBtn.addActionListener(listener);
+    }
+
+    public void addResetActionListener(ActionListener listener) {
+        resetBtn.addActionListener(listener);
+    }
+
+    public void addToggleControlActionListener(ActionListener listener) {
+        toggleControlBtn.addActionListener(listener);
+    }
+
+    public void setToggleControlButtonEnabled(boolean enabled) {
+    }
+
+    public void setToggleControlButtonColor(Color color) {
         toggleControlBtn.setBaseColor(color);
     }
 
-    void setNavigationEnabled(boolean enabled) {
+    public void setNavigationEnabled(boolean enabled) {
         setPrevButtonEnabled(enabled);
         setNextButtonEnabled(enabled);
     }
 
-    void setPrevButtonEnabled(boolean enabled) {
+    public void setPrevButtonEnabled(boolean enabled) {
         prevBtn.setEnabled(enabled);
     }
 
-    void setNextButtonEnabled(boolean enabled) {
+    public void setNextButtonEnabled(boolean enabled) {
         nextBtn.setEnabled(enabled);
     }
 
-    void setZoomInButtonEnabled(boolean enabled) {
+    public void setZoomInButtonEnabled(boolean enabled) {
         zoomInBtn.setEnabled(enabled);
     }
 
-    void setZoomOutButtonEnabled(boolean enabled) {
+    public void setZoomOutButtonEnabled(boolean enabled) {
         zoomOutBtn.setEnabled(enabled);
     }
 
-    void setResetButtonEnabled(boolean enabled) {
+    public void setResetButtonEnabled(boolean enabled) {
         resetBtn.setEnabled(enabled);
     }
 
-    void setPlotTitle(String title) {
+    public void setPlotTitle(String title) {
         plotLabel.setText(title);
     }
 

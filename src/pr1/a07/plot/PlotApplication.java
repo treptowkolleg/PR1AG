@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static pr1.a07.CMath.scaleFactor;
+
 /**
  * The main application window that coordinates rendering and user interaction
  * for multiple plot sets. This class manages a central drawing panel,
@@ -121,8 +123,8 @@ public class PlotApplication extends JFrame {
      */
     public PlotApplication(String title, int width, int height,
                            boolean disableExtendedFunctions) {
-        buttonPanel = createButtonBar();
-        infoPanel = createInfoBar();
+        buttonPanel = new PlotButtonPanel();
+        infoPanel = new PlotInfoPanel();
         if (disableExtendedFunctions) {
             disableExtendedFunctions();
         } else {
@@ -288,7 +290,7 @@ public class PlotApplication extends JFrame {
      *
      * @param e the action event triggering this method (ignored)
      */
-    public void resetMove(ActionEvent e) {
+    public void reset(ActionEvent e) {
         X_DELTA = 0;
         Y_DELTA = 0;
         X_SCALE = 1;
@@ -462,21 +464,13 @@ public class PlotApplication extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private PlotButtonPanel createButtonBar() {
-        return new PlotButtonPanel();
-    }
-
-    private PlotInfoPanel createInfoBar() {
-        return new PlotInfoPanel();
-    }
-
     private void setupEventHandlers() {
-        buttonPanel.getNextBtn().addActionListener(this::nextPlotSet);
-        buttonPanel.getPrevBtn().addActionListener(this::prevPlotSet);
-        buttonPanel.getZoomInBtn().addActionListener(this::zoomIn);
-        buttonPanel.getZoomOutBtn().addActionListener(this::zoomOut);
-        buttonPanel.getToggleControlBtn().addActionListener(this::toggleControl);
-        buttonPanel.getResetBtn().addActionListener(this::resetMove);
+        buttonPanel.addNextActionListener(this::nextPlotSet);
+        buttonPanel.addPrevActionListener(this::prevPlotSet);
+        buttonPanel.addZoomInActionListener(this::zoomIn);
+        buttonPanel.addZoomOutActionListener(this::zoomOut);
+        buttonPanel.addToggleControlActionListener(this::toggleControl);
+        buttonPanel.addResetActionListener(this::reset);
     }
 
     /**
@@ -488,20 +482,5 @@ public class PlotApplication extends JFrame {
                 scaleFactor(MAX_SCALE, X_SCALE) * 100,
                 scaleFactor(MAX_SCALE, Y_SCALE) * 100
         ));
-    }
-
-    /**
-     * Computes a human-readable zoom percentage based on the raw scale value.
-     * This transformation compensates for the non-linear perception of scale
-     * in the UI, mapping the internal scale range [1, target] to a more
-     * intuitive [100%, ~max%] range.
-     *
-     * @param maxScale  the maximum allowed scale factor (used for
-     *                  normalization)
-     * @param axisScale the current raw scale value for one axis
-     * @return a normalized scale factor suitable for display as a percentage
-     */
-    private double scaleFactor(double maxScale, double axisScale) {
-        return 1.0 + maxScale * (axisScale - 1.0) / axisScale;
     }
 }
