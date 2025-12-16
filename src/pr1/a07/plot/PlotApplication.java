@@ -12,8 +12,7 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
- * .0.html>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
 package pr1.a07.plot;
 
@@ -52,9 +51,8 @@ import java.util.Map;
  *
  * <p><strong>Note:</strong> This class is a work in progress. Future
  * enhancements may include support for UI navigation (e.g., menus or
- * toolbars to select
- * active plot sets), persistence of plot configurations, and improved lifecycle
- * management of controls.</p>
+ * toolbars to select active plot sets), persistence of plot configurations,
+ * and improved lifecycle management of controls.</p>
  */
 public class PlotApplication extends JFrame {
     public static double X_DELTA = 0;
@@ -63,21 +61,17 @@ public class PlotApplication extends JFrame {
     public static double Y_SCALE = 1;
     private static final double MIN_SCALE = 1;
     private static final double MAX_SCALE = 6;
+
     private final DrawablePanel panel = new DrawablePanel();
     private final List<PlotSet<?>> plotSets = new ArrayList<>();
     private final Map<PlotSet<?>, PlotControl<?>> controlMap = new HashMap<>();
     private final JLabel plotLabel = new JLabel("plot name");
     private final JButton resetBtn = new ModernButton("Reset", Colors.BLUE);
-    private final JButton nextBtn = new ModernIconButton("/icons/icons8" +
-            "-doppelt-rechts-16.png");
-    private final JButton prevBtn = new ModernIconButton("/icons/icons8" +
-            "-doppelt-links-16.png");
-    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8" +
-            "-hineinzoomen-16.png");
-    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8" +
-            "-rauszoomen-16.png");
-    private final ModernButton toggleControlBtn = new ModernButton("Steuerung"
-            , Colors.BLUE);
+    private final JButton nextBtn = new ModernIconButton("/icons/icons8-doppelt-rechts-16.png");
+    private final JButton prevBtn = new ModernIconButton("/icons/icons8-doppelt-links-16.png");
+    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8-hineinzoomen-16.png");
+    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8-rauszoomen-16.png");
+    private final ModernButton toggleControlBtn = new ModernButton("Steuerung", Colors.BLUE);
     private final JLabel zoomInfoText = new JLabel();
     private Timer zoomTimer = null;
     private double targetXScale = 1.0;
@@ -137,8 +131,7 @@ public class PlotApplication extends JFrame {
         infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         infoContainer.setBackground(Colors.GRAY5);
         infoText.setForeground(Colors.GRAY);
-        infoText.setText("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur" +
-                " Mausrad");
+        infoText.setText("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur Mausrad");
         zoomInfoText.setForeground(Colors.GRAY);
         infoContainer.add(infoText);
         infoContainer.add(Box.createHorizontalGlue());
@@ -208,10 +201,9 @@ public class PlotApplication extends JFrame {
                 Point current = e.getPoint();
                 int dx = current.x - dragStart.x;
                 int dy = current.y - dragStart.y;
-                double scale = 1.0;
 
-                PlotApplication.X_DELTA += dx * scale;
-                PlotApplication.Y_DELTA += dy * scale;
+                PlotApplication.X_DELTA += dx;
+                PlotApplication.Y_DELTA += dy;
                 dragStart = current;
                 panel.repaint();
             }
@@ -235,8 +227,12 @@ public class PlotApplication extends JFrame {
      * and is immediately displayed.
      *
      * @param set the plot set to add; must not be null
+     * @throws NullPointerException if {@code set} is {@code null}
      */
     public void addPlotSet(PlotSet<?> set) {
+        if (set == null) {
+            throw new NullPointerException("PlotSet must not be null");
+        }
         plotSets.add(set);
         if (activeSet == null) {
             switchToSet(set);
@@ -250,9 +246,13 @@ public class PlotApplication extends JFrame {
      * and shows the associated control window.
      *
      * @param set the plot set to activate; must be registered via
-     *            {@link #addPlotSet}
+     *            {@link #addPlotSet(PlotSet)}
+     * @throws IllegalArgumentException if the set is not registered
      */
     public void switchToSet(PlotSet<?> set) {
+        if (!plotSets.contains(set)) {
+            throw new IllegalArgumentException("PlotSet is not registered");
+        }
         if (activeSet != null) {
             PlotControl<?> oldControl = controlMap.get(activeSet);
 
@@ -287,8 +287,7 @@ public class PlotApplication extends JFrame {
             boolean willBeVisible = !control.isVisible();
 
             control.setVisible(willBeVisible);
-            toggleControlBtn.setBaseColor(willBeVisible ? Colors.BLUE :
-                    Colors.GRAY2);
+            toggleControlBtn.setBaseColor(willBeVisible ? Colors.BLUE : Colors.GRAY2);
         }
     }
 
@@ -315,8 +314,9 @@ public class PlotApplication extends JFrame {
     }
 
     /**
-     * Resets the coordinate system offset to zero (centered view).
-     * Disables the reset button afterward and triggers a repaint.
+     * Resets the coordinate system offset and scale to their defaults
+     * (zero offset, unit scale). Disables the reset button afterward and
+     * triggers a repaint.
      *
      * @param e the action event triggering this method (ignored)
      */
@@ -333,32 +333,66 @@ public class PlotApplication extends JFrame {
         panel.repaint();
     }
 
+    /**
+     * Zooms in uniformly on both X and Y axes by a factor of 1.2.
+     * Triggers a smooth zoom animation.
+     *
+     * @param e the action event triggering this method (ignored)
+     */
     public void zoomIn(ActionEvent e) {
         applyZoom(1.2, true);
         applyZoom(1.2, false);
         startZoomAnimation();
     }
 
+    /**
+     * Zooms out uniformly on both X and Y axes by a factor of 0.8.
+     * Triggers a smooth zoom animation.
+     *
+     * @param e the action event triggering this method (ignored)
+     */
     public void zoomOut(ActionEvent e) {
-        applyZoom(.8, true);
-        applyZoom(.8, false);
+        applyZoom(0.8, true);
+        applyZoom(0.8, false);
         startZoomAnimation();
     }
 
+    /**
+     * Visually disables the toggle control button by changing its color to
+     * gray, indicating that the associated control window is no longer available
+     * (e.g., because it was closed externally).
+     * <p>
+     * Note: This method does <em>not</em> disable the button's functionality;
+     * it only updates its appearance.
+     */
     public void softDisableToggleControlButton() {
         toggleControlBtn.setBaseColor(Colors.GRAY2);
     }
 
+    /**
+     * Delegates the {@link JComponent#setEnabled(boolean)} call to the given
+     * component. This method exists primarily to allow controlled access
+     * to component enablement from external classes while keeping UI logic
+     * centralized.
+     *
+     * @param component the component whose enabled state should be set
+     * @param enabled   {@code true} to enable the component, {@code false} to disable it
+     * @throws NullPointerException if {@code component} is {@code null}
+     */
     public void setEnabled(JComponent component, boolean enabled) {
+        if (component == null) {
+            throw new NullPointerException("Component must not be null");
+        }
         component.setEnabled(enabled);
     }
 
     /**
      * Starts the application by making the main window visible.
+     * Also configures navigation button states based on the number of
+     * registered plot sets (disables next/prev buttons if only one set exists).
      */
     public void start() {
         boolean singleSet = plotSets.size() == 1;
-
         nextBtn.setEnabled(!singleSet);
         prevBtn.setEnabled(!singleSet);
         setVisible(true);
@@ -371,30 +405,37 @@ public class PlotApplication extends JFrame {
      *
      * @param set the plot set for which to create a control
      * @return a new {@link PlotControl} instance, or {@code null} if the set
-     * does not require user interaction
+     *         does not require user interaction
      */
     private PlotControl<?> createControl(PlotSet<?> set) {
         return set.createControl(this);
     }
 
+    /**
+     * Applies a zoom factor to either the X or Y axis scale target.
+     * The resulting scale is clamped between {@link #MIN_SCALE} and
+     * {@link #MAX_SCALE}.
+     *
+     * @param factor   the zoom factor to apply (greater than 1 for zoom-in,
+     *                 less than 1 for zoom-out)
+     * @param isXAxis  {@code true} to zoom the X axis, {@code false} for Y axis
+     */
     private void applyZoom(double factor, boolean isXAxis) {
         if (isXAxis) {
             targetXScale *= factor;
-            targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
-                    targetXScale));
+            targetXScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetXScale));
         } else {
             targetYScale *= factor;
-            targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE,
-                    targetYScale));
+            targetYScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, targetYScale));
         }
     }
 
     /**
      * Updates the enabled state of the reset button based on whether the
-     * coordinate system has been moved from its origin (0,0).
-     * The button is enabled only if at least one of {@link #X_DELTA} or
-     * {@link #Y_DELTA} differs from zero (within a small tolerance to
-     * account for floating-point precision).
+     * coordinate system has been moved or zoomed from its default state
+     * (offset = (0,0), scale = (1,1)).
+     * The button is enabled only if the current state differs from the default
+     * (within a small tolerance to account for floating-point precision).
      */
     private void updateResetButtonState() {
         final double EPSILON = 1e-9;
@@ -406,17 +447,26 @@ public class PlotApplication extends JFrame {
         resetBtn.setEnabled(!isAtOrigin);
     }
 
+    /**
+     * Updates the enabled state of the zoom buttons based on current scale limits.
+     * The zoom-in button is disabled at maximum zoom; zoom-out is disabled at minimum.
+     */
     private void updateZoomButtonState() {
         final double EPSILON = 1e-9;
-        boolean isMinimum = scaleFactor(MAX_SCALE, X_SCALE) == MIN_SCALE &&
+        boolean isMinimum = scaleFactor(MAX_SCALE, X_SCALE) <= MIN_SCALE + EPSILON &&
                 scaleFactor(MAX_SCALE, Y_SCALE) <= MIN_SCALE + EPSILON;
-        boolean isMaximum = scaleFactor(MAX_SCALE, X_SCALE) == MAX_SCALE &&
+        boolean isMaximum = scaleFactor(MAX_SCALE, X_SCALE) >= MAX_SCALE - EPSILON &&
                 scaleFactor(MAX_SCALE, Y_SCALE) >= MAX_SCALE - EPSILON;
 
         zoomInBtn.setEnabled(!isMaximum);
         zoomOutBtn.setEnabled(!isMinimum);
     }
 
+    /**
+     * Starts a smooth animation that interpolates the current scale values
+     * toward the target scales. The animation runs at ~100 FPS and stops
+     * when the targets are reached (within tolerance).
+     */
     private void startZoomAnimation() {
         if (zoomTimer != null) {
             zoomTimer.stop();
@@ -439,6 +489,10 @@ public class PlotApplication extends JFrame {
         zoomTimer.start();
     }
 
+    /**
+     * Updates the zoom info label to display the current effective zoom level
+     * for both axes as percentages.
+     */
     private void updateZoomInfo() {
         zoomInfoText.setText(String.format("%.0f%% | %.0f%%",
                 scaleFactor(MAX_SCALE, X_SCALE) * 100,
@@ -446,6 +500,16 @@ public class PlotApplication extends JFrame {
         ));
     }
 
+    /**
+     * Computes a human-readable zoom percentage based on the raw scale value.
+     * This transformation compensates for the non-linear perception of scale
+     * in the UI, mapping the internal scale range [1, target] to a more
+     * intuitive [100%, ~max%] range.
+     *
+     * @param maxScale    the maximum allowed scale factor (used for normalization)
+     * @param axisScale   the current raw scale value for one axis
+     * @return a normalized scale factor suitable for display as a percentage
+     */
     private double scaleFactor(double maxScale, double axisScale) {
         return 1.0 + maxScale * (axisScale - 1.0) / axisScale;
     }
