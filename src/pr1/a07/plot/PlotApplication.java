@@ -18,16 +18,8 @@
 package pr1.a07.plot;
 
 import pr1.a07.Colors;
-import pr1.a07.plot.components.ModernButton;
-import pr1.a07.plot.components.ModernIconButton;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -62,21 +54,10 @@ public class PlotApplication extends JFrame {
     public static double X_SCALE = 1;
     public static double Y_SCALE = 1;
     private final DrawablePanel panel = new DrawablePanel();
+    private final PlotButtonPanel buttonPanel;
+    private final PlotInfoPanel infoPanel;
     private final List<PlotSet<?>> plotSets = new ArrayList<>();
     private final Map<PlotSet<?>, PlotControl<?>> controlMap = new HashMap<>();
-    private final JLabel plotLabel = new JLabel("plot name");
-    private final JButton resetBtn = new ModernButton("Reset", Colors.BLUE);
-    private final JButton nextBtn = new ModernIconButton("/icons/icons8" +
-            "-doppelt-rechts-16.png");
-    private final JButton prevBtn = new ModernIconButton("/icons/icons8" +
-            "-doppelt-links-16.png");
-    private final JButton zoomInBtn = new ModernIconButton("/icons/icons8" +
-            "-hineinzoomen-16.png");
-    private final JButton zoomOutBtn = new ModernIconButton("/icons/icons8" +
-            "-rauszoomen-16.png");
-    private final ModernButton toggleControlBtn = new ModernButton("Steuerung"
-            , Colors.BLUE);
-    private final JLabel zoomInfoText = new JLabel();
     private Timer zoomTimer = null;
     private double targetXScale = 1.0;
     private double targetYScale = 1.0;
@@ -140,15 +121,19 @@ public class PlotApplication extends JFrame {
      */
     public PlotApplication(String title, int width, int height,
                            boolean disableExtendedFunctions) {
+        buttonPanel = createButtonBar();
+        infoPanel = createInfoBar();
         if (disableExtendedFunctions) {
             disableExtendedFunctions();
         } else {
-            add(createInfoBar(), BorderLayout.SOUTH);
+            add(infoPanel, BorderLayout.SOUTH);
             setupEventHandlers();
             setupMouseListener();
         }
+        updateResetButtonState();
+        updateZoomButtonState();
         add(panel, BorderLayout.CENTER);
-        add(createButtonBar(), BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.NORTH);
         configureWindowProperties(title, width, height);
     }
 
@@ -240,7 +225,7 @@ public class PlotApplication extends JFrame {
             if (oldControl != null) oldControl.setVisible(false);
         }
         activeSet = set;
-        plotLabel.setText(activeSet.getTitle());
+        buttonPanel.setPlotTitle(activeSet.getTitle());
         panel.clearDrawables();
         panel.addDrawable(set.getGrid());
         panel.addDrawables(set.getGraphs());
@@ -248,10 +233,10 @@ public class PlotApplication extends JFrame {
 
         if (control != null) {
             control.setVisible(true);
-            toggleControlBtn.setBaseColor(Colors.BLUE);
-            toggleControlBtn.setEnabled(true);
+            buttonPanel.setToggleControlButtonColor(Colors.BLUE);
+            buttonPanel.setToggleControlButtonEnabled(true);
         } else {
-            toggleControlBtn.setEnabled(false);
+            buttonPanel.setToggleControlButtonEnabled(false);
         }
         panel.repaint();
     }
@@ -268,7 +253,8 @@ public class PlotApplication extends JFrame {
             boolean willBeVisible = !control.isVisible();
 
             control.setVisible(willBeVisible);
-            toggleControlBtn.setBaseColor(willBeVisible ? Colors.BLUE :
+            buttonPanel.setToggleControlButtonColor(willBeVisible ?
+                    Colors.BLUE :
                     Colors.GRAY2);
         }
     }
@@ -349,13 +335,13 @@ public class PlotApplication extends JFrame {
      * it only updates its appearance.
      */
     public void softDisableToggleControlButton() {
-        toggleControlBtn.setBaseColor(Colors.GRAY2);
+        buttonPanel.setToggleControlButtonColor(Colors.GRAY2);
     }
 
     public void disableExtendedFunctions() {
-        zoomInBtn.setEnabled(false);
-        zoomOutBtn.setEnabled(false);
-        resetBtn.setEnabled(false);
+        buttonPanel.setZoomInButtonEnabled(false);
+        buttonPanel.setZoomOutButtonEnabled(false);
+        buttonPanel.setResetButtonEnabled(false);
     }
 
     /**
@@ -365,8 +351,7 @@ public class PlotApplication extends JFrame {
      */
     public void start() {
         boolean singleSet = plotSets.size() == 1;
-        nextBtn.setEnabled(!singleSet);
-        prevBtn.setEnabled(!singleSet);
+        buttonPanel.setNavigationEnabled(!singleSet);
         setVisible(true);
     }
 
@@ -418,7 +403,7 @@ public class PlotApplication extends JFrame {
                 Math.abs(X_SCALE - 1.0) < EPSILON &&
                 Math.abs(Y_SCALE - 1.0) < EPSILON;
 
-        resetBtn.setEnabled(!isAtOrigin);
+        buttonPanel.setResetButtonEnabled(!isAtOrigin);
     }
 
     /**
@@ -431,13 +416,13 @@ public class PlotApplication extends JFrame {
         final double EPSILON = 1e-9;
         boolean isMinimum =
                 scaleFactor(MAX_SCALE, X_SCALE) <= MIN_SCALE + EPSILON &&
-                scaleFactor(MAX_SCALE, Y_SCALE) <= MIN_SCALE + EPSILON;
+                        scaleFactor(MAX_SCALE, Y_SCALE) <= MIN_SCALE + EPSILON;
         boolean isMaximum =
                 scaleFactor(MAX_SCALE, X_SCALE) >= MAX_SCALE - EPSILON &&
-                scaleFactor(MAX_SCALE, Y_SCALE) >= MAX_SCALE - EPSILON;
+                        scaleFactor(MAX_SCALE, Y_SCALE) >= MAX_SCALE - EPSILON;
 
-        zoomInBtn.setEnabled(!isMaximum);
-        zoomOutBtn.setEnabled(!isMinimum);
+        buttonPanel.setZoomInButtonEnabled(!isMaximum);
+        buttonPanel.setZoomOutButtonEnabled(!isMinimum);
     }
 
     /**
@@ -477,55 +462,21 @@ public class PlotApplication extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private JPanel createButtonBar() {
-        JPanel btnContainer = new JPanel();
-
-        btnContainer.setLayout(new BoxLayout(btnContainer, BoxLayout.X_AXIS));
-        btnContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        btnContainer.setBackground(Colors.GRAY5);
-        btnContainer.add(prevBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(5, 0)));
-        btnContainer.add(nextBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(toggleControlBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(plotLabel);
-        btnContainer.add(Box.createHorizontalGlue());
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(zoomOutBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(5, 0)));
-        btnContainer.add(zoomInBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(resetBtn);
-        return btnContainer;
+    private PlotButtonPanel createButtonBar() {
+        return new PlotButtonPanel();
     }
 
-    private JPanel createInfoBar() {
-        JPanel infoContainer = new JPanel();
-        JLabel infoText = new JLabel("Verschieben: Ziehen | Zoomen: " +
-                "Strg+Mausrad bzw. nur Mausrad");
-
-        infoContainer.setLayout(new BoxLayout(infoContainer, BoxLayout.X_AXIS));
-        infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        infoContainer.setBackground(Colors.GRAY5);
-        infoText.setForeground(Colors.GRAY);
-        zoomInfoText.setForeground(Colors.GRAY);
-        updateZoomInfo();
-        updateZoomButtonState();
-        infoContainer.add(infoText);
-        infoContainer.add(Box.createHorizontalGlue());
-        infoContainer.add(zoomInfoText);
-        return infoContainer;
+    private PlotInfoPanel createInfoBar() {
+        return new PlotInfoPanel();
     }
 
     private void setupEventHandlers() {
-        nextBtn.addActionListener(this::nextPlotSet);
-        prevBtn.addActionListener(this::prevPlotSet);
-        zoomInBtn.addActionListener(this::zoomIn);
-        zoomOutBtn.addActionListener(this::zoomOut);
-        toggleControlBtn.addActionListener(this::toggleControl);
-        resetBtn.addActionListener(this::resetMove);
-        resetBtn.setEnabled(false);
+        buttonPanel.getNextBtn().addActionListener(this::nextPlotSet);
+        buttonPanel.getPrevBtn().addActionListener(this::prevPlotSet);
+        buttonPanel.getZoomInBtn().addActionListener(this::zoomIn);
+        buttonPanel.getZoomOutBtn().addActionListener(this::zoomOut);
+        buttonPanel.getToggleControlBtn().addActionListener(this::toggleControl);
+        buttonPanel.getResetBtn().addActionListener(this::resetMove);
     }
 
     /**
@@ -533,7 +484,7 @@ public class PlotApplication extends JFrame {
      * for both axes as percentages.
      */
     private void updateZoomInfo() {
-        zoomInfoText.setText(String.format("%.0f%% | %.0f%%",
+        infoPanel.getZoomInfo().setText(String.format("%.0f%% | %.0f%%",
                 scaleFactor(MAX_SCALE, X_SCALE) * 100,
                 scaleFactor(MAX_SCALE, Y_SCALE) * 100
         ));
