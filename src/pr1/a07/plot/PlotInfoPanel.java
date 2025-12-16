@@ -9,8 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class PlotInfoPanel extends JPanel {
-    private final JLabel zoomInfo = new JLabel();
-    private final JLabel info = new JLabel();
+    protected final JLabel zoomInfo = new JLabel();
+    protected final JLabel info = new JLabel();
 
     public PlotInfoPanel() {
         this("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur Mausrad");
