@@ -120,54 +120,11 @@ public class PlotApplication extends JFrame {
      * @param height the initial height of the window in pixels
      */
     public PlotApplication(String title, int width, int height) {
-        JPanel btnContainer = new JPanel();
-        JPanel infoContainer = new JPanel();
-        JLabel infoText = new JLabel();
-
-        btnContainer.setLayout(new BoxLayout(btnContainer, BoxLayout.X_AXIS));
-        btnContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        btnContainer.setBackground(Colors.GRAY5);
-        infoContainer.setLayout(new BoxLayout(infoContainer, BoxLayout.X_AXIS));
-        infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        infoContainer.setBackground(Colors.GRAY5);
-        infoText.setForeground(Colors.GRAY);
-        infoText.setText("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur Mausrad");
-        zoomInfoText.setForeground(Colors.GRAY);
-        infoContainer.add(infoText);
-        infoContainer.add(Box.createHorizontalGlue());
-        updateZoomInfo();
-        updateZoomButtonState();
-        infoContainer.add(zoomInfoText);
-        panel.setBackground(Colors.GRAY6);
-        setMinimumSize(new Dimension(800, 600));
-        setTitle(title);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        nextBtn.addActionListener(this::nextPlotSet);
-        prevBtn.addActionListener(this::prevPlotSet);
-        zoomInBtn.addActionListener(this::zoomIn);
-        zoomOutBtn.addActionListener(this::zoomOut);
-        toggleControlBtn.addActionListener(this::toggleControl);
-        resetBtn.addActionListener(this::resetMove);
-        resetBtn.setEnabled(false);
-        btnContainer.add(prevBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(5, 0)));
-        btnContainer.add(nextBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(toggleControlBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(plotLabel);
-        btnContainer.add(Box.createHorizontalGlue());
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(zoomOutBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(5, 0)));
-        btnContainer.add(zoomInBtn);
-        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
-        btnContainer.add(resetBtn);
-        add(panel);
-        add(btnContainer, BorderLayout.NORTH);
-        add(infoContainer, BorderLayout.SOUTH);
-        setSize(width, height);
-        setLocationRelativeTo(null);
+        add(panel, BorderLayout.CENTER);
+        add(createButtonBar(), BorderLayout.NORTH);
+        add(createInfoBar(), BorderLayout.SOUTH);
+        configureWindowProperties(title, width, height);
+        setupEventHandlers();
         setupMouseListener();
     }
 
@@ -487,6 +444,65 @@ public class PlotApplication extends JFrame {
             panel.repaint();
         });
         zoomTimer.start();
+    }
+
+    private void configureWindowProperties(String title, int width, int height) {
+        panel.setBackground(Colors.GRAY6);
+        setMinimumSize(new Dimension(800, 600));
+        setTitle(title);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(width, height);
+        setLocationRelativeTo(null);
+    }
+
+    private JPanel createButtonBar() {
+        JPanel btnContainer = new JPanel();
+
+        btnContainer.setLayout(new BoxLayout(btnContainer, BoxLayout.X_AXIS));
+        btnContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        btnContainer.setBackground(Colors.GRAY5);
+        btnContainer.add(prevBtn);
+        btnContainer.add(Box.createRigidArea(new Dimension(5, 0)));
+        btnContainer.add(nextBtn);
+        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
+        btnContainer.add(toggleControlBtn);
+        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
+        btnContainer.add(plotLabel);
+        btnContainer.add(Box.createHorizontalGlue());
+        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
+        btnContainer.add(zoomOutBtn);
+        btnContainer.add(Box.createRigidArea(new Dimension(5, 0)));
+        btnContainer.add(zoomInBtn);
+        btnContainer.add(Box.createRigidArea(new Dimension(15, 0)));
+        btnContainer.add(resetBtn);
+        return btnContainer;
+    }
+
+    private JPanel createInfoBar() {
+        JPanel infoContainer = new JPanel();
+        JLabel infoText = new JLabel("Verschieben: Ziehen | Zoomen: Strg+Mausrad bzw. nur Mausrad");
+
+        infoContainer.setLayout(new BoxLayout(infoContainer, BoxLayout.X_AXIS));
+        infoContainer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        infoContainer.setBackground(Colors.GRAY5);
+        infoText.setForeground(Colors.GRAY);
+        zoomInfoText.setForeground(Colors.GRAY);
+        updateZoomInfo();
+        updateZoomButtonState();
+        infoContainer.add(infoText);
+        infoContainer.add(Box.createHorizontalGlue());
+        infoContainer.add(zoomInfoText);
+        return infoContainer;
+    }
+
+    private void setupEventHandlers() {
+        nextBtn.addActionListener(this::nextPlotSet);
+        prevBtn.addActionListener(this::prevPlotSet);
+        zoomInBtn.addActionListener(this::zoomIn);
+        zoomOutBtn.addActionListener(this::zoomOut);
+        toggleControlBtn.addActionListener(this::toggleControl);
+        resetBtn.addActionListener(this::resetMove);
+        resetBtn.setEnabled(false);
     }
 
     /**
