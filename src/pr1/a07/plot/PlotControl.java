@@ -58,34 +58,11 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
      * @throws IllegalArgumentException if the graph list is null or empty
      */
     public PlotControl(PlotApplication application, PlotSet<T> plotSet) {
-        PlotGraphList<T> graphs = plotSet.getGraphs();
-
-        if (graphs == null || graphs.isEmpty()) {
-            throw new IllegalArgumentException("Graph list must not be null or empty");
-        }
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.application = application;
-        this.graphs = graphs;
-        this.activeGraph = graphs.get(0);
-        for (T graph : graphs) {
-            graph.setPlotControl(this);
-        }
-        controlPanel = configureControls(createBuilder());
-        if (controlPanel != null) {
-            add(controlPanel);
-        }
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                onFrameClosing();
-            }
-        });
-        setDefaultTitle();
-        pack();
-        setMinimumSize(new Dimension(400, 1));
-        setLocationRelativeTo(null);
-        setAlwaysOnTop(true);
-        setVisible(true);
+        validateInput(plotSet);
+        initializeState(application, plotSet.getGraphs());
+        buildAndAddControlPanel();
+        configureWindowBehavior();
+        configureWindowProperties();
     }
 
     /**
@@ -169,6 +146,48 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
      * @return the control panel or {@code null} if no controls are desired
      */
     public abstract JPanel configureControls(ControlBuilder<T> build);
+
+    private void validateInput(PlotSet<T> plotSet) {
+        PlotGraphList<T> graphs = plotSet.getGraphs();
+        if (graphs == null || graphs.isEmpty()) {
+            throw new IllegalArgumentException("Graph list must not be null or empty");
+        }
+    }
+
+    private void initializeState(PlotApplication application, PlotGraphList<T> graphs) {
+        this.application = application;
+        this.graphs = graphs;
+        this.activeGraph = graphs.get(0);
+        for (T graph : graphs) {
+            graph.setPlotControl(this);
+        }
+    }
+
+    private void configureWindowBehavior() {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                onFrameClosing();
+            }
+        });
+    }
+
+    private void buildAndAddControlPanel() {
+        controlPanel = configureControls(createBuilder());
+        if (controlPanel != null) {
+            add(controlPanel);
+        }
+    }
+
+    private void configureWindowProperties() {
+        setDefaultTitle();
+        pack();
+        setMinimumSize(new Dimension(400, 1));
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
+        setVisible(true);
+    }
 
     /**
      * Creates a new control builder instance associated with this control
