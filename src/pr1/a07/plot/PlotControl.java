@@ -19,6 +19,10 @@ package pr1.a07.plot;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -133,9 +137,9 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
     @Override
     public void setVisible(boolean visible) {
         if (visible && !locationSet && controlPanel != null) {
-            java.awt.GraphicsConfiguration gc = application.getGraphicsConfiguration();
-            java.awt.Rectangle screenBounds = gc.getBounds();
-            java.awt.Insets screenInsets = java.awt.Toolkit.getDefaultToolkit().getScreenInsets(gc);
+            GraphicsConfiguration gc = application.getGraphicsConfiguration();
+            Rectangle screenBounds = gc.getBounds();
+            Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
             int usableRight = screenBounds.x + screenBounds.width - screenInsets.right;
             int usableTop = screenBounds.y + screenInsets.top;
             int proposedX = application.getX() + application.getWidth() + 10;
