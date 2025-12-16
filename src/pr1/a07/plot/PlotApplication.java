@@ -357,28 +357,10 @@ public class PlotApplication extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Delegates control creation to the plot set itself via its
-     * {@link PlotSet#createControl(PlotApplication)} method.
-     * This method is called only once per plot set, when first needed.
-     *
-     * @param set the plot set for which to create a control
-     * @return a new {@link PlotControl} instance, or {@code null} if the set
-     * does not require user interaction
-     */
     private PlotControl<?> createControl(PlotSet<?> set) {
         return set.createControl(this);
     }
 
-    /**
-     * Applies a zoom factor to either the X or Y axis scale target.
-     * The resulting scale is clamped between {@link #MIN_SCALE} and
-     * {@link #MAX_SCALE}.
-     *
-     * @param factor  the zoom factor to apply (greater than 1 for zoom-in,
-     *                less than 1 for zoom-out)
-     * @param isXAxis {@code true} to zoom the X axis, {@code false} for Y axis
-     */
     private void applyZoom(double factor, boolean isXAxis) {
         if (isXAxis) {
             targetXScale *= factor;
@@ -391,13 +373,6 @@ public class PlotApplication extends JFrame {
         }
     }
 
-    /**
-     * Updates the enabled state of the reset button based on whether the
-     * coordinate system has been moved or zoomed from its default state
-     * (offset = (0,0), scale = (1,1)).
-     * The button is enabled only if the current state differs from the default
-     * (within a small tolerance to account for floating-point precision).
-     */
     private void updateResetButtonState() {
         final double EPSILON = 1e-9;
         boolean isAtOrigin = Math.abs(X_DELTA) < EPSILON &&
@@ -408,12 +383,6 @@ public class PlotApplication extends JFrame {
         buttonPanel.setResetButtonEnabled(!isAtOrigin);
     }
 
-    /**
-     * Updates the enabled state of the zoom buttons based on current scale
-     * limits.
-     * The zoom-in button is disabled at maximum zoom; zoom-out is disabled
-     * at minimum.
-     */
     private void updateZoomButtonState() {
         final double EPSILON = 1e-9;
         boolean isMinimum =
@@ -427,11 +396,6 @@ public class PlotApplication extends JFrame {
         buttonPanel.setZoomOutButtonEnabled(!isMinimum);
     }
 
-    /**
-     * Starts a smooth animation that interpolates the current scale values
-     * toward the target scales. The animation runs at ~100 FPS and stops
-     * when the targets are reached (within tolerance).
-     */
     private void startZoomAnimation() {
         if (zoomTimer != null) {
             zoomTimer.stop();
@@ -473,10 +437,6 @@ public class PlotApplication extends JFrame {
         buttonPanel.addResetActionListener(this::reset);
     }
 
-    /**
-     * Updates the zoom info label to display the current effective zoom level
-     * for both axes as percentages.
-     */
     private void updateZoomInfo() {
         infoPanel.getZoomInfo().setText(String.format("%.0f%% | %.0f%%",
                 scaleFactor(MAX_SCALE, X_SCALE) * 100,
