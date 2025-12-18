@@ -8,10 +8,9 @@ public class TestDemo {
         PlotApplication app = new PlotApplication("Demo-Plotter", 1280, 720);
 
         app.addPlotSet(new TestSet());
+        app.addPlotSet(new SerialSet());
         app.addPlotSet(new TrigonometrieSet());
         app.addPlotSet(new MusterSet());
         app.start();
-
-        // TODO: Live-Graph zur Anzeige von seriellen Daten (z. B. Arduino)
     }
 }

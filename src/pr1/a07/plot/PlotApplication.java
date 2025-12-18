@@ -49,12 +49,13 @@ import static pr1.a07.CMath.scaleFactor;
  * and improved lifecycle management of controls.</p>
  */
 public class PlotApplication extends JFrame {
-    private static final double MIN_SCALE = 1;
+    private static final double MIN_SCALE = .2;
     private static final double MAX_SCALE = 6;
     public static double X_DELTA = 0;
     public static double Y_DELTA = 0;
     public static double X_SCALE = 1;
     public static double Y_SCALE = 1;
+    public static int FRAME_COUNT = 0;
     private final DrawablePanel panel = new DrawablePanel();
     private final PlotButtonPanel buttonPanel;
     private final PlotInfoPanel infoPanel;

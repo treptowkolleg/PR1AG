@@ -19,6 +19,7 @@ package pr1.a07.plot;
 import schimkat.berlin.lernhilfe2025ws.graphics.Drawable;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -49,6 +50,12 @@ import java.util.ArrayList;
  */
 public class DrawablePanel extends JPanel {
     private final ArrayList<Drawable> drawableObjects = new ArrayList<>();
+
+    public DrawablePanel() {
+        Timer repaintTimer = new Timer(33, e -> repaint());
+        repaintTimer.setRepeats(true);
+        repaintTimer.start();
+    }
 
     /**
      * Adds a single drawable object to this panel.
@@ -85,5 +92,6 @@ public class DrawablePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawableObjects.forEach(object -> object.draw(g));
+        PlotApplication.FRAME_COUNT++;
     }
 }

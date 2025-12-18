@@ -17,8 +17,10 @@
 package pr1.a07.plot;
 
 import pr1.a07.Colors;
+import pr1.a07.plot.components.ModernButton;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -35,6 +37,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -169,6 +172,21 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      */
     public JPanel getPanel() {
         return panel;
+    }
+
+    public ControlBuilder<T> button(String label, Consumer<T> action) {
+        JButton button = new ModernButton(label, Colors.GRAY);
+
+        button.setBackground(Colors.GRAY5);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        add(button);
+        button.addActionListener(e -> {
+            action.accept(control.getActiveGraph());
+            control.application.repaint();
+        });
+        return this;
     }
 
     public ControlBuilder<T> checkbox(

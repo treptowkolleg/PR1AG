@@ -1,5 +1,6 @@
 package pr1.a07.plot.demo;
 
+import pr1.a07.Colors;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGrid;
 
@@ -9,15 +10,17 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
-public class TrigonometrieGrid extends PlotGrid {
+public class MathGrid extends PlotGrid {
     protected int scale;
+    protected double xFactor;
 
-    public TrigonometrieGrid() {
+    public MathGrid() {
         this(50);
     }
 
-    public TrigonometrieGrid(int scale) {
+    public MathGrid(int scale) {
         this.scale = scale;
+        xFactor = (double) scale / 100;
     }
 
     @Override
@@ -26,49 +29,46 @@ public class TrigonometrieGrid extends PlotGrid {
         int kMax;
         double yPlusOne = centerY - scale * PlotApplication.Y_SCALE;
         double yMinusOne = centerY + scale * PlotApplication.Y_SCALE;
-        double pixelsPerPi = Math.PI * scale * PlotApplication.X_SCALE;
+        double pixelsPerPi = xFactor * scale * PlotApplication.X_SCALE;
 
         if (pixelsPerPi <= 0) {
             return;
         }
-        g.setPaint(Color.GRAY);
-        g.setStroke(new BasicStroke(1.0f));
-        g.draw(new Line2D.Double(0, centerY, panelWidth, centerY));
-        g.draw(new Line2D.Double(centerX, 0, centerX, panelHeight));
-        g.setStroke(new BasicStroke(
-                1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
-                10.0f, new float[]{5.0f, 5.0f}, 0.0f
-        ));
-        g.draw(new Line2D.Double(0, yPlusOne, panelWidth, yPlusOne));
-        g.draw(new Line2D.Double(0, yMinusOne, panelWidth, yMinusOne));
         kMin = (int) Math.floor((-centerX) / pixelsPerPi) - 1;
         kMax = (int) Math.ceil((panelWidth - centerX) / pixelsPerPi) + 1;
         g.setStroke(new BasicStroke(1.0f));
-        g.setPaint(Color.GRAY);
         for (int k = kMin; k <= kMax; k++) {
-            double xPixel =
-                    centerX + k * Math.PI * scale * PlotApplication.X_SCALE;
+            double xPixel = centerX + k * xFactor * scale * PlotApplication.X_SCALE;
+
             if (xPixel < 0 || xPixel > panelWidth) {
                 continue;
             }
-            String label = switch (k) {
-                case 0 -> "0";
-                case 1 -> "π";
-                case -1 -> "-π";
-                default -> k + "π";
-            };
+            g.setPaint(Colors.GRAY3);
+            g.draw(new Line2D.Double(xPixel, 0, xPixel, panelHeight));
+            g.setPaint(Colors.GRAY);
             g.draw(new Line2D.Double(xPixel, centerY, xPixel, centerY + 10));
             g.setPaint(Color.DARK_GRAY);
             g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
             int textX = (int) xPixel + 5;
-            g.drawString(label, textX, centerY + 10);
+            g.drawString(String.valueOf(k), textX, centerY + 10);
             g.setPaint(Color.GRAY);
         }
         g.setPaint(Color.DARK_GRAY);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
-        g.drawString("+2", centerX + 5, (int) (yPlusOne - scale * PlotApplication.Y_SCALE - 2));
+        g.setStroke(new BasicStroke(.5f));
+        g.setPaint(Colors.GRAY3);
+        for (int dy = 1; dy <= panelHeight; dy++) {
+            double yPositiv = (centerY - dy * (scale * PlotApplication.Y_SCALE));
+            double yNegativ = (centerY + dy * (scale * PlotApplication.Y_SCALE));
+            g.draw(new Line2D.Double(0, yPositiv, panelWidth, yPositiv));
+            g.draw(new Line2D.Double(0, yNegativ, panelWidth, yNegativ));
+        }
+        g.setPaint(Colors.GRAY);
+        g.setStroke(new BasicStroke(1.0f));
+        g.draw(new Line2D.Double(0, centerY, panelWidth, centerY));
+        g.draw(new Line2D.Double(centerX, 0, centerX, panelHeight));
+        g.setPaint(Colors.BLACK);
         g.drawString("+1", centerX + 5, (int) (yPlusOne - 2));
         g.drawString("-1", centerX + 5, (int) (yMinusOne + 12));
-        g.drawString("-2", centerX + 5, (int) (yMinusOne + scale * PlotApplication.Y_SCALE + 12));
     }
 }
