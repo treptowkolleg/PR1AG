@@ -87,8 +87,7 @@ public class SerialReader implements AutoCloseable {
                                             }
                                         }
                                     }
-                                } catch (NumberFormatException e) {
-                                    System.err.println("Ungültige Zahl: '" + line + "'");
+                                } catch (NumberFormatException ignored) {
                                 }
                             }
                         }
