@@ -69,50 +69,40 @@ public class SerialReader implements AutoCloseable {
             running.set(false);
             return;
         }
-        try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(port.getInputStream()))) {
-            try {
-                String line;
-                while (running.get()) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(port.getInputStream()))) {
+            String line;
 
-                    if (reader.ready()) {
-                        line = reader.readLine();
-                        if (line != null) {
-                            line = line.trim();
-                            if (!line.isEmpty()) {
-                                try {
-                                    double raw = Double.parseDouble(line);
-                                    int scaled = (int) (raw * 100);
-                                    ArrayList<Integer> list = this.targetList;
-                                    if (list != null) {
-                                        synchronized (list) {
-                                            if (isRunning()) {
-                                                list.add(scaled);
-                                            }
-                                        }
-                                    }
-                                } catch (NumberFormatException ignored) {
-                                }
-                            }
-                        }
-                    } else {
-                        try {
-                            Thread.sleep(5);
-                        } catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                            break;
-                        }
-                    }
+            while (running.get()) {
+                line = reader.readLine();
 
-                }
-            } catch (IOException e) {
-                if (running.get()) {
-                    System.err.println("Lese-Fehler: " + e.getMessage());
+                if (line != null && !line.isBlank()) {
+                    processLine(line.trim());
                 }
             }
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            if (isRunning) {
+                System.err.println("Lese-Fehler: " + e.getMessage());
+            }
         } finally {
             running.set(false);
+        }
+    }
+
+    private void processLine(String line) {
+        try {
+            double raw = Double.parseDouble(line);
+            int scaled = (int) Math.round(raw * 100);
+            ArrayList<Integer> list = this.targetList;
+
+            if (list != null) {
+                synchronized (list) {
+                    if (isRunning) {
+                        list.add(scaled);
+                    }
+                }
+            }
+        } catch (NumberFormatException ignored) {
+            // Ungültige Eingaben werden stillschweigend ignoriert
         }
     }
 
