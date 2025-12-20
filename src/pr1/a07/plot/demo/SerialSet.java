@@ -17,7 +17,12 @@ public class SerialSet extends PlotSet<SerialGraph> {
 
     @Override
     public PlotControl<SerialGraph> createControl(PlotApplication app) {
-        app.setArduinoEnabled(serialGraph.serialIsAvailable());
-        return new SerialControl(app, this);
+        boolean serialAvailable = serialGraph.serialIsAvailable();
+
+        app.setArduinoEnabled(serialAvailable);
+        if (serialAvailable) {
+            return new SerialControl(app, this);
+        }
+        return null;
     }
 }

@@ -182,6 +182,7 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
 
     private void configureWindowProperties() {
         setDefaultTitle();
+        setIconImage(Icon.get(Icon.TK_LOGO));
         pack();
         setMinimumSize(new Dimension(400, 1));
         setLocationRelativeTo(null);

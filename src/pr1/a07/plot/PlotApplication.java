@@ -19,6 +19,7 @@ package pr1.a07.plot;
 
 import pr1.a07.Colors;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static pr1.a07.CMath.scaleFactor;
 
@@ -425,6 +427,7 @@ public class PlotApplication extends JFrame {
     private void configureWindowProperties(String title, int width,
                                            int height) {
         panel.setBackground(Colors.GRAY6);
+        setIconImage(Icon.get(Icon.TK_LOGO));
         setMinimumSize(new Dimension(800, 600));
         setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
