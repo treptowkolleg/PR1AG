@@ -4,8 +4,8 @@ import pr1.a07.Colors;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGraph;
 import pr1.a07.plot.SerialReader;
+import pr1.a07.plot.Stroke;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -48,38 +48,49 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     @Override
     public void configureGraphics2D(Graphics2D g) {
+        int prevX = centerX;
+        int prevY;
+        final int size;
+        final double xFactor = xScale * PlotApplication.X_SCALE;
+        final double yFactor = yScale * PlotApplication.Y_SCALE;
+
         g.setColor(color);
-        g.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_BEVEL
-        ));
+        g.setStroke(Stroke.BEVEL_MEDIUM);
         synchronized (yValues) {
-            if (yValues.isEmpty()) {
+            size = yValues.size();
+            if (size <= 1) {
                 return;
             }
-            int prevX = (int) (centerX + 0 * xScale * PlotApplication.X_SCALE);
-            int prevY = (int) (centerY - yValues.get(0) * yScale * PlotApplication.Y_SCALE);
+        }
+        prevY = (int) (centerY - yValues.get(0) * yFactor);
+        for (int i = 1; i < size; i++) {
+            int currX = (int) (centerX + i * xFactor);
+            int currY = (int) (centerY - yValues.get(i) * yFactor);
 
-            for (int i = 1; i < yValues.size(); i++) {
-                int currX = (int) (centerX + i * xScale * PlotApplication.X_SCALE);
-                int currY = (int) (centerY - yValues.get(i) * yScale * PlotApplication.Y_SCALE);
-
-                if (prevY > currY) {
-                    g.setColor(Colors.BLUE);
-                } else if (prevY == currY) {
-                    g.setColor(Colors.YELLOW);
-                } else {
-                    g.setColor(color);
-                }
-                if (prevY < centerY && currY == centerY) {
-                    stop();
-                }
-                g.drawLine(prevX, prevY, currX, currY);
-                prevX = currX;
-                prevY = currY;
+            updateColorBasedOnSlope(g, prevY, currY);
+            if (prevY < centerY && currY == centerY) {
+                stop();
             }
+            g.drawLine(prevX, prevY, currX, currY);
+            prevX = currX;
+            prevY = currY;
         }
         if (reader.isRunning()) {
-            PlotApplication.X_DELTA = PlotApplication.X_DELTA - PlotApplication.X_SCALE / xScale * 4.25;
+            adjustXDelta();
         }
+    }
+
+    private void updateColorBasedOnSlope(Graphics2D g, int prevY, int currY) {
+        if (prevY > currY) {
+            g.setColor(Colors.BLUE);
+        } else if (prevY == currY) {
+            g.setColor(Colors.YELLOW);
+        } else {
+            g.setColor(color);
+        }
+    }
+
+    private void adjustXDelta() {
+        PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / xScale) * 4.25;
     }
 }

@@ -3,6 +3,7 @@ package pr1.a07.plot.demo;
 import pr1.a07.Colors;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGraph;
+import pr1.a07.plot.Stroke;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -118,7 +119,7 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
             }
         }
         g.setPaint(color);
-        g.setStroke(new BasicStroke(2.0f));
+        g.setStroke(Stroke.BEVEL_MEDIUM);
         for (int i = 1; i < points.size(); i++) {
             Point2D p1 = points.get(i - 1);
             Point2D p2 = points.get(i);
