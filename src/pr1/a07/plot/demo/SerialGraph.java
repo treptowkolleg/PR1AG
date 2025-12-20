@@ -5,6 +5,7 @@ import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGraph;
 import pr1.a07.plot.SerialReader;
 import pr1.a07.plot.Stroke;
+import pr1.helper.core.StopWatch;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -15,6 +16,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private final double yScale;
     private final ArrayList<Integer> yValues = new ArrayList<>();
     private final SerialReader reader = new SerialReader();
+    private final StopWatch stopWatch = new StopWatch();
 
     public SerialGraph(Color color, String title) {
         this(color, title, 5.0, 0.5);
@@ -39,18 +41,27 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     public void sendStartCommand() {
         reader.sendStartCommand();
+        stopWatch.setPreTime(1);
+        stopWatch.start();
     }
 
-    public void play() {
+    public void start() {
         reader.setRunning(true);
+        if (!stopWatch.isRunning()) {
+            stopWatch.setPreTime(0);
+            stopWatch.start();
+        }
     }
 
     public void stop() {
         reader.setRunning(false);
+        if (stopWatch.isRunning()) {
+            stopWatch.stop();
+        }
     }
 
-    public void toggle() {
-        reader.setRunning(!reader.isRunning());
+    public String getStoppedTimeFormatted() {
+        return String.format("%.1f s", stopWatch.getElapsedSeconds());
     }
 
     @Override
@@ -76,7 +87,9 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
             updateColorBasedOnSlope(g, prevY, currY);
             if (prevY < centerY && currY == centerY) {
-                stop();
+                if (reader.isRunning()) {
+                    stop();
+                }
             }
             g.drawLine(prevX, prevY, currX, currY);
             prevX = currX;

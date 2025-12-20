@@ -19,9 +19,13 @@ public class SerialControl extends PlotControl<SerialGraph> {
     @Override
     public JPanel configureControls(ControlBuilder<SerialGraph> build) {
         return build
-                .button("Zurücksetzen", SerialGraph::reset)
-                .button("Start/Pause", SerialGraph::toggle)
+                .button(Colors.BLUE, "Start", SerialGraph::start)
+                .button("Stop", SerialGraph::stop)
+                .divider()
                 .button(Colors.DARK_GREEN, "Starte Messung", SerialGraph::sendStartCommand)
+                .outputTimed("Entladezeit", "t", SerialGraph::getStoppedTimeFormatted, 50)
+                .divider()
+                .button(Colors.RED, "Zurücksetzen", SerialGraph::reset)
                 .getPanel();
     }
 }

@@ -20,6 +20,7 @@ import pr1.a07.Colors;
 import pr1.a07.plot.components.ModernButton;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -27,7 +28,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -35,8 +39,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -50,6 +56,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     private final PlotControl<T> control;
     private final PlotGraphList<T> graphs;
     private final T activeGraph;
+    private final Map<String, JTextField> outputs = new HashMap<>();
+    private final Map<String, Function<T, String>> outputGetters = new HashMap<>();
     private final List<JSlider> sliders = new ArrayList<>();
     private final List<Function<T, Integer>> getters = new ArrayList<>();
     private final List<JCheckBox> checkBoxes = new ArrayList<>();
@@ -175,6 +183,16 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return panel;
     }
 
+    public ControlBuilder<T> divider() {
+        return divider(10);
+    }
+
+    public ControlBuilder<T> divider(int height) {
+        Component verticalSpacer = Box.createVerticalStrut(height);
+        add(verticalSpacer);
+        return this;
+    }
+
     public ControlBuilder<T> button(String label, Consumer<T> action) {
         button(Colors.GRAY2, label, action);
         return this;
@@ -191,6 +209,27 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             action.accept(control.getActiveGraph());
             control.application.repaint();
         });
+        return this;
+    }
+
+    public ControlBuilder<T> outputTimed(String label, String key, Function<T, String> getter, int delayMs) {
+        JTextField valueField = new JTextField("0.0 s");
+        valueField.setEditable(false);
+        valueField.setFocusable(false);
+        JPanel container = new JPanel(new BorderLayout());
+
+        container.setBackground(Colors.GRAY5);
+        container.setBorder(BorderFactory.createTitledBorder(label));
+        container.add(valueField, BorderLayout.CENTER);
+        outputs.put(key, valueField);
+
+        Timer timer = new Timer(delayMs, e -> {
+            T active = control.getActiveGraph();
+            String value = getter.apply(active);
+            valueField.setText(value);
+        });
+        timer.start();
+        add(container);
         return this;
     }
 
@@ -340,6 +379,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
                 control.setActiveGraph(index);
                 syncCheckBoxesToActiveGraph();
                 syncSlidersToActiveGraph();
+                syncOutputsToActiveGraph();
                 control.application.repaint();
             }
         });
@@ -370,6 +410,28 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             setter.accept(control.getActiveGraph(), value);
             control.application.repaint();
         });
+    }
+
+    public void updateOutput(String key, String value) {
+        JTextField field = outputs.get(key);
+        if (field != null) {
+            field.setText(value);
+        }
+    }
+
+    private void syncOutputsToActiveGraph() {
+        T active = control.getActiveGraph();
+
+        for (String key : outputs.keySet()) {
+            Function<T, String> getter = outputGetters.get(key);
+            if (getter != null) {
+                String value = getter.apply(active);
+                JTextField field = outputs.get(key);
+                if (field != null) {
+                    field.setText(value);
+                }
+            }
+        }
     }
 
     /**

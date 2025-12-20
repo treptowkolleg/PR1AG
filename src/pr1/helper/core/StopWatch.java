@@ -35,6 +35,7 @@ public class StopWatch {
      * The timestamp when the stopwatch was started, in nanoseconds.
      */
     private long startTime;
+    private long preTime = 0;
 
     /**
      * The timestamp when the stopwatch was stopped, in nanoseconds.
@@ -85,7 +86,11 @@ public class StopWatch {
     public double getElapsedSeconds() {
         long elapsed = isRunning ? System.nanoTime() - startTime :
                 endTime - startTime;
-        return elapsed / 1_000_000_000.0;
+        return elapsed / 1_000_000_000.0 - preTime;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 
     /**
@@ -101,6 +106,10 @@ public class StopWatch {
     public long getElapsedMillis() {
         long elapsed = isRunning ? System.nanoTime() - startTime :
                 endTime - startTime;
-        return elapsed / 1_000_000;
+        return elapsed / 1_000_000 - preTime;
+    }
+
+    public void setPreTime(int s) {
+        preTime = s;
     }
 }
