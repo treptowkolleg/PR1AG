@@ -11,14 +11,21 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class SerialGraph extends PlotGraph<SerialGraph> {
+    private final double xScale;
+    private final double yScale;
     private final ArrayList<Integer> yValues = new ArrayList<>();
-    private final double xScale = 5;
-    private final double yScale = .5;
     private final SerialReader reader = new SerialReader();
 
     public SerialGraph(Color color, String title) {
+        this(color, title, 5.0, 0.5);
+    }
+
+    public SerialGraph(Color color, String title, double xScale,
+                       double yScale) {
         this.color = color;
         this.title = title;
+        this.xScale = xScale;
+        this.yScale = yScale;
         reader.startReading(yValues);
     }
 

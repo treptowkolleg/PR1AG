@@ -6,7 +6,7 @@ import pr1.a07.plot.PlotSet;
 import pr1.a08.Colors;
 
 public class SerialSet extends PlotSet<SerialGraph> {
-    SerialGraph serialGraph;
+    private final SerialGraph serialGraph;
 
     public SerialSet() {
         serialGraph = new SerialGraph(Colors.DARKER_GREEN, "Spannung");

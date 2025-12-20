@@ -5,7 +5,6 @@ import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGraph;
 import pr1.a07.plot.Stroke;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -101,7 +100,7 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
 
     @Override
     public void configureGraphics2D(Graphics2D g) {
-        if (!isVisible) {
+        if (!isVisible()) {
             return;
         }
         List<Point2D> points = new ArrayList<>();
@@ -109,8 +108,7 @@ public class TrigonometrieGraph extends PlotGraph<TrigonometrieGraph> {
         double xMax = intervalEnd * Math.PI;
 
         for (double x = xMin; x <= xMax; x += resolution) {
-            double y =
-                    amplitude * Math.sin(this.frequency * (x - dx * Math.PI)) + dy;
+            double y = amplitude * Math.sin(this.frequency * (x - dx * Math.PI)) + dy;
             int px = (int) ((double) centerX + x * scale * PlotApplication.X_SCALE);
             int py = (int) (centerY - y * scale * PlotApplication.Y_SCALE);
 
