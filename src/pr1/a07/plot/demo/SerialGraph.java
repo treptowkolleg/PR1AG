@@ -22,6 +22,10 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         reader.startReading(yValues);
     }
 
+    public boolean serialIsAvailable() {
+        return reader.isAvailable();
+    }
+
     public void reset() {
         yValues.clear();
     }

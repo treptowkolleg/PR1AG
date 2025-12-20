@@ -6,15 +6,18 @@ import pr1.a07.plot.PlotSet;
 import pr1.a08.Colors;
 
 public class SerialSet extends PlotSet<SerialGraph> {
+    SerialGraph serialGraph;
 
     public SerialSet() {
+        serialGraph = new SerialGraph(Colors.DARKER_GREEN, "Spannung");
         setGrid(new MathGrid());
-        addGraph(new SerialGraph(Colors.DARKER_GREEN, "Spannung"));
+        addGraph(serialGraph);
         setTitle("Kondensatorentladung mit Arduino messen");
     }
 
     @Override
     public PlotControl<SerialGraph> createControl(PlotApplication app) {
+        app.setArduinoEnabled(serialGraph.serialIsAvailable());
         return new SerialControl(app, this);
     }
 }

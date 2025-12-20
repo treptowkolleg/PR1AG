@@ -20,6 +20,7 @@ public class PlotButtonPanel extends JPanel {
     protected final ModernButton zoomOutBtn;
     protected final ModernButton resetBtn;
     protected final ModernButton toggleControlBtn;
+    protected final ModernButton arduinoPresentButton;
     protected final JLabel plotLabel = new JLabel("plot name");
 
     public PlotButtonPanel() {
@@ -27,6 +28,7 @@ public class PlotButtonPanel extends JPanel {
         prevBtn = new ModernIconButton(Icon.CHEVRON_LEFT);
         zoomInBtn = new ModernIconButton(Icon.ZOOM_IN);
         zoomOutBtn = new ModernIconButton(Icon.ZOOM_OUT);
+        arduinoPresentButton = new ModernIconButton(Icon.ARDUINO);
         resetBtn = new ModernButton("Reset", Colors.BLUE);
         toggleControlBtn = new ModernButton("Steuerung", Colors.BLUE);
         init();
@@ -116,6 +118,10 @@ public class PlotButtonPanel extends JPanel {
         resetBtn.setEnabled(enabled);
     }
 
+    public void setArduinoAvailable(boolean enabled) {
+        arduinoPresentButton.setEnabled(enabled);
+    }
+
     public void setPlotTitle(String title) {
         plotLabel.setText(title);
     }
@@ -132,6 +138,10 @@ public class PlotButtonPanel extends JPanel {
         add(Box.createRigidArea(new Dimension(15, 0)));
         add(plotLabel);
         add(Box.createHorizontalGlue());
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        arduinoPresentButton.setBaseColor(Colors.GREEN);
+        arduinoPresentButton.setEnabled(false);
+        add(arduinoPresentButton);
         add(Box.createRigidArea(new Dimension(15, 0)));
         add(zoomOutBtn);
         add(Box.createRigidArea(new Dimension(5, 0)));

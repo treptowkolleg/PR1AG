@@ -51,6 +51,10 @@ public class SerialReader implements AutoCloseable {
         }
     }
 
+    public boolean isAvailable() {
+        return port != null && port.isOpen();
+    }
+
     public boolean isRunning() {
         return isRunning;
     }

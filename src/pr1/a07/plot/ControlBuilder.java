@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -175,9 +176,13 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     }
 
     public ControlBuilder<T> button(String label, Consumer<T> action) {
-        JButton button = new ModernButton(label, Colors.GRAY);
+        button(Colors.GRAY2, label, action);
+        return this;
+    }
 
-        button.setBackground(Colors.GRAY5);
+    public ControlBuilder<T> button(Color color, String label, Consumer<T> action) {
+        JButton button = new ModernButton(label, color);
+
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setOpaque(true);

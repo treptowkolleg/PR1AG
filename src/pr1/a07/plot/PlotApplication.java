@@ -340,6 +340,10 @@ public class PlotApplication extends JFrame {
         buttonPanel.setToggleControlButtonColor(Colors.GRAY2);
     }
 
+    public void setArduinoEnabled(boolean enabled) {
+        buttonPanel.setArduinoAvailable(enabled);
+    }
+
     public void disableExtendedFunctions() {
         buttonPanel.setZoomInButtonEnabled(false);
         buttonPanel.setZoomOutButtonEnabled(false);

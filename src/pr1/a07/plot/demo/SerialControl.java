@@ -1,5 +1,6 @@
 package pr1.a07.plot.demo;
 
+import pr1.a07.Colors;
 import pr1.a07.plot.ControlBuilder;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotControl;
@@ -20,7 +21,7 @@ public class SerialControl extends PlotControl<SerialGraph> {
         return build
                 .button("Zurücksetzen", SerialGraph::reset)
                 .button("Start/Pause", SerialGraph::toggle)
-                .button("Starte Messung",SerialGraph::sendStartCommand)
+                .button(Colors.DARK_GREEN, "Starte Messung", SerialGraph::sendStartCommand)
                 .getPanel();
     }
 }
