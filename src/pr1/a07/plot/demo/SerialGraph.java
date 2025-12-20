@@ -57,8 +57,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
                 return;
             }
             int prevX = (int) (centerX + 0 * xScale * PlotApplication.X_SCALE);
-            int prevY =
-                    (int) (centerY - yValues.get(0) * yScale * PlotApplication.Y_SCALE);
+            int prevY = (int) (centerY - yValues.get(0) * yScale * PlotApplication.Y_SCALE);
 
             for (int i = 1; i < yValues.size(); i++) {
                 int currX = (int) (centerX + i * xScale * PlotApplication.X_SCALE);
