@@ -37,6 +37,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     public void reset() {
         yValues.clear();
+        stop();
     }
 
     public void sendStartCommand() {

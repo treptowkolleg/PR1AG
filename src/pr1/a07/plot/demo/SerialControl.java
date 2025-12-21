@@ -23,7 +23,7 @@ public class SerialControl extends PlotControl<SerialGraph> {
                 .button("Stop", SerialGraph::stop)
                 .divider()
                 .button(Colors.DARK_GREEN, "Starte Messung", SerialGraph::sendStartCommand)
-                .outputTimed("Entladezeit", "t", SerialGraph::getStoppedTimeFormatted, 50)
+                .outputTimed("Entladezeit", "t", SerialGraph::getStoppedTimeFormatted, 100)
                 .divider()
                 .button(Colors.RED, "Zurücksetzen", SerialGraph::reset)
                 .getPanel();
