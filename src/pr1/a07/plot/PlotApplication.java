@@ -19,7 +19,6 @@ package pr1.a07.plot;
 
 import pr1.a07.Colors;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
@@ -34,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static pr1.a07.CMath.scaleFactor;
 
