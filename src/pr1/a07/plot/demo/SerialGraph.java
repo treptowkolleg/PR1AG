@@ -42,8 +42,10 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     public void sendStartCommand() {
         reader.sendStartCommand();
-        stopWatch.setPreTime(1);
-        stopWatch.start();
+        if (!stopWatch.isRunning()) {
+            stopWatch.setPreTime(1);
+            stopWatch.start();
+        }
     }
 
     public void start() {
@@ -98,6 +100,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         }
         if (reader.isRunning()) {
             adjustXDelta();
+        } else {
+            drawApproximatedExponentialCurve(g);
         }
     }
 
@@ -113,5 +117,33 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     private void adjustXDelta() {
         PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / xScale) * 4.25;
+    }
+
+    private void drawApproximatedExponentialCurve(Graphics2D g) {
+        if (yValues.size() < 2) {
+            return;
+        }
+        final double xFactor = xScale * PlotApplication.X_SCALE;
+        final double yFactor = yScale * PlotApplication.Y_SCALE;
+        int startY = yValues.get(0);
+        int endY = yValues.get(yValues.size() - 1);
+        int size = yValues.size();
+        double a = startY - endY;
+        double targetY = endY + 0.01 * a;
+        double b = -Math.log((targetY - (double) endY) / a) / (size - 1);
+        int prevX = centerX;
+        int prevY = (int) (centerY - (a * Math.exp(-b * 0) + (double) endY) * yFactor);
+
+        g.setColor(Colors.PINK);
+        g.setStroke(Stroke.LINE_THICK);
+        for (int i = 1; i < size; i++) {
+            int currX = (int) (centerX + i * xFactor);
+            double currYReal = a * Math.exp(-b * i) + (double) endY;
+            int currY = (int) (centerY - currYReal * yFactor);
+
+            g.drawLine(prevX, prevY, currX, currY);
+            prevX = currX;
+            prevY = currY;
+        }
     }
 }
