@@ -27,7 +27,7 @@ public class TestThePersons extends IOApplication {
         printAll(out, students, "Altes Studienfach");
         students.forEach(student ->
                 student.studienfachWechseln(
-                        getAnotherElement(student.getStudienfach(), subjects)
+                        pickOneNotEqual(student.getStudienfach(), subjects)
                 )
         );
         printAll(out, students, "Neues Studienfach");
@@ -66,9 +66,12 @@ public class TestThePersons extends IOApplication {
                 .toList();
     }
 
-    public static String getAnotherElement(String current, String[] elements) {
+    public static String pickOneNotEqual(String current, String[] elements) {
         String candidate;
 
+        if (elements.length <= 1) {
+            throw new IllegalArgumentException("Mindestens zwei Fächer benötigt.");
+        }
         do {
             candidate = BetterRandom.pickOne(elements);
         } while (candidate.equals(current));
