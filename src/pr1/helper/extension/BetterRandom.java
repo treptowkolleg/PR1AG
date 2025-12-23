@@ -18,11 +18,22 @@ public class BetterRandom {
      * @return ein zufälliges Element aus der Liste
      * @throws IllegalArgumentException wenn die Liste leer ist
      */
-    public static <T> T pick(List<T> list) {
+    public static <T> T pickOne(List<T> list) {
         if (list.isEmpty()) {
             throw new IllegalArgumentException("Can not pick from empty list");
         }
         return list.get(random.nextInt(list.size()));
+    }
+
+    public static <T> T pickOne(T[] list) {
+        if (list.length == 0) {
+            throw new IllegalArgumentException("Can not pick from empty list");
+        }
+        return list[get(list)];
+    }
+
+    public static <T> int get(T[] array) {
+        return get(0, array.length);
     }
 
     public static int get(int upperBound) {
@@ -30,9 +41,7 @@ public class BetterRandom {
     }
 
     public static int get(int lowerBound, int upperBound) {
-        double f = Math.random() / Math.nextDown(1.0);
-        double x = lowerBound * (1.0 - f) + upperBound * f;
-        return (int) x;
+        return lowerBound + (int) (Math.random() * (upperBound - lowerBound));
     }
 
 }

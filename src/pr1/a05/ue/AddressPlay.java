@@ -48,7 +48,7 @@ public class AddressPlay extends IOApplication {
         ArrayList<Adresse> addresses = createTestAddresses();
         EinwohnerList inhabitants = personList.stream()
                 .map(person -> new Einwohner(person,
-                        BetterRandom.pick(addresses)))
+                        BetterRandom.pickOne(addresses)))
                 .collect(Collectors.toCollection(EinwohnerList::new));
 
         decorator.printHeadline("VOR UMZUG:");
@@ -60,7 +60,7 @@ public class AddressPlay extends IOApplication {
             Adresse newAddress;
 
             do {
-                newAddress = BetterRandom.pick(addresses);
+                newAddress = BetterRandom.pickOne(addresses);
             } while (newAddress.equals(original.getAdresse()));
             inhabitants.set(i, new Einwohner(original.getPerson(), newAddress));
         }

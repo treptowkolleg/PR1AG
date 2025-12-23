@@ -15,9 +15,9 @@ public class TestThePersons extends IOApplication {
     }
 
     public static void testDifferentTypes(PrintWriter out) {
-        ArrayList<Person> people = new ArrayList<>();
         List<Student> students;
         String[] subjects = StudentFactory.createTestSubjects();
+        ArrayList<Person> people = new ArrayList<>();
 
         people.addAll(PersonFactory.createTestPersons());
         people.addAll(StudentFactory.createTestStudents());
@@ -39,10 +39,9 @@ public class TestThePersons extends IOApplication {
 
         out.println("Rechnungen".toUpperCase());
         handwerker.forEach(h -> {
-            for (int arbeitszeit : new int[]{7, 11, 17}) {
+            for (int stunden : new int[]{7, 11, 17}) {
                 out.printf("%s berechnet für %2d h: %.2f € %n",
-                        h.toStringReadable(), arbeitszeit,
-                        h.rechnung(arbeitszeit));
+                        h.toStringReadable(), stunden, h.rechnung(stunden));
             }
         });
     }
@@ -71,7 +70,7 @@ public class TestThePersons extends IOApplication {
         String candidate;
 
         do {
-            candidate = elements[BetterRandom.get(0, elements.length)];
+            candidate = BetterRandom.pickOne(elements);
         } while (candidate.equals(current));
         return candidate;
     }
