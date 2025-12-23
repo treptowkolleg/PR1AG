@@ -57,11 +57,11 @@ public class Person {
 
     @Override
     public String toString() {
-        return toString(" ", getFullName(), birthDate);
+        return toString(" ", getFullName(), getBirthYear());
     }
 
     public String toStringReadable() {
-        return toString(", ", getFullName(), birthDate);
+        return toString(", ", getFullName(), getBirthYear());
     }
 
     protected String toString(Object... elements) {

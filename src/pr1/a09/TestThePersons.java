@@ -17,7 +17,7 @@ public class TestThePersons extends IOApplication {
     public static void testDifferentTypes(PrintWriter out) {
         ArrayList<Person> people = new ArrayList<>();
         List<Student> students;
-        String[] availableSubjects = StudentFactory.createTestSubjects();
+        String[] subjects = StudentFactory.createTestSubjects();
 
         people.addAll(PersonFactory.createTestPersons());
         people.addAll(StudentFactory.createTestStudents());
@@ -27,8 +27,7 @@ public class TestThePersons extends IOApplication {
         printAll(out, students, "Altes Studienfach");
         students.forEach(student ->
                 student.studienfachWechseln(
-                        getRandomSubject(student.getStudienfach(),
-                                availableSubjects)
+                        getAnotherElement(student.getStudienfach(), subjects)
                 )
         );
         printAll(out, students, "Neues Studienfach");
@@ -68,11 +67,11 @@ public class TestThePersons extends IOApplication {
                 .toList();
     }
 
-    private static String getRandomSubject(String current, String[] subjects) {
+    public static String getAnotherElement(String current, String[] elements) {
         String candidate;
 
         do {
-            candidate = subjects[BetterRandom.get(0, subjects.length)];
+            candidate = elements[BetterRandom.get(0, elements.length)];
         } while (candidate.equals(current));
         return candidate;
     }
