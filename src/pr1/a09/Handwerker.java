@@ -3,12 +3,12 @@ package pr1.a09;
 import java.time.LocalDate;
 
 public class Handwerker extends Person {
-    private String gewerk;
-    private double stundenlohn;
+    protected String gewerk;
+    protected double stundenlohn;
 
-    public Handwerker(Person person, String studienfach, int matrikelNr) {
+    public Handwerker(Person person, String gewerk, double stundenlohn) {
         this(person.getFirstName(), person.getLastName(),
-                person.getBirthDate(), studienfach, matrikelNr);
+                person.getBirthDate(), gewerk, stundenlohn);
     }
 
     public Handwerker(String firstName, String lastName, LocalDate birthDate,
@@ -54,6 +54,7 @@ public class Handwerker extends Person {
         return toString(" ", getFullName(), getGewerk(), getStundenlohnFormatted());
     }
 
+    @Override
     public String toStringReadable() {
         return toString(", ", getFullName(), getGewerk(), getStundenlohnFormatted());
     }

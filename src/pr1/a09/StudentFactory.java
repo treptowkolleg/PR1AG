@@ -3,21 +3,22 @@ package pr1.a09;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class StudentFactory extends AbstractPersonFactory<Student> {
-    private static final StudentFactory INSTANCE = new StudentFactory();
+public class StudentFactory extends PersonFactory {
 
     public static Student createStudent(String firstName, String lastName,
                                         String birthYear, String studienfach,
                                         int matrikelNr) {
-        return INSTANCE.create(firstName, lastName, birthYear, studienfach,
-                matrikelNr);
+        Person person = createPerson(firstName, lastName, birthYear);
+
+        return new Student(person, studienfach, matrikelNr);
     }
 
     public static Student createStudent(String firstName, String lastName,
                                         LocalDate birthDate, String studienfach,
                                         int matrikelNr) {
-        return INSTANCE.create(firstName, lastName, birthDate, studienfach,
-                matrikelNr);
+        Person person = createPerson(firstName, lastName, birthDate);
+
+        return new Student(person, studienfach, matrikelNr);
     }
 
     public static ArrayList<Student> createTestStudents() {
@@ -34,6 +35,26 @@ public class StudentFactory extends AbstractPersonFactory<Student> {
             ));
         }
         return students;
+    }
+
+    public static String[] createTestSubjects() {
+        return new String[]{
+                "Informatik",
+                "Mathematik",
+                "Physik",
+                "Biologie",
+                "Chemie",
+                "Elektrotechnik",
+                "Maschinenbau",
+                "Wirtschaftsinformatik",
+                "Psychologie",
+                "Geschichte",
+                "Philosophie",
+                "Medizin",
+                "Rechtswissenschaft",
+                "Soziologie",
+                "Kunstgeschichte"
+        };
     }
 
     public static Object[][] createTestStudentsRaw() {
@@ -54,19 +75,5 @@ public class StudentFactory extends AbstractPersonFactory<Student> {
                 {"Jan", "Koum", "1976", "Informatik", 200014},
                 {"Rihanna", "Fenty", "1988", "Musik", 200015}
         };
-    }
-
-    @Override
-    protected Student createInstance(String firstName, String lastName,
-                                     LocalDate birthDate, Object... extraArgs) {
-        if (extraArgs.length < 2) {
-            throw new IllegalArgumentException(
-                    "Student requires exactly two extra arguments: (String) " +
-                            "studienfach, (Integer) matrikelNr");
-        }
-        String studienfach = (String) extraArgs[0];
-        Integer matrikelNr = (Integer) extraArgs[1];
-        return new Student(firstName, lastName, birthDate, studienfach,
-                matrikelNr);
     }
 }

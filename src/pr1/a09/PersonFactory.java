@@ -3,17 +3,21 @@ package pr1.a09;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class PersonFactory extends AbstractPersonFactory<Person> {
-    private static final PersonFactory INSTANCE = new PersonFactory();
+public class PersonFactory {
 
     public static Person createPerson(String firstName, String lastName,
                                       String birthYear) {
-        return INSTANCE.create(firstName, lastName, birthYear);
+        return createPerson(firstName, lastName, Integer.parseInt(birthYear));
+    }
+
+    public static Person createPerson(String firstName, String lastName,
+                                      int birthYear) {
+        return new Person(firstName, lastName, birthYear);
     }
 
     public static Person createPerson(String firstName, String lastName,
                                       LocalDate birthDate) {
-        return INSTANCE.create(firstName, lastName, birthDate);
+        return new Person(firstName, lastName, birthDate);
     }
 
     public static ArrayList<Person> createTestPersons() {
@@ -44,11 +48,5 @@ public class PersonFactory extends AbstractPersonFactory<Person> {
                 {"Ľubomír", "Balko", "1970"},
                 {"Åsmund", "Tveit", "1975"},
         };
-    }
-
-    @Override
-    protected Person createInstance(String firstName, String lastName,
-                                    LocalDate birthDate, Object... extraArgs) {
-        return new Person(firstName, lastName, birthDate);
     }
 }

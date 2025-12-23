@@ -47,6 +47,7 @@ public class Student extends Person {
         return toString(" ", getFullName(), studienfach, matrikelNr);
     }
 
+    @Override
     public String toStringReadable() {
         return toString(", ", getFullName(), studienfach, matrikelNr);
     }

@@ -3,22 +3,23 @@ package pr1.a09;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class HandwerkerFactory extends AbstractPersonFactory<Handwerker> {
-    private static final HandwerkerFactory INSTANCE = new HandwerkerFactory();
+public class HandwerkerFactory extends PersonFactory {
 
     public static Handwerker createHandwerker(String firstName, String lastName,
                                               String birthYear, String gewerk,
                                               double stundenlohn) {
-        return INSTANCE.create(firstName, lastName, birthYear, gewerk,
-                stundenlohn);
+        Person person = createPerson(firstName, lastName, birthYear);
+
+        return new Handwerker(person, gewerk, stundenlohn);
     }
 
     public static Handwerker createHandwerker(String firstName, String lastName,
                                               LocalDate birthDate,
                                               String gewerk,
                                               double stundenlohn) {
-        return INSTANCE.create(firstName, lastName, birthDate, gewerk,
-                stundenlohn);
+        Person person = createPerson(firstName, lastName, birthDate);
+
+        return new Handwerker(person, gewerk, stundenlohn);
     }
 
     public static ArrayList<Handwerker> createTestHandwerker() {
@@ -55,20 +56,5 @@ public class HandwerkerFactory extends AbstractPersonFactory<Handwerker> {
                 {"Claudia", "Fuchs", "1984", "Friseurhandwerk", 21.50},
                 {"Oskar", "Schreiner", "1958", "Restaurierung", 38.75}
         };
-    }
-
-    @Override
-    protected Handwerker createInstance(String firstName, String lastName,
-                                        LocalDate birthDate,
-                                        Object... extraArgs) {
-        if (extraArgs.length < 2) {
-            throw new IllegalArgumentException(
-                    "Handwerker requires exactly two extra arguments: " +
-                            "(String) gewerk, (Double) stundenlohn");
-        }
-        String gewerk = (String) extraArgs[0];
-        Double stundenlohn = (Double) extraArgs[1];
-        return new Handwerker(firstName, lastName, birthDate, gewerk,
-                stundenlohn);
     }
 }
