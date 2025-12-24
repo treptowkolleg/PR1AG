@@ -17,6 +17,10 @@ public class Person {
         this.birthDate = birthDate;
     }
 
+    public Person(String firstName, String lastName, String birthYear) {
+        this(firstName, lastName, Integer.parseInt(birthYear));
+    }
+
     public Person(String firstName, String lastName, int birthYear) {
         this(firstName, lastName, birthYear, 1, 1);
     }

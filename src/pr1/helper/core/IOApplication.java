@@ -20,6 +20,7 @@ import pr1.helper.extension.PrintDecorator;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -242,7 +243,7 @@ public abstract class IOApplication {
      * @param content String to be printed to the console output.
      * @return this instance for fluent method chaining.
      */
-    public IOApplication print(String content) {
+    public IOApplication print(Object content) {
         if (null == printWriter) {
             createConsoleWriter();
         }
@@ -256,7 +257,7 @@ public abstract class IOApplication {
      * @param content String to be printed to the file output.
      * @return this instance for fluent method chaining.
      */
-    public IOApplication printToFile(String content) {
+    public IOApplication printToFile(Object content) {
         if (null == fileWriter) {
             createFileWriter();
         }
@@ -283,7 +284,7 @@ public abstract class IOApplication {
      * @param content String to be printed to the console output.
      * @return this instance for fluent method chaining.
      */
-    public IOApplication println(String content) {
+    public IOApplication println(Object content) {
         if (null == printWriter) {
             createConsoleWriter();
         }
@@ -310,7 +311,7 @@ public abstract class IOApplication {
      * @param content String to be printed to the file output.
      * @return this instance for fluent method chaining.
      */
-    public IOApplication printlnToFile(String content) {
+    public IOApplication printlnToFile(Object content) {
         if (null == fileWriter) {
             createFileWriter();
         }

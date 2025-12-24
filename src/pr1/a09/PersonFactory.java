@@ -3,7 +3,9 @@ package pr1.a09;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class PersonFactory {
+import static pr1.helper.extension.Validator.isInteger;
+
+public class PersonFactory implements ObjectFactory<Person> {
 
     public static Person createPerson(String firstName, String lastName,
                                       String birthYear) {
@@ -48,5 +50,16 @@ public class PersonFactory {
                 {"Ľubomír", "Balko", "1970"},
                 {"Åsmund", "Tveit", "1975"},
         };
+    }
+
+    @Override
+    public boolean validate(String[] parts) {
+        return parts.length == 3
+                && isInteger(parts[2]);
+    }
+
+    @Override
+    public Person map(String[] parts) {
+        return createPerson(parts[0], parts[1], parts[2]);
     }
 }

@@ -3,7 +3,11 @@ package pr1.a09;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class HandwerkerFactory extends PersonFactory {
+import static pr1.a09.PersonFactory.createPerson;
+import static pr1.helper.extension.Validator.isDouble;
+import static pr1.helper.extension.Validator.isInteger;
+
+public class HandwerkerFactory implements ObjectFactory<Handwerker> {
 
     public static Handwerker createHandwerker(String firstName, String lastName,
                                               String birthYear, String gewerk,
@@ -56,5 +60,18 @@ public class HandwerkerFactory extends PersonFactory {
                 {"Claudia", "Fuchs", "1984", "Friseurhandwerk", 21.50},
                 {"Oskar", "Schreiner", "1958", "Restaurierung", 38.75}
         };
+    }
+
+    @Override
+    public boolean validate(String[] parts) {
+        return parts.length == 5
+                && isInteger(parts[2])
+                && isDouble(parts[4]);
+    }
+
+    @Override
+    public Handwerker map(String[] parts) {
+        return createHandwerker(parts[0], parts[1], parts[2], parts[3],
+                Double.parseDouble(parts[4]));
     }
 }

@@ -3,7 +3,10 @@ package pr1.a09;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class StudentFactory extends PersonFactory {
+import static pr1.a09.PersonFactory.createPerson;
+import static pr1.helper.extension.Validator.isInteger;
+
+public class StudentFactory implements ObjectFactory<Student> {
 
     public static Student createStudent(String firstName, String lastName,
                                         String birthYear, String studienfach,
@@ -76,4 +79,19 @@ public class StudentFactory extends PersonFactory {
                 {"Rihanna", "Fenty", "1988", "Musik", 200015}
         };
     }
+
+    @Override
+    public boolean validate(String[] parts) {
+        return parts.length == 5
+                && isInteger(parts[2])
+                && isInteger(parts[4]);
+    }
+
+    @Override
+    public Student map(String[] parts) {
+        return createStudent(parts[0], parts[1], parts[2], parts[3],
+                Integer.parseInt(parts[4]));
+    }
+
+
 }

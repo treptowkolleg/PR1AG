@@ -1,0 +1,12 @@
+A
+B C D
+C D 1987
+D
+E F
+A A 4 A B
+A B 4 1
+A C 4 2
+F C 4 5 A
+G
+Anna Schmidt 1985 Tischlerei 28.50
+Peter Thiel 1967 Jura 200008

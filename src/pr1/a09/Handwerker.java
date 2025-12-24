@@ -51,7 +51,7 @@ public class Handwerker extends Person {
 
     @Override
     public String toString() {
-        return toString(" ", getFullName(), getGewerk(), getStundenlohnFormatted());
+        return toString(" ", getFullName(), getGewerk(), getStundenlohn());
     }
 
     @Override
