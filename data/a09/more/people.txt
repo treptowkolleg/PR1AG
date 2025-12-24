@@ -3,7 +3,9 @@ A
 B C D
 D
 E F
-A A 4 A B
+A Z 4 A B
+
+
 A B 4 1
 A C 4 2
 F C 4 5 A
