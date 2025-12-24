@@ -9,7 +9,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Factory {
+public class Parser {
+
+    public static <T> ArrayList<T> listOf(Scanner input,
+                                          ObjectFactory<T> factory) {
+        input.useDelimiter("\\R");
+        return parseLines(input.tokens(), factory::validate, factory::map);
+    }
 
     private static <T> ArrayList<T> parseLines(
             Stream<String> input,
@@ -23,11 +29,5 @@ public class Factory {
                 .filter(validator)
                 .map(mapper)
                 .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public static <T> ArrayList<T> listOf(Scanner input,
-                                          ObjectFactory<T> factory) {
-        input.useDelimiter("\\R");
-        return parseLines(input.tokens(), factory::validate, factory::map);
     }
 }
