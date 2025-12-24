@@ -23,8 +23,8 @@ Tom Neumann 1995 Gärtner 18.30
 Julia Fischer 2002 Informatik 123456
 David Klein 1999 Medizin 987654
 Nina Roth 2003 BWL 100000
-Lukas Wolf 1998 Physik 162273
+Lukas Wolf 1998 Physik 162273 #Dies ist auch ein Kommentar. Die Zeile wird dennoch geparsed.
 Mia Vogt 2001
 Jan Hoffmann 1955
 # Diese Zeile enthält einen Kommentar und wird daher übersprungen.
-# Rauten dürfen nur komplette Zeilen auskommentieren.
+#Rauten dürfen nur komplette Zeilen auskommentieren.
