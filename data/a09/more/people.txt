@@ -26,3 +26,5 @@ Nina Roth 2003 BWL 100000
 Lukas Wolf 1998 Physik 162273
 Mia Vogt 2001
 Jan Hoffmann 1955
+# Diese Zeile enthält einen Kommentar und wird daher übersprungen.
+# Rauten dürfen nur komplette Zeilen auskommentieren.
