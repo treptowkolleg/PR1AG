@@ -38,6 +38,10 @@ public class Handwerker extends Person {
         return stundenlohn;
     }
 
+    public String getStundenlohnAsString() {
+        return String.format("%.2f", stundenlohn);
+    }
+
     public String getStundenlohnFormatted() {
         return String.format("%.2f €/h", stundenlohn);
     }
@@ -51,7 +55,7 @@ public class Handwerker extends Person {
 
     @Override
     public String toString() {
-        return toString(" ", getFullName(), getGewerk(), getStundenlohn());
+        return toString(" ", getFullName(), getGewerk(), getStundenlohnAsString());
     }
 
     @Override

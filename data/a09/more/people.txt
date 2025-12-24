@@ -1,6 +1,6 @@
+Testdaten, die ignoriert werden:
 A
 B C D
-C D 1987
 D
 E F
 A A 4 A B
@@ -8,5 +8,19 @@ A B 4 1
 A C 4 2
 F C 4 5 A
 G
+korrekte Testdaten:
 Anna Schmidt 1985 Tischlerei 28.50
 Peter Thiel 1967 Jura 200008
+Lena Wagner 1990 Elektrikerin 22.75
+Nora Berg 1990
+Max Mustermann 1980 Klempner 17.45
+Sophie Becker 2001 Tischlerin 19.99
+Ben Schulz 1968
+Kai Schulze 1975 Maler 12.0
+Tom Neumann 1995 Gärtner 18.30
+Julia Fischer 2002 Informatik 123456
+David Klein 1999 Medizin 987654
+Nina Roth 2003 BWL 100000
+Lukas Wolf 1998 Physik 162273
+Mia Vogt 2001
+Jan Hoffmann 1955
