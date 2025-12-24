@@ -30,8 +30,7 @@ public class PersonIO extends IOApplication {
         for (Map.Entry<String, ObjectFactory<?>> entry : PEOPLE.entrySet()) {
             decorator.printHeadline(entry.getKey());
             withFileScanner("people.txt", scanner -> {
-                scanner.useDelimiter("\\R");
-                Factory.listFromInput(scanner.tokens(), entry.getValue())
+                Factory.listFromInput(scanner, entry.getValue())
                         .forEach(this::println);
             });
         }

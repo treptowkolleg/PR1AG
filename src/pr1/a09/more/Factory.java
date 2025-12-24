@@ -3,6 +3,7 @@ package pr1.a09.more;
 import pr1.a09.ObjectFactory;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
 
 public class Factory {
 
-    public static <T> ArrayList<T> map(
+    private static <T> ArrayList<T> parseLines(
             Stream<String> input,
             Predicate<String[]> validator,
             Function<String[], T> mapper
@@ -23,8 +24,9 @@ public class Factory {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static <T> ArrayList<T> listFromInput(Stream<String> input,
+    public static <T> ArrayList<T> listFromInput(Scanner input,
                                                  ObjectFactory<T> factory) {
-        return map(input, factory::validate, factory::map);
+        input.useDelimiter("\\R");
+        return parseLines(input.tokens(), factory::validate, factory::map);
     }
 }
