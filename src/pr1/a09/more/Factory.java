@@ -25,8 +25,8 @@ public class Factory {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static <T> ArrayList<T> listOfInput(Scanner input,
-                                               ObjectFactory<T> factory) {
+    public static <T> ArrayList<T> listOf(Scanner input,
+                                          ObjectFactory<T> factory) {
         input.useDelimiter("\\R");
         return parseLines(input.tokens(), factory::validate, factory::map);
     }
