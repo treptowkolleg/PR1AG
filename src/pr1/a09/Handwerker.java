@@ -55,12 +55,14 @@ public class Handwerker extends Person {
 
     @Override
     public String toString() {
-        return toString(" ", getFullName(), getGewerk(), getStundenlohnAsString());
+        return toString(" ", getFullName(), getGewerk(),
+                getStundenlohnAsString());
     }
 
     @Override
     public String toStringReadable() {
-        return toString(", ", getFullName(), getGewerk(), getStundenlohnFormatted());
+        return toString(", ", getFullName(), getGewerk(),
+                getStundenlohnFormatted());
     }
 
     private void initFields(String gewerk, double stundenlohn) {
