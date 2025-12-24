@@ -1,4 +1,4 @@
-Testdaten, die ignoriert werden:
+# Testdaten, die ignoriert werden:
 A
 B C D
 D
@@ -10,7 +10,7 @@ A B 4 1
 A C 4 2
 F C 4 5 A
 G
-korrekte Testdaten:
+# korrekte Testdaten:
 Anna Schmidt 1985 Tischlerei 28.50
 Peter Thiel 1967 Jura 200008
 Lena Wagner 1990 Elektrikerin 22.75

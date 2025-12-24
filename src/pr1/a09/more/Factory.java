@@ -18,6 +18,7 @@ public class Factory {
     ) {
         return input.map(String::trim)
                 .filter(line -> !line.isEmpty())
+                .filter(line -> !line.startsWith("#"))
                 .map(line -> line.split("\\s+"))
                 .filter(validator)
                 .map(mapper)
