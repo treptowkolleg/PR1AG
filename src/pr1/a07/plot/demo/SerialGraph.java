@@ -15,15 +15,16 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private final double xScale;
     private final double yScale;
     private final ArrayList<Integer> yValues = new ArrayList<>();
+    private final ArrayList<Double> diffValues = new ArrayList<>(); // NEU
     private final SerialReader reader = new SerialReader();
     private final StopWatch stopWatch = new StopWatch();
+    private boolean diffComputed = false; // NEU
 
     public SerialGraph(Color color, String title) {
         this(color, title, 10.0, 0.1);
     }
 
-    public SerialGraph(Color color, String title, double xScale,
-                       double yScale) {
+    public SerialGraph(Color color, String title, double xScale, double yScale) {
         this.color = color;
         this.title = title;
         this.xScale = xScale;
@@ -37,6 +38,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     public void reset() {
         yValues.clear();
+        diffValues.clear(); // NEU
+        diffComputed = false; // NEU
         stop();
     }
 
@@ -102,6 +105,10 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
             adjustXDelta();
         } else {
             drawApproximatedExponentialCurve(g);
+            if (!diffComputed) {
+                computeDifferenceCurve(); // NEU
+            }
+            drawDifferenceCurve(g); // NEU
         }
     }
 
@@ -114,7 +121,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     }
 
     private void adjustXDelta() {
-        PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / xScale) * (xScale * xScale * 1/3);
+        PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / xScale) * (xScale * xScale * 1.0 / 3.0);
     }
 
     private void drawApproximatedExponentialCurve(Graphics2D g) {
@@ -139,6 +146,49 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
             double currYReal = a * Math.exp(-b * i) + (double) endY;
             int currY = (int) (centerY - currYReal * yFactor);
 
+            g.drawLine(prevX, prevY, currX, currY);
+            prevX = currX;
+            prevY = currY;
+        }
+    }
+
+    // NEU: Berechnet die Differenz zwischen idealer und gemessener Kurve
+    private void computeDifferenceCurve() {
+        if (yValues.size() < 2) return;
+
+        int size = yValues.size();
+        int startY = yValues.get(0);
+        int endY = yValues.get(size - 1);
+        double a = startY - endY;
+        double targetY = endY + 0.01 * a;
+        double b = -Math.log((targetY - (double) endY) / a) / (size - 1);
+
+        diffValues.clear();
+        for (int i = 0; i < size; i++) {
+            double yIdeal = a * Math.exp(-b * i) + (double) endY;
+            double yMeasured = yValues.get(i);
+            diffValues.add(yIdeal - yMeasured); // >0: Diode beschleunigt Entladung
+        }
+        diffComputed = true;
+    }
+
+    // NEU: Zeichnet die Differenzkurve
+    private void drawDifferenceCurve(Graphics2D g) {
+        if (diffValues.isEmpty()) return;
+
+        final double xFactor = xScale * PlotApplication.X_SCALE;
+        // Skalierung der Differenz – anpassbar für bessere Sichtbarkeit
+        final double diffYFactor = yScale * PlotApplication.Y_SCALE * 0.25;
+
+        g.setColor(Colors.BLUE);
+        g.setStroke(Stroke.LINE_THICK);
+
+        int prevX = centerX;
+        int prevY = (int) (centerY - diffValues.get(0) * diffYFactor);
+
+        for (int i = 1; i < diffValues.size(); i++) {
+            int currX = (int) (centerX + i * xFactor);
+            int currY = (int) (centerY - diffValues.get(i) * diffYFactor);
             g.drawLine(prevX, prevY, currX, currY);
             prevX = currX;
             prevY = currY;
