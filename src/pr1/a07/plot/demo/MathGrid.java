@@ -15,7 +15,7 @@ public class MathGrid extends PlotGrid {
     protected double xFactor;
 
     public MathGrid() {
-        this(50);
+        this(100);
     }
 
     public MathGrid(int scale) {

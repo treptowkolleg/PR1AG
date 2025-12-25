@@ -19,7 +19,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private final StopWatch stopWatch = new StopWatch();
 
     public SerialGraph(Color color, String title) {
-        this(color, title, 5.0, 0.5);
+        this(color, title, 10.0, 0.1);
     }
 
     public SerialGraph(Color color, String title, double xScale,
@@ -108,15 +108,13 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private void updateColorBasedOnSlope(Graphics2D g, int prevY, int currY) {
         if (prevY > currY) {
             g.setColor(Colors.BLUE);
-        } else if (prevY == currY) {
-            g.setColor(Colors.YELLOW);
         } else {
             g.setColor(color);
         }
     }
 
     private void adjustXDelta() {
-        PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / xScale) * 4.25;
+        PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / xScale) * (xScale * xScale * 1/3);
     }
 
     private void drawApproximatedExponentialCurve(Graphics2D g) {
