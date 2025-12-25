@@ -24,7 +24,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         this(color, title, 10.0, 0.1);
     }
 
-    public SerialGraph(Color color, String title, double xScale, double yScale) {
+    public SerialGraph(Color color, String title, double xScale,
+                       double yScale) {
         this.color = color;
         this.title = title;
         this.xScale = xScale;
@@ -106,9 +107,9 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         } else {
             drawApproximatedExponentialCurve(g);
             if (!diffComputed) {
-                computeDifferenceCurve(); // NEU
+                computeDifferenceCurve();
             }
-            drawDifferenceCurve(g); // NEU
+            drawDifferenceCurve(g);
         }
     }
 
@@ -137,7 +138,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         double targetY = endY + 0.01 * a;
         double b = -Math.log((targetY - (double) endY) / a) / (size - 1);
         int prevX = centerX;
-        int prevY = (int) (centerY - (a * Math.exp(-b * 0) + (double) endY) * yFactor);
+        int prevY =
+                (int) (centerY - (a * Math.exp(-b * 0) + (double) endY) * yFactor);
 
         g.setColor(Colors.PINK);
         g.setStroke(Stroke.LINE_THICK);
@@ -152,10 +154,10 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         }
     }
 
-    // NEU: Berechnet die Differenz zwischen idealer und gemessener Kurve
     private void computeDifferenceCurve() {
-        if (yValues.size() < 2) return;
-
+        if (yValues.size() < 2) {
+            return;
+        }
         int size = yValues.size();
         int startY = yValues.get(0);
         int endY = yValues.get(size - 1);
@@ -167,25 +169,23 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         for (int i = 0; i < size; i++) {
             double yIdeal = a * Math.exp(-b * i) + (double) endY;
             double yMeasured = yValues.get(i);
-            diffValues.add(yIdeal - yMeasured); // >0: Diode beschleunigt Entladung
+
+            diffValues.add(yIdeal - yMeasured);
         }
         diffComputed = true;
     }
 
-    // NEU: Zeichnet die Differenzkurve
     private void drawDifferenceCurve(Graphics2D g) {
-        if (diffValues.isEmpty()) return;
-
+        if (diffValues.isEmpty()) {
+            return;
+        }
         final double xFactor = xScale * PlotApplication.X_SCALE;
-        // Skalierung der Differenz – anpassbar für bessere Sichtbarkeit
         final double diffYFactor = yScale * PlotApplication.Y_SCALE * 0.25;
-
-        g.setColor(Colors.BLUE);
-        g.setStroke(Stroke.LINE_THICK);
-
         int prevX = centerX;
         int prevY = (int) (centerY - diffValues.get(0) * diffYFactor);
 
+        g.setColor(Colors.BLUE);
+        g.setStroke(Stroke.LINE_THICK);
         for (int i = 1; i < diffValues.size(); i++) {
             int currX = (int) (centerX + i * xFactor);
             int currY = (int) (centerY - diffValues.get(i) * diffYFactor);
