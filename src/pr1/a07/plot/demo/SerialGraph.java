@@ -39,8 +39,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     public void reset() {
         yValues.clear();
-        diffValues.clear(); // NEU
-        diffComputed = false; // NEU
+        diffValues.clear();
+        diffComputed = false;
         stop();
     }
 
