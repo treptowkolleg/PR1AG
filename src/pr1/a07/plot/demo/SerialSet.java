@@ -3,7 +3,7 @@ package pr1.a07.plot.demo;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotControl;
 import pr1.a07.plot.PlotSet;
-import pr1.a08.Colors;
+import pr1.a07.Colors;
 
 public class SerialSet extends PlotSet<SerialGraph> {
     private final SerialGraph serialGraph;

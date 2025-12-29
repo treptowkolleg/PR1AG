@@ -189,7 +189,9 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private void computeDifferenceCurve() {
         double[] params = computeIdealExponentialParams();
         double a = params[0], b = params[1];
-        if (a == 0 && b == 0) return;
+        if (a == 0 && b == 0) {
+            return;
+        }
         int size = yValues.size();
 
         diffValues.clear();
@@ -230,17 +232,20 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     }
 
     private void drawDifferenceCurve(Graphics2D g) {
-        drawCurve(g, Colors.BLUE, diffValues);
-        int maxIndex =
-                IntStream.range(0, diffValues.size()).reduce((i, j) -> diffValues.get(i) > diffValues.get(j) ? i : j).orElse(0);
+        int maxIndex = IntStream.range(0, diffValues.size()).reduce((i, j)
+                -> diffValues.get(i) > diffValues.get(j) ? i : j).orElse(0);
         double maxDiff = yValues.get(maxIndex);
         thresholdVoltage = maxDiff / 1000;
+        final double xFactor = xScale * PlotApplication.X_SCALE;
         final double yFactor = yScale * PlotApplication.Y_SCALE;
-        int yLine = (int) (centerY - maxDiff * yFactor);
+        int x = (int) (centerX + maxIndex * xFactor);
+        int y = (int) (centerY - maxDiff * yFactor);
 
-        g.setColor(Colors.GREEN);
-        g.setStroke(new BasicStroke(2f));
-        g.drawLine(0, yLine, panelWidth, yLine);
+        drawCurve(g, Colors.BLUE, diffValues);
+        g.setColor(Colors.BLUE);
+        g.fillOval(x - 3, y - 3, 6, 6);
+        g.setColor(Colors.BLACK);
+        g.drawString("Schwellspannung", x + 5, y - 2);
     }
 
     private void drawCurve(Graphics2D g, Color color, List<Double> yData) {
