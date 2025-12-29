@@ -205,6 +205,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         }
         int startY = getMaxValue(yValues);
         double b = -Math.log(TARGET_FRACTION) / (yValues.size() - 1);
+
         return new double[]{startY, b};
     }
 
