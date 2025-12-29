@@ -54,6 +54,7 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
     protected int centerX;
     protected int centerY;
     private AffineTransform originalTransform;
+    private Graphics2D g2d;
 
     /**
      * Renders this object by first extracting the current drawing area dimensions
@@ -63,7 +64,7 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
      * @param g the graphics context used for rendering
      */
     public void draw(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g.create();
+        g2d = (Graphics2D) g.create();
         originalTransform = g2d.getTransform();
         panelWidth = g.getClipBounds().width;
         panelHeight = g.getClipBounds().height;
@@ -72,6 +73,10 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         configureGraphics(g);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         configureGraphics2D(g2d);
+    }
+
+    protected void resetTransform() {
+        resetTransform(g2d);
     }
 
     protected void resetTransform(Graphics2D g2d) {

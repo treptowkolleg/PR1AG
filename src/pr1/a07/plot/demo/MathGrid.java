@@ -91,7 +91,7 @@ public class MathGrid extends PlotGrid {
         g.setTransform(transform);
 
         g.drawString(yAxisLabel, centerX - 30, 10 + textLengthY);
-        resetTransform(g);
+        resetTransform();
 
     }
 }
