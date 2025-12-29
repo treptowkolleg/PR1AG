@@ -1,0 +1,7 @@
+LED;	ideal (20mA);	gemessen (ca. 1mA);	korrigiert
+rot;	1,6V;			1,79V;				1,61V
+gelb;	2,1V;			1,88V;				2,26V
+grün;	2,2V;			1,90V				2,28V
+blau;	3,0V;			2,69V				3,23V
+weiß;	3,5V;			2,73V				3,28V
+Ge-D;	0,3V;			0,51V				0,35V

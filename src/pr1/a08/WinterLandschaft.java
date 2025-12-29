@@ -50,8 +50,8 @@ public class WinterLandschaft extends Landschaft {
         for (int i = 0; i < flakeCount; i++) {
             int x = rand.nextInt(panelWidth);
             int y = rand.nextInt(panelHeight);
+
             g.fillRect(x, y, 2, 2);
         }
     }
-
 }

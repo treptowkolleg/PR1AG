@@ -92,6 +92,5 @@ public class DrawablePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawableObjects.forEach(object -> object.draw(g));
-        PlotApplication.FRAME_COUNT++;
     }
 }
