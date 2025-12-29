@@ -87,6 +87,7 @@ public class PlotButtonPanel extends JPanel {
     }
 
     public void setToggleControlButtonEnabled(boolean enabled) {
+        toggleControlBtn.setEnabled(enabled);
     }
 
     public void setToggleControlButtonColor(Color color) {
