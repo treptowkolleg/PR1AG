@@ -24,8 +24,7 @@ public class Sonifier {
             line.write(audioData, 0, audioData.length);
             line.drain();
             line.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 
@@ -53,9 +52,8 @@ public class Sonifier {
                     ? data.get(data.size() - 1)
                     : data.get(idx) * (1 - frac) + data.get(idx + 1) * frac;
             voltage = Math.max(V_MIN, Math.min(V_MAX, voltage));
-            double norm = (voltage - V_MIN) / (V_MAX - V_MIN);
-            double freq = F_MIN + norm * (F_MAX - F_MIN);
-            double envelope = norm;
+            double envelope = (voltage - V_MIN) / (V_MAX - V_MIN);
+            double freq = F_MIN + envelope * (F_MAX - F_MIN);
             phase += 2.0 * Math.PI * freq / sampleRate;
             double sample = envelope * Math.sin(phase);
             sample = Math.max(-1.0, Math.min(1.0, sample));
