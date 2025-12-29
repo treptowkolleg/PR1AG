@@ -19,13 +19,20 @@ public class SerialControl extends PlotControl<SerialGraph> {
     @Override
     public JPanel configureControls(ControlBuilder<SerialGraph> build) {
         return build
+                .headline("Plot-Steuerung")
                 .button(Colors.BLUE, "Start", SerialGraph::start)
                 .button("Stop", SerialGraph::stop)
-                .divider()
+                .button("Zurücksetzen", SerialGraph::reset)
+                .headline("Messsteuerung")
                 .button(Colors.DARK_GREEN, "Starte Messung", SerialGraph::sendStartCommand)
                 .outputTimed("Entladezeit", "t", SerialGraph::getStoppedTimeFormatted, 100)
-                .divider()
-                .button(Colors.RED, "Zurücksetzen", SerialGraph::reset)
+                .outputTimed("gemessene Schwellenspannung (HP von d an g)", "u", SerialGraph::getThresholdVoltageFormatted, 100)
+                .outputTimed("ermittelte Diode", "d", SerialGraph::getUsedDiode, 100)
+                .button("Diodencharakteristik abhören", SerialGraph::playDiodeCurveSonified)
+                .headline("Legende")
+                .legend(Colors.RED, "Kondensatorkennlinie f(x)")
+                .legend(Colors.DARKER_GREEN, "Messkurve g(x)")
+                .legend(Colors.BLUE, "Diodencharakteristik d(x) = f(x) - g(x)")
                 .getPanel();
     }
 }

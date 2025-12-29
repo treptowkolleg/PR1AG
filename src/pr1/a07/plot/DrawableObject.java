@@ -21,6 +21,7 @@ import schimkat.berlin.lernhilfe2025ws.graphics.Drawable;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 
 /**
  * An abstract base class for drawable objects that provides common rendering infrastructure.
@@ -52,6 +53,7 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
     protected int panelHeight;
     protected int centerX;
     protected int centerY;
+    protected AffineTransform originalTransform;
 
     /**
      * Renders this object by first extracting the current drawing area dimensions
@@ -62,7 +64,7 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
      */
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g.create();
-
+        originalTransform = g2d.getTransform();
         panelWidth = g.getClipBounds().width;
         panelHeight = g.getClipBounds().height;
         centerX = (int) (PlotApplication.X_DELTA + (double) panelWidth / 2);
@@ -70,5 +72,9 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         configureGraphics(g);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         configureGraphics2D(g2d);
+    }
+
+    public void resetTransform(Graphics2D g2d) {
+        g2d.setTransform(originalTransform);
     }
 }

@@ -34,6 +34,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -190,6 +193,29 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     public ControlBuilder<T> divider(int height) {
         Component verticalSpacer = Box.createVerticalStrut(height);
         add(verticalSpacer);
+        return this;
+    }
+
+    public ControlBuilder<T> headline(String text) {
+        JLabel headlineLabel = new JLabel(text);
+        headlineLabel.setFont(headlineLabel.getFont().deriveFont(Font.BOLD, 14f));
+        headlineLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(headlineLabel);
+        return this;
+    }
+
+    public ControlBuilder<T> legend(Color color, String label) {
+        JPanel legendItem = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        JPanel colorBox = new JPanel();
+        JLabel labelComponent = new JLabel(label);
+
+        colorBox.setPreferredSize(new Dimension(12, 12));
+        colorBox.setBackground(color);
+        colorBox.setBorder(BorderFactory.createLineBorder(color.darker(), 1));
+        legendItem.setOpaque(false);
+        legendItem.add(colorBox);
+        legendItem.add(labelComponent);
+        add(legendItem);
         return this;
     }
 

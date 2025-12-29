@@ -4,14 +4,19 @@ import pr1.a07.Colors;
 import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGraph;
 import pr1.a07.plot.SerialReader;
+import pr1.a07.plot.Sonifier;
 import pr1.a07.plot.Stroke;
 import pr1.helper.core.StopWatch;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class SerialGraph extends PlotGraph<SerialGraph> {
+    private static final double TARGET_FRACTION = 0.002;
     private final double xScale;
     private final double yScale;
     private final ArrayList<Integer> yValues = new ArrayList<>();
@@ -19,6 +24,9 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private final SerialReader reader = new SerialReader();
     private final StopWatch stopWatch = new StopWatch();
     private boolean diffComputed = false; // NEU
+    private double thresholdVoltage = 0;
+    private String usedDiode = "-";
+    private boolean audioIsPlaying = false;
 
     public SerialGraph(Color color, String title) {
         this(color, title, 10.0, 0.1);
@@ -37,6 +45,41 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         return reader.isAvailable();
     }
 
+    public String getThresholdVoltageFormatted() {
+        correctedVoltage(thresholdVoltage);
+        return String.format("%.2f V", thresholdVoltage);
+    }
+
+    public String getUsedDiode() {
+        return usedDiode;
+    }
+
+    private void correctedVoltage(double measuredU) {
+        if (measuredU < 0.1) {
+            usedDiode = "-";
+        } else if (measuredU < 0.5) {
+            usedDiode = "Germanium-Diode";
+        } else if (measuredU < 0.54) {
+            usedDiode = "Germanium- oder Silizium-Diode";
+        } else if (measuredU < 1) {
+            usedDiode = "Silizium-Diode";
+        } else if (measuredU < 1.8) {
+            usedDiode = "rote LED";
+        } else if (measuredU < 1.85) {
+            usedDiode = "gelbe LED";
+        } else if (measuredU < 1.89) {
+            usedDiode = "gelbe oder grüne LED";
+        } else if (measuredU < 2) {
+            usedDiode = "grüne LED";
+        } else if (measuredU < 2.65) {
+            usedDiode = "blaue LED";
+        } else if (measuredU < 2.67) {
+            usedDiode = "blaue oder weiße LED";
+        } else {
+            usedDiode = "weiße LED";
+        }
+    }
+
     public void reset() {
         yValues.clear();
         diffValues.clear();
@@ -49,7 +92,25 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         if (!stopWatch.isRunning()) {
             stopWatch.setPreTime(1);
             stopWatch.start();
+            thresholdVoltage = 0;
+            correctedVoltage(thresholdVoltage);
         }
+    }
+
+    public void playDiodeCurveSonified() {
+        if (diffValues.isEmpty() | audioIsPlaying) {
+            return;
+        }
+        Thread t = new Thread(() -> {
+            audioIsPlaying = true;
+            try {
+                Sonifier.sonify(diffValues);
+            } finally {
+                audioIsPlaying = false;
+            }
+        }, "Sonification");
+        t.setDaemon(true);
+        t.start();
     }
 
     public void start() {
@@ -105,7 +166,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         if (reader.isRunning()) {
             adjustXDelta();
         } else {
-            drawApproximatedExponentialCurve(g);
+            drawIdealGraph(g);
             if (!diffComputed) {
                 computeDifferenceCurve();
             }
@@ -125,49 +186,15 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / xScale) * (xScale * xScale * 1.0 / 3.0);
     }
 
-    private void drawApproximatedExponentialCurve(Graphics2D g) {
-        if (yValues.size() < 2) {
-            return;
-        }
-        final double xFactor = xScale * PlotApplication.X_SCALE;
-        final double yFactor = yScale * PlotApplication.Y_SCALE;
-        int startY = yValues.get(0);
-        int endY = yValues.get(yValues.size() - 1);
-        int size = yValues.size();
-        double a = startY - endY;
-        double targetY = endY + 0.01 * a;
-        double b = -Math.log((targetY - (double) endY) / a) / (size - 1);
-        int prevX = centerX;
-        int prevY =
-                (int) (centerY - (a * Math.exp(-b * 0) + (double) endY) * yFactor);
-
-        g.setColor(Colors.PINK);
-        g.setStroke(Stroke.LINE_THICK);
-        for (int i = 1; i < size; i++) {
-            int currX = (int) (centerX + i * xFactor);
-            double currYReal = a * Math.exp(-b * i) + (double) endY;
-            int currY = (int) (centerY - currYReal * yFactor);
-
-            g.drawLine(prevX, prevY, currX, currY);
-            prevX = currX;
-            prevY = currY;
-        }
-    }
-
     private void computeDifferenceCurve() {
-        if (yValues.size() < 2) {
-            return;
-        }
+        double[] params = computeIdealExponentialParams();
+        double a = params[0], b = params[1];
+        if (a == 0 && b == 0) return;
         int size = yValues.size();
-        int startY = yValues.get(0);
-        int endY = yValues.get(size - 1);
-        double a = startY - endY;
-        double targetY = endY + 0.01 * a;
-        double b = -Math.log((targetY - (double) endY) / a) / (size - 1);
 
         diffValues.clear();
         for (int i = 0; i < size; i++) {
-            double yIdeal = a * Math.exp(-b * i) + (double) endY;
+            double yIdeal = a * Math.exp(-b * i);
             double yMeasured = yValues.get(i);
 
             diffValues.add(yIdeal - yMeasured);
@@ -175,20 +202,63 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         diffComputed = true;
     }
 
+    private double[] computeIdealExponentialParams() {
+        if (yValues.size() < 2) {
+            return new double[]{0, 0};
+        }
+        int size = yValues.size();
+        int startY =
+                yValues.stream().mapToInt(Integer::intValue).max().orElse(0);
+        double b = -Math.log(TARGET_FRACTION) / (size - 1);
+        return new double[]{startY, b};
+    }
+
+    private void drawIdealGraph(Graphics2D g) {
+        if (yValues.size() < 2) {
+            return;
+        }
+        int size = yValues.size();
+        int startY =
+                yValues.stream().mapToInt(Integer::intValue).max().orElse(0);
+        double b = -Math.log(TARGET_FRACTION) / (size - 1);
+        List<Double> idealY = new ArrayList<>(size);
+
+        for (int i = 0; i < size; i++) {
+            idealY.add(startY * Math.exp(-b * i));
+        }
+        drawCurve(g, Colors.RED, idealY);
+    }
+
     private void drawDifferenceCurve(Graphics2D g) {
-        if (diffValues.isEmpty()) {
+        drawCurve(g, Colors.BLUE, diffValues);
+        int maxIndex =
+                IntStream.range(0, diffValues.size()).reduce((i, j) -> diffValues.get(i) > diffValues.get(j) ? i : j).orElse(0);
+        double maxDiff = yValues.get(maxIndex);
+        thresholdVoltage = maxDiff / 1000;
+        final double yFactor = yScale * PlotApplication.Y_SCALE;
+        int yLine = (int) (centerY - maxDiff * yFactor);
+
+        g.setColor(Colors.GREEN);
+        g.setStroke(new BasicStroke(2f));
+        g.drawLine(0, yLine, panelWidth, yLine);
+    }
+
+    private void drawCurve(Graphics2D g, Color color, List<Double> yData) {
+        if (yData.isEmpty()) {
             return;
         }
         final double xFactor = xScale * PlotApplication.X_SCALE;
-        final double diffYFactor = yScale * PlotApplication.Y_SCALE * 0.25;
+        final double yFactor = yScale * PlotApplication.Y_SCALE;
+        int size = yData.size();
         int prevX = centerX;
-        int prevY = (int) (centerY - diffValues.get(0) * diffYFactor);
+        int prevY = (int) (centerY - yData.get(0) * yFactor);
 
-        g.setColor(Colors.BLUE);
-        g.setStroke(Stroke.LINE_THICK);
-        for (int i = 1; i < diffValues.size(); i++) {
+        g.setColor(color);
+        g.setStroke(Stroke.BEVEL_MEDIUM);
+        for (int i = 1; i < size; i++) {
             int currX = (int) (centerX + i * xFactor);
-            int currY = (int) (centerY - diffValues.get(i) * diffYFactor);
+            int currY = (int) (centerY - yData.get(i) * yFactor);
+
             g.drawLine(prevX, prevY, currX, currY);
             prevX = currX;
             prevY = currY;

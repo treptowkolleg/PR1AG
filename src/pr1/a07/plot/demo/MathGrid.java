@@ -8,23 +8,29 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 
 public class MathGrid extends PlotGrid {
     protected int scale;
     protected double xFactor;
+    protected String xAxisLabel;
+    protected String yAxisLabel;
 
-    public MathGrid() {
-        this(100);
+    public MathGrid(String xAxisLabel, String yAxisLabel) {
+        this(100, xAxisLabel, yAxisLabel);
     }
 
-    public MathGrid(int scale) {
+    public MathGrid(int scale, String xAxisLabel, String yAxisLabel) {
         this.scale = scale;
         xFactor = (double) scale / 100;
+        this.xAxisLabel = xAxisLabel;
+        this.yAxisLabel = yAxisLabel;
     }
 
     @Override
     public void configureGraphics2D(Graphics2D g) {
+        AffineTransform transform = new AffineTransform();
         int kMin;
         int kMax;
         double yPlusOne = centerY - scale * PlotApplication.Y_SCALE;
@@ -70,5 +76,14 @@ public class MathGrid extends PlotGrid {
         g.setPaint(Colors.BLACK);
         g.drawString("+1", centerX + 5, (int) (yPlusOne - 2));
         g.drawString("-1", centerX + 5, (int) (yMinusOne + 12));
+
+        g.setColor(Colors.BLACK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
+        transform.rotate(Math.toRadians(-90), centerX - 10, 40);
+        g.drawString(xAxisLabel, 20, centerY - 10);
+        g.setTransform(transform);
+        g.drawString(yAxisLabel, centerX - 10, 40);
+        resetTransform(g);
+
     }
 }

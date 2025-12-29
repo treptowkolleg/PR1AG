@@ -10,9 +10,9 @@ public class SerialSet extends PlotSet<SerialGraph> {
 
     public SerialSet() {
         serialGraph = new SerialGraph(Colors.DARKER_GREEN, "Spannung");
-        setGrid(new MathGrid());
+        setGrid(new MathGrid("t in s", "U in V"));
         addGraph(serialGraph);
-        setTitle("Kondensatorentladung mit Arduino messen");
+        setTitle("Schwellenspannung von Dioden");
     }
 
     @Override
