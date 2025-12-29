@@ -74,7 +74,7 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         configureGraphics2D(g2d);
     }
 
-    public void resetTransform(Graphics2D g2d) {
+    protected void resetTransform(Graphics2D g2d) {
         g2d.setTransform(originalTransform);
     }
 }
