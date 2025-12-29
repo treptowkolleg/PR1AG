@@ -34,10 +34,9 @@ public class MathGrid extends PlotGrid {
         AffineTransform transform = new AffineTransform();
         int kMin;
         int kMax;
-        double yPlusOne = centerY - scale * PlotApplication.Y_SCALE;
-        double yMinusOne = centerY + scale * PlotApplication.Y_SCALE;
         double pixelsPerPi = xFactor * scale * PlotApplication.X_SCALE;
         FontMetrics fm = g.getFontMetrics();
+        int textLengthY = fm.stringWidth(String.valueOf(yAxisLabel));
 
         if (pixelsPerPi <= 0) {
             return;
@@ -84,14 +83,10 @@ public class MathGrid extends PlotGrid {
         g.draw(new Line2D.Double(centerX, 0, centerX, panelHeight));
         g.setPaint(Colors.BLACK);
         g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
-        int textLengthY = fm.stringWidth(String.valueOf(yAxisLabel));
         transform.rotate(Math.toRadians(-90), centerX - 30, 10 + textLengthY);
-
         g.drawString(xAxisLabel, 10, centerY - 10);
         g.setTransform(transform);
-
         g.drawString(yAxisLabel, centerX - 30, 10 + textLengthY);
         resetTransform();
-
     }
 }
