@@ -8,7 +8,6 @@ import pr1.a07.plot.Sonifier;
 import pr1.a07.plot.Stroke;
 import pr1.helper.core.StopWatch;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -20,10 +19,10 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private final double xScale;
     private final double yScale;
     private final ArrayList<Integer> yValues = new ArrayList<>();
-    private final ArrayList<Double> diffValues = new ArrayList<>(); // NEU
+    private final ArrayList<Double> diffValues = new ArrayList<>();
     private final SerialReader reader = new SerialReader();
     private final StopWatch stopWatch = new StopWatch();
-    private boolean diffComputed = false; // NEU
+    private boolean diffComputed = false;
     private double thresholdVoltage = 0;
     private String usedDiode = "-";
     private boolean audioIsPlaying = false;
@@ -136,22 +135,18 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     public void configureGraphics2D(Graphics2D g) {
         int prevX = centerX;
         int prevY;
-        final int size;
-        final double xFactor = xScale * PlotApplication.X_SCALE;
-        final double yFactor = yScale * PlotApplication.Y_SCALE;
 
         g.setColor(color);
         g.setStroke(Stroke.BEVEL_MEDIUM);
         synchronized (yValues) {
-            size = yValues.size();
-            if (size <= 1) {
+            if (yValues.size() <= 1) {
                 return;
             }
         }
-        prevY = (int) (centerY - yValues.get(0) * yFactor);
-        for (int i = 1; i < size; i++) {
-            int currX = (int) (centerX + i * xFactor);
-            int currY = (int) (centerY - yValues.get(i) * yFactor);
+        prevY = centerY - getScaledY(yValues.get(0));
+        for (int i = 1; i < yValues.size(); i++) {
+            int currX = centerX + getScaledX(i);
+            int currY = centerY - getScaledY(yValues.get(i));
 
             updateColorBasedOnSlope(g, prevY, currY);
             if (prevY < centerY && currY == centerY) {
@@ -188,14 +183,14 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     private void computeDifferenceCurve() {
         double[] params = computeIdealExponentialParams();
-        double a = params[0], b = params[1];
+        double a = params[0];
+        double b = params[1];
+
         if (a == 0 && b == 0) {
             return;
         }
-        int size = yValues.size();
-
         diffValues.clear();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < yValues.size(); i++) {
             double yIdeal = a * Math.exp(-b * i);
             double yMeasured = yValues.get(i);
 
@@ -208,10 +203,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         if (yValues.size() < 2) {
             return new double[]{0, 0};
         }
-        int size = yValues.size();
-        int startY =
-                yValues.stream().mapToInt(Integer::intValue).max().orElse(0);
-        double b = -Math.log(TARGET_FRACTION) / (size - 1);
+        int startY = getMaxValue(yValues);
+        double b = -Math.log(TARGET_FRACTION) / (yValues.size() - 1);
         return new double[]{startY, b};
     }
 
@@ -219,13 +212,11 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         if (yValues.size() < 2) {
             return;
         }
-        int size = yValues.size();
-        int startY =
-                yValues.stream().mapToInt(Integer::intValue).max().orElse(0);
-        double b = -Math.log(TARGET_FRACTION) / (size - 1);
-        List<Double> idealY = new ArrayList<>(size);
+        int startY = getMaxValue(yValues);
+        double b = -Math.log(TARGET_FRACTION) / (yValues.size() - 1);
+        List<Double> idealY = new ArrayList<>(yValues.size());
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < yValues.size(); i++) {
             idealY.add(startY * Math.exp(-b * i));
         }
         drawCurve(g, Colors.RED, idealY);
@@ -236,10 +227,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
                 -> diffValues.get(i) > diffValues.get(j) ? i : j).orElse(0);
         double maxDiff = yValues.get(maxIndex);
         thresholdVoltage = maxDiff / 1000;
-        final double xFactor = xScale * PlotApplication.X_SCALE;
-        final double yFactor = yScale * PlotApplication.Y_SCALE;
-        int x = (int) (centerX + maxIndex * xFactor);
-        int y = (int) (centerY - maxDiff * yFactor);
+        int x = centerX + getScaledX(maxIndex);
+        int y = centerY - getScaledY(maxDiff);
 
         drawCurve(g, Colors.BLUE, diffValues);
         g.setColor(Colors.BLUE);
@@ -252,21 +241,38 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         if (yData.isEmpty()) {
             return;
         }
-        final double xFactor = xScale * PlotApplication.X_SCALE;
-        final double yFactor = yScale * PlotApplication.Y_SCALE;
-        int size = yData.size();
         int prevX = centerX;
-        int prevY = (int) (centerY - yData.get(0) * yFactor);
+        int prevY = centerY - getScaledY(yData.get(0));
 
         g.setColor(color);
         g.setStroke(Stroke.BEVEL_MEDIUM);
-        for (int i = 1; i < size; i++) {
-            int currX = (int) (centerX + i * xFactor);
-            int currY = (int) (centerY - yData.get(i) * yFactor);
+        for (int i = 1; i < yData.size(); i++) {
+            int currX = centerX + getScaledX(i);
+            int currY = centerY - getScaledY(yData.get(i));
 
             g.drawLine(prevX, prevY, currX, currY);
             prevX = currX;
             prevY = currY;
         }
+    }
+
+    private int getScaledX(int value) {
+        return getScaledX((double) value);
+    }
+
+    private int getScaledX(double value) {
+        return (int) (value * xScale * PlotApplication.X_SCALE);
+    }
+
+    private int getScaledY(int value) {
+        return getScaledY((double) value);
+    }
+
+    private int getScaledY(double value) {
+        return (int) (value * yScale * PlotApplication.Y_SCALE);
+    }
+
+    private int getMaxValue(List<Integer> list) {
+        return list.stream().mapToInt(Integer::intValue).max().orElse(0);
     }
 }
