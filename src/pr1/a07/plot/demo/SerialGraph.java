@@ -37,6 +37,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         this.title = title;
         this.xScale = xScale;
         this.yScale = yScale;
+        // TODO: x- und y-Scale in Oberklasse überführen!
         reader.startReading(yValues);
     }
 
