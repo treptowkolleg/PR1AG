@@ -53,7 +53,7 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
     protected int panelHeight;
     protected int centerX;
     protected int centerY;
-    protected AffineTransform originalTransform;
+    private AffineTransform originalTransform;
 
     /**
      * Renders this object by first extracting the current drawing area dimensions
