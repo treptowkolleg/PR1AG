@@ -12,15 +12,22 @@
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
+ * .0.html>.
  */
 package pr1.a07.plot;
 
 import pr1.a07.Colors;
+import pr1.a07.plot.components.LegendItem;
 import pr1.a07.plot.components.ModernButton;
+import pr1.a07.plot.components.ModernCheckBox;
+import pr1.a07.plot.components.ModernLabeledBorder;
+import pr1.a07.plot.components.ModernSlider;
+import pr1.a07.plot.components.RoundedLineBorder;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -34,8 +41,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -60,19 +65,23 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     private final PlotGraphList<T> graphs;
     private final T activeGraph;
     private final Map<String, JTextField> outputs = new HashMap<>();
-    private final Map<String, Function<T, String>> outputGetters = new HashMap<>();
+    private final Map<String, Function<T, String>> outputGetters =
+            new HashMap<>();
     private final List<JSlider> sliders = new ArrayList<>();
     private final List<Function<T, Integer>> getters = new ArrayList<>();
     private final List<JCheckBox> checkBoxes = new ArrayList<>();
-    private final List<Function<T, Boolean>> checkBoxGetters = new ArrayList<>();
+    private final List<Function<T, Boolean>> checkBoxGetters =
+            new ArrayList<>();
     private final JPanel panel = new JPanel(new GridBagLayout());
     private final GridBagConstraints constraints = new GridBagConstraints();
 
     /**
-     * Constructs a new control builder for the given plot control and graph list.
+     * Constructs a new control builder for the given plot control and graph
+     * list.
      *
      * @param control the associated plot control instance
-     * @param graphs  the list of plot graphs to manage; must not be null or empty
+     * @param graphs  the list of plot graphs to manage; must not be null or
+     *                empty
      * @throws IllegalArgumentException if the graph list is null or empty
      */
     public ControlBuilder(PlotControl<T> control, PlotGraphList<T> graphs) {
@@ -95,12 +104,12 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      * Ensures that the minimum and maximum values are always present as labels
      * in the slider's label table.
      *
-     * @param labels      the label table to update
-     * @param min         the minimum value
-     * @param max         the maximum value
-     * @param keyMapper   function to map value to integer slider key
-     * @param formatter   function to format value as display string
-     * @param <V>         the type of the min/max values (e.g., Integer or Double)
+     * @param labels    the label table to update
+     * @param min       the minimum value
+     * @param max       the maximum value
+     * @param keyMapper function to map value to integer slider key
+     * @param formatter function to format value as display string
+     * @param <V>       the type of the min/max values (e.g., Integer or Double)
      */
     private static <V> void ensureMinAndMaxLabels(
             Dictionary<Integer, JComponent> labels,
@@ -114,13 +123,14 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     }
 
     /**
-     * Computes a preferred number of ticks for a slider based on the value range
+     * Computes a preferred number of ticks for a slider based on the value
+     * range
      * and step size. Small ranges show all discrete values; larger ranges use
      * a logarithmic heuristic to yield 4–8 readable ticks.
      *
-     * @param min   the minimum value of the range
-     * @param max   the maximum value of the range
-     * @param step  the smallest increment (must be positive)
+     * @param min  the minimum value of the range
+     * @param max  the maximum value of the range
+     * @param step the smallest increment (must be positive)
      * @return a target number of ticks between 3 and 8
      */
     private static int computePreferredTickCount(double min, double max,
@@ -140,11 +150,12 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     }
 
     /**
-     * Computes a "nice" (human-readable) tick spacing such as 1, 2, 5, 10, etc.,
+     * Computes a "nice" (human-readable) tick spacing such as 1, 2, 5, 10,
+     * etc.,
      * based on the value range and desired number of ticks.
      *
-     * @param range           the total range (max - min)
-     * @param preferredTicks  the approximate number of desired ticks
+     * @param range          the total range (max - min)
+     * @param preferredTicks the approximate number of desired ticks
      * @return a rounded, user-friendly tick interval
      */
     private static double computeNiceTickSpacing(double range,
@@ -162,7 +173,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     }
 
     /**
-     * Formats a double value for display by omitting unnecessary decimal places.
+     * Formats a double value for display by omitting unnecessary decimal
+     * places.
      * Examples: 2.0 → "2", 1.5 → "1.5", 0.75 → "0.75".
      *
      * @param value the numeric value to format
@@ -198,23 +210,26 @@ public class ControlBuilder<T extends PlotGraph<T>> {
 
     public ControlBuilder<T> headline(String text) {
         JLabel headlineLabel = new JLabel(text);
-        headlineLabel.setFont(headlineLabel.getFont().deriveFont(Font.BOLD, 14f));
+        headlineLabel.setFont(headlineLabel.getFont().deriveFont(Font.BOLD,
+                13f));
         headlineLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         add(headlineLabel);
         return this;
     }
 
     public ControlBuilder<T> legend(Color color, String label) {
-        JPanel legendItem = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        JPanel colorBox = new JPanel();
+        JPanel legendItem = new JPanel();
+        JComponent colorBox = new LegendItem(color);
         JLabel labelComponent = new JLabel(label);
+        labelComponent.setFont(labelComponent.getFont().deriveFont(Font.PLAIN
+                , 12f));
 
-        colorBox.setPreferredSize(new Dimension(12, 12));
-        colorBox.setBackground(color);
-        colorBox.setBorder(BorderFactory.createLineBorder(color.darker(), 1));
+        legendItem.setLayout(new BoxLayout(legendItem, BoxLayout.X_AXIS));
         legendItem.setOpaque(false);
         legendItem.add(colorBox);
+        legendItem.add(Box.createHorizontalStrut(10)); // exakt 8px Abstand
         legendItem.add(labelComponent);
+        legendItem.add(Box.createHorizontalGlue());
         add(legendItem);
         return this;
     }
@@ -224,7 +239,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
-    public ControlBuilder<T> button(Color color, String label, Consumer<T> action) {
+    public ControlBuilder<T> button(Color color, String label,
+                                    Consumer<T> action) {
         JButton button = new ModernButton(label, color);
 
         button.setFocusPainted(false);
@@ -238,14 +254,19 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
-    public ControlBuilder<T> outputTimed(String label, String key, Function<T, String> getter, int delayMs) {
+    public ControlBuilder<T> outputTimed(String label, String key, Function<T
+            , String> getter, int delayMs) {
         JTextField valueField = new JTextField("0.0 s");
+        valueField.setBorder(BorderFactory.createCompoundBorder(
+                new RoundedLineBorder(Colors.GRAY3, 1.2f, 12),
+                BorderFactory.createEmptyBorder(8, 8, 8, 8)
+        ));
         valueField.setEditable(false);
         valueField.setFocusable(false);
         JPanel container = new JPanel(new BorderLayout());
 
         container.setBackground(Colors.GRAY5);
-        container.setBorder(BorderFactory.createTitledBorder(label));
+        container.setBorder(new ModernLabeledBorder(label));
         container.add(valueField, BorderLayout.CENTER);
         outputs.put(key, valueField);
 
@@ -265,7 +286,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             BiConsumer<T, Boolean> setter
     ) {
         boolean initialValue = getter.apply(activeGraph);
-        JCheckBox checkBox = new JCheckBox(label, initialValue);
+        JCheckBox checkBox = new ModernCheckBox(label, initialValue);
 
         checkBox.setBackground(Colors.GRAY5);
         checkBox.setFocusPainted(false);
@@ -339,14 +360,14 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         int preferredTicks = computePreferredTickCount(min, max, step);
         int tickSpacing = (int) Math.max(1,
                 Math.round(computeNiceTickSpacing(range, preferredTicks) * scale));
-        JSlider slider = new JSlider(intMin, intMax, initial);
+        JSlider slider = new ModernSlider(intMin, intMax, initial);
         Dictionary<Integer, JComponent> labels = new Hashtable<>();
 
         slider.setBackground(Colors.GRAY5);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.setMajorTickSpacing(tickSpacing);
-        slider.setBorder(BorderFactory.createTitledBorder(label));
+        slider.setBorder(new ModernLabeledBorder(label, true));
 
         double tickStart =
                 Math.floor(min / (tickSpacing / scale)) * (tickSpacing / scale);
@@ -416,11 +437,13 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      * Attaches a change listener to a slider that updates the active graph
      * and triggers a repaint.
      *
-     * @param slider     the slider to attach the listener to
-     * @param intGetter  function to extract integer state from a graph (for sync)
-     * @param mapper     function to convert slider integer value to parameter type
-     * @param setter     function to apply the new value to the graph
-     * @param <V>        the parameter type (Integer or Double)
+     * @param slider    the slider to attach the listener to
+     * @param intGetter function to extract integer state from a graph (for
+     *                  sync)
+     * @param mapper    function to convert slider integer value to parameter
+     *                 type
+     * @param setter    function to apply the new value to the graph
+     * @param <V>       the parameter type (Integer or Double)
      */
     private <V> void attachSliderListener(
             JSlider slider,
@@ -461,7 +484,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     }
 
     /**
-     * Synchronizes all checkboxes to reflect the current state of the active graph.
+     * Synchronizes all checkboxes to reflect the current state of the active
+     * graph.
      */
     private void syncCheckBoxesToActiveGraph() {
         T active = control.getActiveGraph();
@@ -472,7 +496,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     }
 
     /**
-     * Synchronizes all sliders to reflect the current state of the active graph.
+     * Synchronizes all sliders to reflect the current state of the active
+     * graph.
      */
     private void syncSlidersToActiveGraph() {
         T active = control.getActiveGraph();
@@ -501,11 +526,11 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         int preferredTicks = computePreferredTickCount(min, max, 1.0);
         int tickSpacing = (int) Math.max(1,
                 computeNiceTickSpacing(range, preferredTicks));
-        JSlider slider = new JSlider(min, max, value);
+        JSlider slider = new ModernSlider(min, max, value);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         slider.setMajorTickSpacing(tickSpacing);
-        slider.setBorder(BorderFactory.createTitledBorder(title));
+        slider.setBorder(new ModernLabeledBorder(title, true));
         Dictionary<Integer, JComponent> labels = new Hashtable<>();
         int start = (int) Math.floor((double) min / tickSpacing) * tickSpacing;
 

@@ -3,6 +3,13 @@ package pr1.a07.plot;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.List;
 
 public class Sonifier {
@@ -63,5 +70,78 @@ public class Sonifier {
             audioData[2 * i + 1] = (byte) ((val >> 8) & 0xFF);
         }
         return audioData;
+    }
+
+    public static void sonifyAndSave(List<Double> values, String fileName) {
+        if (values == null || values.isEmpty()) {
+            return;
+        }
+        byte[] rawAudio = generateAudioData(values);
+
+        if (rawAudio.length == 0) {
+            return;
+        }
+        int sampleRate = 44100;
+        int channels = 1;
+        int bitsPerSample = 16;
+
+        // JFileChooser erstellen
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Audio speichern");
+        fileChooser.setSelectedFile(new File(fileName + ".wav"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("WAV Audio Datei (*.wav)", "wav"));
+
+        int result = fileChooser.showSaveDialog(null);
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return; // Abbruch durch Benutzer
+        }
+
+        File file = fileChooser.getSelectedFile();
+        if (!file.getName().toLowerCase().endsWith(".wav")) {
+            file = new File(file.getAbsolutePath() + ".wav");
+        }
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            byte[] wavData = createWavHeaderAndData(rawAudio, sampleRate, channels, bitsPerSample);
+            fos.write(wavData);
+
+            System.out.println("Audio gespeichert: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Erzeugt einen vollständigen WAV-Bytestrom (Header + PCM-Daten).
+     */
+    private static byte[] createWavHeaderAndData(byte[] rawPcmData, int sampleRate, int channels, int bitsPerSample) {
+        int byteRate = sampleRate * channels * bitsPerSample / 8;
+        int blockAlign = channels * bitsPerSample / 8;
+        int dataSize = rawPcmData.length;
+        int totalSize = 36 + dataSize; // WAV-Header ist 44 Bytes, aber "RIFF"-Chunk enthält nur 36 + data
+
+        ByteBuffer buffer = ByteBuffer.allocate(44 + dataSize);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+
+        // RIFF Header
+        buffer.put("RIFF".getBytes());
+        buffer.putInt(totalSize);           // Größe ab nächstem Feld
+        buffer.put("WAVE".getBytes());
+
+        // fmt subchunk
+        buffer.put("fmt ".getBytes());
+        buffer.putInt(16);                  // Größe des fmt-Chunks
+        buffer.putShort((short) 1);         // PCM = 1
+        buffer.putShort((short) channels);
+        buffer.putInt(sampleRate);
+        buffer.putInt(byteRate);
+        buffer.putShort((short) blockAlign);
+        buffer.putShort((short) bitsPerSample);
+
+        // data subchunk
+        buffer.put("data".getBytes());
+        buffer.putInt(dataSize);
+        buffer.put(rawPcmData);
+
+        return buffer.array();
     }
 }

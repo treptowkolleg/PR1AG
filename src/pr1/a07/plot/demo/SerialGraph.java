@@ -24,6 +24,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private double thresholdVoltage = 0;
     private String usedDiode = "-";
     private boolean audioIsPlaying = false;
+    private boolean idealLineIsVisible = false;
+    private boolean diodeLineIsVisible = false;
 
     public SerialGraph(Color color, String title) {
         this(color, title, 10.0, 0.1);
@@ -86,6 +88,17 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         t.start();
     }
 
+    public void saveDiodeCurveSonified() {
+        if (diffValues.isEmpty()) {
+            return;
+        }
+        Thread t = new Thread(() -> {
+            Sonifier.sonifyAndSave(diffValues, usedDiode);
+        }, "SonificationFile");
+        t.setDaemon(true);
+        t.start();
+    }
+
     public void start() {
         reader.setRunning(true);
         if (!stopWatch.isRunning()) {
@@ -103,6 +116,22 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     public String getStoppedTimeFormatted() {
         return String.format("%.1f s", stopWatch.getElapsedSeconds());
+    }
+
+    public boolean isIdealLineIsVisible() {
+        return idealLineIsVisible;
+    }
+
+    public void setIdealLineIsVisible(boolean idealLineIsVisible) {
+        this.idealLineIsVisible = idealLineIsVisible;
+    }
+
+    public boolean isDiodeLineIsVisible() {
+        return diodeLineIsVisible;
+    }
+
+    public void setDiodeLineIsVisible(boolean diodeLineIsVisible) {
+        this.diodeLineIsVisible = diodeLineIsVisible;
     }
 
     @Override
@@ -208,8 +237,9 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         for (int i = 0; i < values.size(); i++) {
             idealY.add(startY * Math.exp(-b * i));
         }
-        // TODO: optional einblenden
-        // drawCurve(g, Colors.RED, idealY);
+        if (idealLineIsVisible) {
+            drawCurve(g, Colors.RED, idealY);
+        }
     }
 
     private void drawDifferenceCurve(Graphics2D g, List<Integer> values) {
@@ -219,7 +249,9 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         int y = getScaledY(py);
         thresholdVoltage = py / 1000;
 
-        drawCurve(g, Colors.BLUE, diffValues);
+        if (diodeLineIsVisible) {
+            drawCurve(g, Colors.BLUE, diffValues);
+        }
         g.setColor(Colors.BLUE);
         g.drawOval(x - 3, y - 3, 6, 6);
         g.setColor(Colors.BLACK);
