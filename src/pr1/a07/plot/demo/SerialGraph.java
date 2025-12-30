@@ -208,7 +208,8 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         for (int i = 0; i < values.size(); i++) {
             idealY.add(startY * Math.exp(-b * i));
         }
-        drawCurve(g, Colors.RED, idealY);
+        // TODO: optional einblenden
+        // drawCurve(g, Colors.RED, idealY);
     }
 
     private void drawDifferenceCurve(Graphics2D g, List<Integer> values) {
