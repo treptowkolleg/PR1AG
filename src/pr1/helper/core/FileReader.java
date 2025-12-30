@@ -18,6 +18,8 @@ package pr1.helper.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.util.Scanner;
 
@@ -68,10 +70,12 @@ public class FileReader {
     public void createScanner() {
         if (null != targetFile) {
             try {
-                this.scanner = new Scanner(targetFile);
+                this.scanner = new Scanner(targetFile, StandardCharsets.UTF_8);
             } catch (FileNotFoundException e) {
                 System.err.printf("File '%s' not found!%n",
                         targetFile.getPath());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }

@@ -21,6 +21,7 @@ import pr1.helper.extension.PrintDecorator;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -125,7 +126,7 @@ public abstract class IOApplication {
      * @see Scanner
      */
     public IOApplication createInputScanner() {
-        scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         return this;
     }
 
