@@ -91,6 +91,10 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         configureGraphics2D(g2d);
     }
 
+    protected void adjustXDelta() {
+        PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / scaleX) * (scaleX * scaleX / 3.0);
+    }
+
     protected int getScaledX(int value) {
         return getScaledX((double) value);
     }

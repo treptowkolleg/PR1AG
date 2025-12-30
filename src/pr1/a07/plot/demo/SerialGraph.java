@@ -1,7 +1,6 @@
 package pr1.a07.plot.demo;
 
 import pr1.a07.Colors;
-import pr1.a07.plot.PlotApplication;
 import pr1.a07.plot.PlotGraph;
 import pr1.a07.plot.SerialReader;
 import pr1.a07.plot.Sonifier;
@@ -44,7 +43,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     }
 
     public String getThresholdVoltageFormatted() {
-        correctedVoltage(thresholdVoltage);
+        setDiode(thresholdVoltage);
         return String.format("%.2f V", thresholdVoltage);
     }
 
@@ -67,7 +66,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
             stopWatch.setPreTime(1);
             stopWatch.start();
             thresholdVoltage = 0;
-            correctedVoltage(thresholdVoltage);
+            setDiode(thresholdVoltage);
         }
     }
 
@@ -146,7 +145,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         }
     }
 
-    private void correctedVoltage(double measuredU) {
+    private void setDiode(double measuredU) {
         usedDiode = switch (classifyDiode(measuredU)) {
             case NONE -> "-";
             case GERMANIUM -> "Germanium-Diode";
@@ -168,10 +167,6 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         } else {
             g.setColor(color);
         }
-    }
-
-    private void adjustXDelta() {
-        PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / scaleX) * (scaleX * scaleX / 3.0);
     }
 
     private void computeDifferenceCurve(List<Integer> values) {
