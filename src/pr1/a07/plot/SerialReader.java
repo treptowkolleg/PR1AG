@@ -63,6 +63,34 @@ public class SerialReader implements AutoCloseable {
         isRunning = running;
     }
 
+    @Override
+    public void close() {
+        running.set(false);
+        try {
+            readerThread.join(1000);
+        } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
+        }
+        if (port != null && port.isOpen()) {
+            port.closePort();
+        }
+    }
+
+    private void configurePort() {
+        if (port == null) {
+            return;
+        }
+        port.setComPortParameters(9600, 8, 1, 0);
+        port.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+        port.openPort();
+    }
+
+    private void addShutdownHook() {
+        Runtime.getRuntime()
+                .addShutdownHook(new Thread(this::close, "SerialReader" +
+                        "-Cleanup"));
+    }
+
     private void readLoop() {
         if (port == null || !port.isOpen()) {
             System.err.println("Port nicht verfügbar – Lese-Thread beendet.");
@@ -104,33 +132,5 @@ public class SerialReader implements AutoCloseable {
         } catch (NumberFormatException ignored) {
             // Ungültige Eingaben werden stillschweigend ignoriert
         }
-    }
-
-    @Override
-    public void close() {
-        running.set(false);
-        try {
-            readerThread.join(1000);
-        } catch (InterruptedException ignored) {
-            Thread.currentThread().interrupt();
-        }
-        if (port != null && port.isOpen()) {
-            port.closePort();
-        }
-    }
-
-    protected void configurePort() {
-        if (port == null) {
-            return;
-        }
-        port.setComPortParameters(9600, 8, 1, 0);
-        port.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
-        port.openPort();
-    }
-
-    protected void addShutdownHook() {
-        Runtime.getRuntime()
-                .addShutdownHook(new Thread(this::close, "SerialReader" +
-                        "-Cleanup"));
     }
 }
