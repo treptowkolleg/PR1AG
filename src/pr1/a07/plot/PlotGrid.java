@@ -18,6 +18,8 @@ package pr1.a07.plot;
 
 import pr1.a07.Colors;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -38,6 +40,7 @@ import java.awt.geom.Line2D;
  */
 public class PlotGrid extends DrawableObject {
     protected int gap;
+    protected GridPosition gridPosition;
 
     public PlotGrid() {
         this(10);
@@ -45,6 +48,67 @@ public class PlotGrid extends DrawableObject {
 
     public PlotGrid(int gap) {
         this.gap = gap;
+    }
+
+
+    public void setGridPosition(GridPosition gridPosition, JPanel frame) {
+        double panelHeight = frame.getHeight();
+        double panelWidth = frame.getWidth();
+        int padding = 50;
+
+        // Die +/-10 wegen Padding
+        switch (gridPosition) {
+            case CENTER:
+                PlotApplication.X_DELTA = 0;
+                PlotApplication.Y_DELTA = 0;
+                break;
+
+            case NORTH:
+                PlotApplication.X_DELTA = 0;
+                PlotApplication.Y_DELTA = -panelHeight / 2 + padding;
+                break;
+
+            case SOUTH:
+                PlotApplication.X_DELTA = 0;
+                PlotApplication.Y_DELTA = panelHeight / 2 - padding;
+                break;
+
+            case WEST:
+                PlotApplication.X_DELTA = -panelWidth / 2 + padding;
+                PlotApplication.Y_DELTA = 0;
+                break;
+
+            case EAST:
+                PlotApplication.X_DELTA = panelWidth / 2 - padding;
+                PlotApplication.Y_DELTA = 0;
+                break;
+
+            case NORTH_WEST:
+                PlotApplication.X_DELTA = -panelWidth / 2 + padding;
+                PlotApplication.Y_DELTA = -panelHeight / 2 + padding;
+                break;
+
+            case NORTH_EAST:
+                PlotApplication.X_DELTA = panelWidth / 2 - padding;
+                PlotApplication.Y_DELTA = -panelHeight / 2 + padding;
+                break;
+
+            case SOUTH_WEST:
+                PlotApplication.X_DELTA = -panelWidth / 2 + padding;
+                PlotApplication.Y_DELTA = panelHeight / 2 - padding;
+                break;
+
+            case SOUTH_EAST:
+                PlotApplication.X_DELTA = panelWidth / 2 - padding;
+                PlotApplication.Y_DELTA = panelHeight / 2 - padding;
+                break;
+
+            default:
+                // Sicherheitsfallback – sollte normalerweise nicht vorkommen
+                PlotApplication.X_DELTA = 0;
+                PlotApplication.Y_DELTA = 0;
+                break;
+        }
     }
 
     /**
@@ -90,4 +154,5 @@ public class PlotGrid extends DrawableObject {
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
         g.drawString("0", centerX + 5, centerY + 10);
     }
+
 }

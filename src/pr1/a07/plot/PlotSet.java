@@ -16,6 +16,9 @@
  */
 package pr1.a07.plot;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 /**
  * An abstract base class that groups a plot grid and a type-safe list of plot graphs
  * of the same concrete type. This class provides a structured container for managing
@@ -25,6 +28,7 @@ package pr1.a07.plot;
  */
 public abstract class PlotSet<T extends PlotGraph<T>> {
     protected PlotGrid grid;
+    protected GridPosition gridPosition = GridPosition.CENTER;
     protected PlotGraphList<T> graphs = new PlotGraphList<>();
     protected String title = "unbenannt";
 
@@ -54,6 +58,10 @@ public abstract class PlotSet<T extends PlotGraph<T>> {
         return grid;
     }
 
+    public void setGridPosition(GridPosition gridPosition, JPanel frame) {
+        getGrid().setGridPosition(gridPosition, frame);
+    }
+
     /**
      * Adds a plot graph to this set.
      *
@@ -61,6 +69,7 @@ public abstract class PlotSet<T extends PlotGraph<T>> {
      */
     public void addGraph(T graph) {
         graphs.add(graph);
+        graph.setPlotSet(this);
     }
 
     /**
@@ -99,5 +108,13 @@ public abstract class PlotSet<T extends PlotGraph<T>> {
      */
     public PlotControl<T> createControl(PlotApplication app) {
         return null;
+    }
+
+    public void preSwitching(JPanel frame) {
+
+    }
+
+    public void postSwitching(JPanel frame) {
+
     }
 }

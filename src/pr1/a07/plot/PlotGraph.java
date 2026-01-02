@@ -31,9 +31,18 @@ import java.awt.Graphics2D;
  */
 public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
     protected PlotControl<T> plotControl;
+    protected PlotSet<T> plotSet;
     protected String title;
     protected Color color = Color.BLACK;
     protected boolean isVisible = true;
+
+    public PlotSet<T> getPlotSet() {
+        return plotSet;
+    }
+
+    public void setPlotSet(PlotSet<T> plotSet) {
+        this.plotSet = plotSet;
+    }
 
     /**
      * Associates this graph with a plot control window.

@@ -20,6 +20,7 @@ package pr1.a07.plot;
 import pr1.a07.Colors;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -224,9 +225,13 @@ public class PlotApplication extends JFrame {
         if (activeSet != null) {
             PlotControl<?> oldControl = controlMap.get(activeSet);
 
-            if (oldControl != null) oldControl.setVisible(false);
+            activeSet.postSwitching(panel);
+            if (oldControl != null) {
+                oldControl.setVisible(false);
+            }
         }
         activeSet = set;
+
         buttonPanel.setPlotTitle(activeSet.getTitle());
         panel.clearDrawables();
         panel.addDrawable(set.getGrid());
@@ -239,6 +244,7 @@ public class PlotApplication extends JFrame {
         } else {
             buttonPanel.setToggleControlButtonEnabled(false);
         }
+        activeSet.preSwitching(panel);
         panel.repaint();
     }
 
@@ -280,6 +286,10 @@ public class PlotApplication extends JFrame {
     public void prevPlotSet(ActionEvent e) {
         currentPlot = (currentPlot - 1 + plotSets.size()) % plotSets.size();
         switchToSet(plotSets.get(currentPlot));
+    }
+
+    public JPanel getDrawablePanel() {
+        return panel;
     }
 
     /**

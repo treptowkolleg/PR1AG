@@ -127,4 +127,16 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
     protected void resetTransform(Graphics2D g2d) {
         g2d.setTransform(originalTransform);
     }
+
+    protected Graphics2D getG2D() {
+        return g2d;
+    }
+
+    protected int getPanelWidth() {
+        return panelWidth;
+    }
+
+    protected int getPanelHeight() {
+        return panelHeight;
+    }
 }
