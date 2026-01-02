@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 Benjamin Wagner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package treptowkolleg.plot;
 
 import com.fazecast.jSerialComm.SerialPort;
@@ -16,6 +32,12 @@ public class SerialReader implements AutoCloseable {
     private boolean isRunning = false;
     private volatile ArrayList<Integer> targetList = null;
 
+    /**
+     * Constructs a new SerialReader and attempts to initialize communication with
+     * the first available serial port. If no port is found, the instance remains
+     * inactive but can be safely used (methods will behave as no-op or return false).
+     * A shutdown hook is registered to ensure clean port closure on JVM exit.
+     */
     public SerialReader() {
         this.port = Arrays.stream(SerialPort.getCommPorts())
                 .findFirst()
@@ -25,6 +47,18 @@ public class SerialReader implements AutoCloseable {
         this.readerThread = new Thread(this::readLoop, "SerialReader-Thread");
     }
 
+    /**
+     * Starts reading serial data from the connected device and appends incoming
+     * integer values to the provided list in real time.
+     *
+     * <p>This method must be called only once per instance. Attempting to start
+     * an already running reader will throw an {@code IllegalStateException}.</p>
+     *
+     * @param yValues the list to which received integer values will be appended;
+     *                must not be null
+     * @throws IllegalStateException if the reader is already running
+     * @throws IllegalArgumentException if {@code yValues} is null
+     */
     public void startReading(ArrayList<Integer> yValues) {
         if (running.get()) {
             throw new IllegalStateException("Bereits gestartet");
@@ -38,6 +72,14 @@ public class SerialReader implements AutoCloseable {
         readerThread.start();
     }
 
+    /**
+     * Sends a "start" command to the connected serial device, instructing it to
+     * begin transmitting measurement data. The command is sent as the ASCII string
+     * "start\n".
+     *
+     * <p>This method has no effect if no serial port is open or if the reader is
+     * already running.</p>
+     */
     public void sendStartCommand() {
         if (port != null && port.isOpen() && !isRunning) {
             try {
@@ -51,18 +93,43 @@ public class SerialReader implements AutoCloseable {
         }
     }
 
+    /**
+     * Checks whether a serial port is available and successfully opened.
+     *
+     * @return {@code true} if a serial port is open and ready for communication,
+     *         {@code false} otherwise
+     */
     public boolean isAvailable() {
         return port != null && port.isOpen();
     }
 
+    /**
+     * Checks whether the serial reader is currently active and processing data.
+     *
+     * @return {@code true} if the reader is running, {@code false} otherwise
+     */
     public boolean isRunning() {
         return isRunning;
     }
 
+    /**
+     * Sets the internal running state flag. This method is typically called
+     * by the reader itself or in response to external commands (e.g., after
+     * sending a "start" signal).
+     *
+     * @param running {@code true} to mark the reader as active, {@code false} to mark it as idle
+     */
     public void setRunning(boolean running) {
         isRunning = running;
     }
 
+    /**
+     * Gracefully shuts down the serial reader by stopping the reading thread
+     * and closing the serial port. This method blocks for up to 1 second while
+     * waiting for the reader thread to terminate.
+     *
+     * <p>Implements {@link AutoCloseable} for use in try-with-resources statements.</p>
+     */
     @Override
     public void close() {
         running.set(false);

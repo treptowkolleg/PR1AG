@@ -43,7 +43,6 @@ public class Test {
         PlotSet<EinfacheLandschaft> set = new PlotSet<>() {
         };
         set.setTitle("Winter");
-        set.setGrid(new EmptyGrid());
         set.addGraph(new WinterLandschaft());
         app.addPlotSet(set);
         app.start();

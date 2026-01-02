@@ -43,10 +43,12 @@ public class ModernIconButton extends ModernButton {
     public ModernIconButton(String resourcePath) {
         super("");
         URL imageUrl = getClass().getResource(resourcePath);
+
         if (imageUrl == null) {
             throw new IllegalArgumentException("Icon resource not found: " + resourcePath);
         }
         ImageIcon icon = new ImageIcon(imageUrl);
+
         this.iconImage = icon.getImage();
         setMargin(new Insets(13, 16, 13, 16));
     }

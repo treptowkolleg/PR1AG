@@ -286,6 +286,14 @@ public class PlotApplication extends JFrame {
         switchToSet(plotSets.get(currentPlot));
     }
 
+    /**
+     * Returns the main drawing panel where plot content is rendered.
+     * This panel is managed internally by the application and should not be modified
+     * directly by external code. It is intended for use with layout or positioning
+     * logic that requires access to the drawable area (e.g., grid placement or scaling).
+     *
+     * @return the JPanel used as the drawing surface
+     */
     public JPanel getDrawablePanel() {
         return panel;
     }
@@ -347,10 +355,24 @@ public class PlotApplication extends JFrame {
         buttonPanel.setToggleControlButtonColor(Colors.GRAY2);
     }
 
+    /**
+     * Enables or disables Arduino-related UI controls based on hardware availability.
+     * When disabled, Arduino-specific buttons (e.g., "Start Measurement") are hidden
+     * or deactivated to prevent user interaction with unavailable functionality.
+     *
+     * @param enabled {@code true} if an Arduino device is connected and ready for use,
+     *                {@code false} otherwise
+     */
     public void setArduinoEnabled(boolean enabled) {
         buttonPanel.setArduinoAvailable(enabled);
     }
 
+    /**
+     * Disables extended navigation and control features in the UI.
+     * This includes zoom in/out and reset buttons, typically used when the application
+     * enters a restricted mode (e.g., during automated measurements or demo playback)
+     * where user interference with the view should be prevented.
+     */
     public void disableExtendedFunctions() {
         buttonPanel.setZoomInButtonEnabled(false);
         buttonPanel.setZoomOutButtonEnabled(false);

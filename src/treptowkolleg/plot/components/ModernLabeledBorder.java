@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 Benjamin Wagner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ */
 package treptowkolleg.plot.components;
 
 import treptowkolleg.plot.Colors;
@@ -42,6 +58,7 @@ public class ModernLabeledBorder implements Border {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g.create();
+
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         g2d.setFont(font);
@@ -51,7 +68,6 @@ public class ModernLabeledBorder implements Border {
             n = 8;
         }
         g2d.drawString(title, x + leftMargin + 8 + n, y + topMargin);
-
         if (hasBorder) {
             g2d.setStroke(new BasicStroke(1.2f));
             g2d.setColor(Colors.GRAY4);
@@ -67,7 +83,6 @@ public class ModernLabeledBorder implements Border {
         } else {
             return new Insets(topMargin + contentTopGap, leftMargin, 4, 0);
         }
-
     }
 
     @Override

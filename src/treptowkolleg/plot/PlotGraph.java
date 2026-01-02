@@ -36,10 +36,25 @@ public abstract class PlotGraph<T extends PlotGraph<T>> extends DrawableObject {
     protected Color color = Color.BLACK;
     protected boolean isVisible = true;
 
+    /**
+     * Returns the plot set that owns this graph.
+     * This reference is used to access shared context such as grid settings,
+     * application state, or lifecycle callbacks.
+     *
+     * @return the associated PlotSet instance, or null if not yet assigned
+     */
     public PlotSet<T> getPlotSet() {
         return plotSet;
     }
 
+    /**
+     * Associates this graph with a specific plot set.
+     * This method is typically called automatically when the graph is added
+     * to a plot set via {@link PlotSet#addGraph(PlotGraph)} and should not
+     * be invoked manually under normal circumstances.
+     *
+     * @param plotSet the PlotSet instance to associate with this graph
+     */
     public void setPlotSet(PlotSet<T> plotSet) {
         this.plotSet = plotSet;
     }

@@ -31,6 +31,14 @@ public abstract class PlotSet<T extends PlotGraph<T>> {
     protected String title = "unbenannt";
 
     /**
+     * Constructs a new PlotSet with an empty grid as the default coordinate system.
+     * Subclasses may replace the grid by calling {@link #setGrid(PlotGrid)} in their constructor.
+     */
+    public PlotSet() {
+        setGrid(new EmptyGrid());
+    }
+
+    /**
      * Returns the display title of this plot set.
      *
      * @return the current title string

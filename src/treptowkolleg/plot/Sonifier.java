@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 Benjamin Wagner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package treptowkolleg.plot;
 
 import javax.sound.sampled.AudioFormat;
@@ -14,6 +30,14 @@ import java.util.List;
 
 public class Sonifier {
 
+    /**
+     * Plays an audible sonification of a list of numeric values by mapping them to a frequency-modulated audio tone.
+     * The sonification is rendered in real time using the system's default audio output.
+     *
+     * <p>This method does nothing if the input list is null or empty.</p>
+     *
+     * @param diffValues the list of double values to sonify; typically representing voltage differences or signal deviations
+     */
     public static void sonify(List<Double> diffValues) {
         if (diffValues == null || diffValues.isEmpty()) {
             return;
@@ -35,7 +59,53 @@ public class Sonifier {
         }
     }
 
-    public static byte[] generateAudioData(List<Double> data) {
+    /**
+     * Sonifies a list of numeric values and saves the resulting audio as a WAV file.
+     * A file chooser dialog is presented to the user for selecting the save location and filename.
+     * If the user cancels the dialog or the input data is invalid, no file is written.
+     *
+     * <p>The output file is always saved with a {@code .wav} extension.</p>
+     *
+     * @param values the list of double values to sonify and save; must not be null or empty
+     * @param fileName the initial filename suggestion for the save dialog (without extension)
+     */
+    public static void sonifyAndSave(List<Double> values, String fileName) {
+        if (values == null || values.isEmpty()) {
+            return;
+        }
+        byte[] rawAudio = generateAudioData(values);
+
+        if (rawAudio.length == 0) {
+            return;
+        }
+        int sampleRate = 44100;
+        int channels = 1;
+        int bitsPerSample = 16;
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Audio speichern");
+        fileChooser.setSelectedFile(new File(fileName + ".wav"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("WAV Audio Datei (*.wav)", "wav"));
+        int result = fileChooser.showSaveDialog(null);
+
+        if (result != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File file = fileChooser.getSelectedFile();
+
+        if (!file.getName().toLowerCase().endsWith(".wav")) {
+            file = new File(file.getAbsolutePath() + ".wav");
+        }
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            byte[] wavData = createWavHeaderAndData(rawAudio, sampleRate, channels, bitsPerSample);
+
+            fos.write(wavData);
+            System.out.println("Audio gespeichert: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static byte[] generateAudioData(List<Double> data) {
         if (data == null || data.isEmpty()) {
             return new byte[0];
         }
@@ -72,76 +142,28 @@ public class Sonifier {
         return audioData;
     }
 
-    public static void sonifyAndSave(List<Double> values, String fileName) {
-        if (values == null || values.isEmpty()) {
-            return;
-        }
-        byte[] rawAudio = generateAudioData(values);
-
-        if (rawAudio.length == 0) {
-            return;
-        }
-        int sampleRate = 44100;
-        int channels = 1;
-        int bitsPerSample = 16;
-
-        // JFileChooser erstellen
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Audio speichern");
-        fileChooser.setSelectedFile(new File(fileName + ".wav"));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("WAV Audio Datei (*.wav)", "wav"));
-
-        int result = fileChooser.showSaveDialog(null);
-        if (result != JFileChooser.APPROVE_OPTION) {
-            return; // Abbruch durch Benutzer
-        }
-
-        File file = fileChooser.getSelectedFile();
-        if (!file.getName().toLowerCase().endsWith(".wav")) {
-            file = new File(file.getAbsolutePath() + ".wav");
-        }
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            byte[] wavData = createWavHeaderAndData(rawAudio, sampleRate, channels, bitsPerSample);
-            fos.write(wavData);
-
-            System.out.println("Audio gespeichert: " + file.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Erzeugt einen vollständigen WAV-Bytestrom (Header + PCM-Daten).
-     */
     private static byte[] createWavHeaderAndData(byte[] rawPcmData, int sampleRate, int channels, int bitsPerSample) {
         int byteRate = sampleRate * channels * bitsPerSample / 8;
         int blockAlign = channels * bitsPerSample / 8;
         int dataSize = rawPcmData.length;
-        int totalSize = 36 + dataSize; // WAV-Header ist 44 Bytes, aber "RIFF"-Chunk enthält nur 36 + data
-
+        int totalSize = 36 + dataSize;
         ByteBuffer buffer = ByteBuffer.allocate(44 + dataSize);
+
         buffer.order(ByteOrder.LITTLE_ENDIAN);
-
-        // RIFF Header
         buffer.put("RIFF".getBytes());
-        buffer.putInt(totalSize);           // Größe ab nächstem Feld
+        buffer.putInt(totalSize);
         buffer.put("WAVE".getBytes());
-
-        // fmt subchunk
         buffer.put("fmt ".getBytes());
-        buffer.putInt(16);                  // Größe des fmt-Chunks
-        buffer.putShort((short) 1);         // PCM = 1
+        buffer.putInt(16);
+        buffer.putShort((short) 1);
         buffer.putShort((short) channels);
         buffer.putInt(sampleRate);
         buffer.putInt(byteRate);
         buffer.putShort((short) blockAlign);
         buffer.putShort((short) bitsPerSample);
-
-        // data subchunk
         buffer.put("data".getBytes());
         buffer.putInt(dataSize);
         buffer.put(rawPcmData);
-
         return buffer.array();
     }
 }

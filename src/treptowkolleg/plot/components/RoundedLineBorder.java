@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 Benjamin Wagner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ */
 package treptowkolleg.plot.components;
 
 import javax.swing.border.AbstractBorder;
@@ -29,6 +45,7 @@ public class RoundedLineBorder extends AbstractBorder {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g.create();
+
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(color);
         g2d.setStroke(new BasicStroke((float) thickness));
@@ -39,6 +56,7 @@ public class RoundedLineBorder extends AbstractBorder {
     @Override
     public Insets getBorderInsets(Component c) {
         int inset = (int) (thickness + (int) Math.ceil(arcHeight / 20.0));
+
         return new Insets(inset, inset, inset, inset);
     }
 }

@@ -7,13 +7,12 @@
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warranty t of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
- * .0.html>.
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
 package treptowkolleg.plot;
 
@@ -38,7 +37,7 @@ import java.util.stream.IntStream;
  * is provided
  * exclusively for use within the courses taught by Dr. Schimkat at the
  * Berlin University
- * of Applied Sciences (Berliner Hochschule für Technik, BHT).
+ * of Applied Sciences (Berliner Hochschule fuer Technik, BHT).
  * Redistribution, public release,
  * or use outside this educational context is not permitted under Dr.
  * Schimkat’s license terms.</p>
@@ -91,51 +90,129 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         configureGraphics2D(g2d);
     }
 
+    /**
+     * Adjusts the global X offset to enable smooth horizontal scrolling
+     * during live data acquisition (e.g., in serial plotting).
+     * This method modifies {@link PlotApplication#X_DELTA} based on the
+     * current scale factors.
+     */
     protected void adjustXDelta() {
         PlotApplication.X_DELTA -= (PlotApplication.X_SCALE / scaleX) * (scaleX * scaleX / 3.0);
     }
 
+    /**
+     * Converts an integer x-coordinate from data space to screen space
+     * using the current scaling and center offset.
+     *
+     * @param value the x-coordinate in data units
+     * @return the corresponding x-coordinate in pixels
+     */
     protected int getScaledX(int value) {
         return getScaledX((double) value);
     }
 
+    /**
+     * Converts a double x-coordinate from data space to screen space
+     * using the current scaling and center offset.
+     *
+     * @param value the x-coordinate in data units
+     * @return the corresponding x-coordinate in pixels
+     */
     protected int getScaledX(double value) {
         return (int) (centerX + value * scaleX * PlotApplication.X_SCALE);
     }
 
+    /**
+     * Converts an integer y-coordinate from data space to screen space
+     * using the current scaling and center offset.
+     * Note: The y-axis is inverted (higher data values appear higher on screen).
+     *
+     * @param value the y-coordinate in data units
+     * @return the corresponding y-coordinate in pixels
+     */
     protected int getScaledY(int value) {
         return getScaledY((double) value);
     }
 
+    /**
+     * Converts a double y-coordinate from data space to screen space
+     * using the current scaling and center offset.
+     * Note: The y-axis is inverted (higher data values appear higher on screen).
+     *
+     * @param value the y-coordinate in data units
+     * @return the corresponding y-coordinate in pixels
+     */
     protected int getScaledY(double value) {
         return (int) (centerY - value * scaleY * PlotApplication.Y_SCALE);
     }
 
+    /**
+     * Returns the maximum value in the given list of integers.
+     * If the list is empty, returns 0.
+     *
+     * @param list the list of integer values
+     * @return the maximum value, or 0 if the list is empty
+     */
     protected int getMaxValue(List<Integer> list) {
         return list.stream().mapToInt(Integer::intValue).max().orElse(0);
     }
 
+    /**
+     * Returns the index of the maximum value in the given list of doubles.
+     * If the list is empty, returns 0.
+     *
+     * @param list the list of double values
+     * @return the index of the maximum element, or 0 if the list is empty
+     */
     protected int indexOfMax(List<Double> list) {
         return IntStream.range(0, list.size()).reduce((i, j)
                 -> list.get(i) > list.get(j) ? i : j).orElse(0);
     }
 
+    /**
+     * Resets the transformation of the internal Graphics2D context to its
+     * state at the beginning of the {@link #draw(Graphics)} call.
+     * This is useful when custom drawing code has applied rotations,
+     * translations, or scaling that should not persist.
+     */
     protected void resetTransform() {
         resetTransform(g2d);
     }
 
+    /**
+     * Resets the transformation of the given Graphics2D context to the
+     * original state captured at the start of rendering.
+     *
+     * @param g2d the graphics context to reset; must not be null
+     */
     protected void resetTransform(Graphics2D g2d) {
         g2d.setTransform(originalTransform);
     }
 
+    /**
+     * Returns the internal Graphics2D context used for advanced rendering.
+     * This context has anti-aliasing enabled and is ready for custom drawing.
+     *
+     * @return the current Graphics2D instance
+     */
     protected Graphics2D getG2D() {
         return g2d;
     }
 
+    /**
+     * Returns the width of the current drawing panel in pixels.
+     *
+     * @return the panel width
+     */
     protected int getPanelWidth() {
         return panelWidth;
     }
 
+    /**
+     * Returns the height of the current drawing panel in pixels.
+     *
+     * @return the panel height
+     */
     protected int getPanelHeight() {
         return panelHeight;
     }

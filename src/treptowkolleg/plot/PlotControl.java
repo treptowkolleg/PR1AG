@@ -190,12 +190,6 @@ public abstract class PlotControl<T extends PlotGraph<T>> extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Creates a new control builder instance associated with this control
-     * and its graph list.
-     *
-     * @return a new {@link ControlBuilder} for this plot control
-     */
     private ControlBuilder<T> createBuilder() {
         return new ControlBuilder<>(this, graphs);
     }

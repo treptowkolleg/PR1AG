@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 Benjamin Wagner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ */
 package treptowkolleg.plot.components;
 
 import treptowkolleg.plot.Colors;
@@ -41,13 +57,11 @@ public class ModernSlider  extends JSlider {
         @Override
         public void paintTrack(Graphics g) {
             Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
             int trackY = thumbRect.y + (thumbRect.height - TRACK_HEIGHT) / 2;
 
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setColor(Colors.WHITE);
             g2d.fillRoundRect(trackRect.x, trackY, trackRect.width, TRACK_HEIGHT, ARC, ARC);
-
             g2d.dispose();
         }
 
@@ -55,12 +69,8 @@ public class ModernSlider  extends JSlider {
         public void paintThumb(Graphics g) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            // Thumb: weiß mit feinem Rahmen
             g2d.setColor(Colors.BLUE);
             g2d.fillOval(thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height);
-
-
             g2d.dispose();
         }
     }

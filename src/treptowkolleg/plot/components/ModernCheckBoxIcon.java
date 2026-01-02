@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 Benjamin Wagner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ */
 package treptowkolleg.plot.components;
 
 import treptowkolleg.plot.Colors;
@@ -21,21 +37,17 @@ public class ModernCheckBoxIcon implements Icon {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2d = (Graphics2D) g.create();
+
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-
-        // Hintergrund (weiß bei ausgewählt, transparent/leer bei nicht ausgewählt)
         if (selected) {
             g2d.setColor(Colors.WHITE);
             g2d.fillRoundRect(x, y, size, size, arc, arc);
         }
 
-        // Rahmen
         g2d.setColor(Colors.GRAY3);
         g2d.setStroke(new BasicStroke(1.2f));
         g2d.drawRoundRect(x, y, size - 1, size - 1, arc, arc);
-
-        // Häkchen (nur wenn ausgewählt)
         if (selected) {
             g2d.setStroke(new BasicStroke(1.8f));
             g2d.setColor(Colors.BLACK);
@@ -43,7 +55,6 @@ public class ModernCheckBoxIcon implements Icon {
             int[] yPoints = {y + 9, y + 12, y + 7};
             g2d.drawPolyline(xPoints, yPoints, 3);
         }
-
         g2d.dispose();
     }
 
