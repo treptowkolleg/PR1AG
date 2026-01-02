@@ -1,9 +1,9 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.plot.PlotControl;
-import pr1.a07.plot.PlotGrid;
-import pr1.a07.plot.PlotSet;
-import pr1.a07.plot.PlotApplication;
+import treptowkolleg.plot.PlotControl;
+import treptowkolleg.plot.PlotGrid;
+import treptowkolleg.plot.PlotSet;
+import treptowkolleg.plot.PlotApplication;
 
 import java.awt.Color;
 

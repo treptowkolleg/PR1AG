@@ -15,15 +15,14 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
  * .0.html>.
  */
-package pr1.a07.plot;
+package treptowkolleg.plot;
 
-import pr1.a07.Colors;
-import pr1.a07.plot.components.LegendItem;
-import pr1.a07.plot.components.ModernButton;
-import pr1.a07.plot.components.ModernCheckBox;
-import pr1.a07.plot.components.ModernLabeledBorder;
-import pr1.a07.plot.components.ModernSlider;
-import pr1.a07.plot.components.RoundedLineBorder;
+import treptowkolleg.plot.components.LegendItem;
+import treptowkolleg.plot.components.ModernButton;
+import treptowkolleg.plot.components.ModernCheckBox;
+import treptowkolleg.plot.components.ModernLabeledBorder;
+import treptowkolleg.plot.components.ModernSlider;
+import treptowkolleg.plot.components.RoundedLineBorder;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;

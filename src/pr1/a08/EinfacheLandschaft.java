@@ -1,6 +1,6 @@
 package pr1.a08;
 
-import pr1.a07.plot.PlotGraph;
+import treptowkolleg.plot.PlotGraph;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

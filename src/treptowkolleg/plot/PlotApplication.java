@@ -15,9 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
  * .0.html>.
  */
-package pr1.a07.plot;
-
-import pr1.a07.Colors;
+package treptowkolleg.plot;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -50,8 +48,8 @@ import static pr1.a07.CMath.scaleFactor;
  * and improved lifecycle management of controls.</p>
  */
 public class PlotApplication extends JFrame {
-    private static final double MIN_SCALE = .2;
-    private static final double MAX_SCALE = 6;
+    public static final double MIN_SCALE = .2;
+    public static final double MAX_SCALE = 6;
     public static double X_DELTA = 0;
     public static double Y_DELTA = 0;
     public static double X_SCALE = 1;
@@ -225,7 +223,7 @@ public class PlotApplication extends JFrame {
         if (activeSet != null) {
             PlotControl<?> oldControl = controlMap.get(activeSet);
 
-            activeSet.postSwitching(panel);
+            activeSet.postSetup(this);
             if (oldControl != null) {
                 oldControl.setVisible(false);
             }
@@ -244,7 +242,7 @@ public class PlotApplication extends JFrame {
         } else {
             buttonPanel.setToggleControlButtonEnabled(false);
         }
-        activeSet.preSwitching(panel);
+        activeSet.preSetup(this);
         panel.repaint();
     }
 

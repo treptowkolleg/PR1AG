@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
  */
-package pr1.a07.plot;
+package treptowkolleg.plot;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

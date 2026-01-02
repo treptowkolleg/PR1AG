@@ -1,8 +1,9 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.plot.PlotApplication;
-import pr1.a07.plot.PlotControl;
-import pr1.a07.plot.PlotSet;
+import treptowkolleg.plot.GridPosition;
+import treptowkolleg.plot.PlotApplication;
+import treptowkolleg.plot.PlotControl;
+import treptowkolleg.plot.PlotSet;
 
 public class TrigonometrieSet extends PlotSet<TrigonometrieGraph> {
 
@@ -20,4 +21,9 @@ public class TrigonometrieSet extends PlotSet<TrigonometrieGraph> {
         return new TrigonometrieControl(app, this);
     }
 
+    @Override
+    public void preSetup(PlotApplication frame) {
+        setGridPosition(GridPosition.CENTER, frame.getDrawablePanel());
+        setZoomY(2);
+    }
 }

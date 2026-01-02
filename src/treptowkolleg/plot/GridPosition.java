@@ -1,4 +1,4 @@
-package pr1.a07.plot;
+package treptowkolleg.plot;
 
 public enum GridPosition {
     NORTH,

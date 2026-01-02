@@ -1,8 +1,8 @@
 package pr1.a08;
 
-import pr1.a07.plot.EmptyGrid;
-import pr1.a07.plot.PlotApplication;
-import pr1.a07.plot.PlotSet;
+import treptowkolleg.plot.EmptyGrid;
+import treptowkolleg.plot.PlotApplication;
+import treptowkolleg.plot.PlotSet;
 import schimkat.berlin.lernhilfe2025ws.graphics.FunnyFirstPainter;
 
 public class Test {

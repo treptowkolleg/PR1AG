@@ -1,4 +1,4 @@
-package pr1.a07;
+package treptowkolleg.plot;
 
 import java.awt.Color;
 

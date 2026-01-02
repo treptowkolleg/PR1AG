@@ -1,9 +1,9 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.Colors;
-import pr1.a07.plot.PlotApplication;
-import pr1.a07.plot.PlotGraph;
-import pr1.a07.plot.Stroke;
+import treptowkolleg.plot.Colors;
+import treptowkolleg.plot.PlotApplication;
+import treptowkolleg.plot.PlotGraph;
+import treptowkolleg.plot.Stroke;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

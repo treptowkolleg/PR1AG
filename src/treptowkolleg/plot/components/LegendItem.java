@@ -1,4 +1,4 @@
-package pr1.a07.plot.components;
+package treptowkolleg.plot.components;
 
 import javax.swing.JPanel;
 import java.awt.BasicStroke;

@@ -1,10 +1,10 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.Colors;
-import pr1.a07.plot.PlotGraph;
-import pr1.a07.plot.SerialReader;
-import pr1.a07.plot.Sonifier;
-import pr1.a07.plot.Stroke;
+import treptowkolleg.plot.Colors;
+import treptowkolleg.plot.PlotGraph;
+import treptowkolleg.plot.SerialReader;
+import treptowkolleg.plot.Sonifier;
+import treptowkolleg.plot.Stroke;
 import pr1.helper.core.StopWatch;
 
 import java.awt.Color;

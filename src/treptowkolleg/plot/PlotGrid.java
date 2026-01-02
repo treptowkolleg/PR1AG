@@ -14,11 +14,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package pr1.a07.plot;
+package treptowkolleg.plot;
 
-import pr1.a07.Colors;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -111,6 +108,14 @@ public class PlotGrid extends DrawableObject {
         }
     }
 
+    public void setZoomX(double amount) {
+        PlotApplication.X_SCALE = prepareScale(amount);
+    }
+
+    public void setZoomY(double amount) {
+        PlotApplication.Y_SCALE = prepareScale(amount);
+    }
+
     /**
      * Configures basic rendering using the Graphics context.
      * This implementation does nothing, as all drawing is handled in
@@ -153,6 +158,19 @@ public class PlotGrid extends DrawableObject {
         g.setPaint(Color.DARK_GRAY);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
         g.drawString("0", centerX + 5, centerY + 10);
+    }
+
+    private double prepareScale(double amount) {
+        double min = PlotApplication.MIN_SCALE;
+        double max = PlotApplication.MAX_SCALE;
+
+        if (amount < min) {
+            amount = min;
+        }
+        if (amount > max) {
+            amount = max;
+        }
+        return amount;
     }
 
 }

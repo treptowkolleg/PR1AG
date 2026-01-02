@@ -1,11 +1,10 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.Colors;
-import pr1.a07.plot.GridPosition;
-import pr1.a07.plot.PlotGrid;
-import pr1.a07.plot.PlotSet;
-
-import javax.swing.JPanel;
+import treptowkolleg.plot.Colors;
+import treptowkolleg.plot.GridPosition;
+import treptowkolleg.plot.PlotApplication;
+import treptowkolleg.plot.PlotGrid;
+import treptowkolleg.plot.PlotSet;
 
 public class MusterSet extends PlotSet<MusterGraph> {
 
@@ -16,11 +15,7 @@ public class MusterSet extends PlotSet<MusterGraph> {
     }
 
     @Override
-    public void preSwitching(JPanel frame) {
-        setGridPosition(GridPosition.NORTH_WEST, frame);
-    }
-
-    public void postSwitching(JPanel frame) {
-        setGridPosition(GridPosition.CENTER, frame);
+    public void preSetup(PlotApplication frame) {
+        setGridPosition(GridPosition.NORTH_WEST, frame.getDrawablePanel());
     }
 }

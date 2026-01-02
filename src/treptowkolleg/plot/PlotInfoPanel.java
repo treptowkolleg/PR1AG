@@ -1,6 +1,4 @@
-package pr1.a07.plot;
-
-import pr1.a07.Colors;
+package treptowkolleg.plot;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;

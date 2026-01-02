@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package pr1.a07.plot;
+package treptowkolleg.plot;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +25,18 @@ import java.awt.Graphics2D;
  * the configure methods.
  */
 public interface CustomDrawable {
+
+    /**
+     * Draws this object using the provided graphics context.
+     * This method typically delegates to {@link #configureGraphics(Graphics)}
+     * and {@link #configureGraphics2D(Graphics2D)} to separate basic and advanced rendering logic.
+     *
+     * <p>Implementations should not assume the graphics context is a specific subclass;
+     * safe casting to {@code Graphics2D} should be performed only when needed.</p>
+     *
+     * @param g the graphics context to draw on; must not be null
+     */
+    void draw(Graphics g);
 
     /**
      * Customizes the rendering using the basic Graphics context.

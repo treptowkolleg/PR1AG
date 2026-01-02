@@ -15,7 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3
  * .0.html>.
  */
-package pr1.a07.plot.components;
+package treptowkolleg.plot.components;
 
 import javax.swing.ImageIcon;
 import java.awt.Graphics;

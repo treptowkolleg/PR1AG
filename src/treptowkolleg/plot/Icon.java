@@ -1,4 +1,4 @@
-package pr1.a07.plot;
+package treptowkolleg.plot;
 
 import javax.swing.ImageIcon;
 import java.awt.Image;

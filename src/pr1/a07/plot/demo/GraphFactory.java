@@ -1,6 +1,6 @@
 package pr1.a07.plot.demo;
 
-import pr1.a07.Colors;
+import treptowkolleg.plot.Colors;
 
 public class GraphFactory {
     private static final int DEFAULT_SCALE = 50;

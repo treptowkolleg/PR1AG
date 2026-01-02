@@ -1,12 +1,10 @@
-package pr1.a07.plot.components;
+package treptowkolleg.plot.components;
 
-import pr1.a07.Colors;
+import treptowkolleg.plot.Colors;
 
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.plaf.basic.BasicSliderUI;
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

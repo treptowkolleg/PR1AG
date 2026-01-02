@@ -1,8 +1,7 @@
-package pr1.a07.plot;
+package treptowkolleg.plot;
 
-import pr1.a07.Colors;
-import pr1.a07.plot.components.ModernButton;
-import pr1.a07.plot.components.ModernIconButton;
+import treptowkolleg.plot.components.ModernButton;
+import treptowkolleg.plot.components.ModernIconButton;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;

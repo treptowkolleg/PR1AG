@@ -19,6 +19,7 @@ package pr1.a07;
 
 import pr1.helper.core.Drawable;
 import pr1.helper.core.GraphicsApplication;
+import treptowkolleg.plot.PlotApplication;
 
 import javax.swing.SwingUtilities;
 import java.awt.Color;
@@ -31,7 +32,7 @@ import java.util.List;
  * <p>This class illustrates the older approach to interactive plotting,
  * which is being superseded by the new, more structured framework located in
  * the {@code pr1.a07.plot} package. The new framework centers around
- * {@link pr1.a07.plot.PlotApplication}, which provides:
+ * {@link PlotApplication}, which provides:
  * </p>
  * <ul>
  *   <li>Type-safe management of multiple {@code PlotSet} instances</li>
