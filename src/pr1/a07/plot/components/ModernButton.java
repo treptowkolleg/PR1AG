@@ -20,6 +20,7 @@ package pr1.a07.plot.components;
 import pr1.a07.Colors;
 
 import javax.swing.JButton;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -180,6 +181,9 @@ public class ModernButton extends JButton {
         RoundRectangle2D shape = new RoundRectangle2D.Float(
                 0, 0, getWidth(), getHeight(), ARC, ARC
         );
+        RoundRectangle2D borderShape = new RoundRectangle2D.Float(
+                0, 0, getWidth() - 1, getHeight() - 1, ARC, ARC
+        );
         int x = (getWidth() - fm.stringWidth(getText())) / 2;
         int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
 
@@ -200,6 +204,12 @@ public class ModernButton extends JButton {
         }
         g2.setColor(buttonColor);
         g2.fill(shape);
+        if (baseColor == Colors.GRAY6) {
+            setForeground(Colors.GRAY.darker());
+            g2.setColor(Colors.GRAY3);
+            g2.setStroke(new BasicStroke(1.2f));
+            g2.draw(borderShape);
+        }
         g2.setColor(getForeground());
         g2.drawString(getText(), x, y);
         g2.dispose();

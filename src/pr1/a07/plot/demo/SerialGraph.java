@@ -24,6 +24,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     private double thresholdVoltage = 0;
     private String usedDiode = "-";
     private boolean audioIsPlaying = false;
+    private boolean isAutoStop = true;
     private boolean idealLineIsVisible = false;
     private boolean diodeLineIsVisible = false;
 
@@ -118,6 +119,14 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
         return String.format("%.1f s", stopWatch.getElapsedSeconds());
     }
 
+    public boolean isAutoStop() {
+        return isAutoStop;
+    }
+
+    public void setAutoStop(boolean autoStop) {
+        isAutoStop = autoStop;
+    }
+
     public boolean isIdealLineIsVisible() {
         return idealLineIsVisible;
     }
@@ -155,7 +164,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
             updateColorBasedOnSlope(g, prevY, currY);
             if (prevY < centerY && currY == centerY) {
-                if (reader.isRunning()) {
+                if (reader.isRunning() && isAutoStop) {
                     stop();
                 }
             }

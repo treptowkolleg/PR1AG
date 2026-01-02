@@ -74,6 +74,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             new ArrayList<>();
     private final JPanel panel = new JPanel(new GridBagLayout());
     private final GridBagConstraints constraints = new GridBagConstraints();
+    private int currentColumn = 0;
+    private boolean inMultiColumnRow = false;
 
     /**
      * Constructs a new control builder for the given plot control and graph
@@ -95,9 +97,45 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 5, 5, 5);
         constraints.weightx = 1.0;
+        constraints.gridwidth = 2;
         constraints.gridx = 0;
         constraints.gridy = 0;
         panel.setBackground(Colors.GRAY5);
+    }
+
+    public ControlBuilder<T> addDoubleColumn(String label) {
+        return headline(label, Font.BOLD, 11f).addDoubleColumn();
+    }
+
+    public ControlBuilder<T> addDoubleColumn() {
+        this.inMultiColumnRow = true;
+        this.currentColumn = 0;
+        constraints.weightx = .5;
+        constraints.gridwidth = 1;
+        return this;
+    }
+
+    private void endRow() {
+        if (inMultiColumnRow) {
+            constraints.gridy++;
+            currentColumn = 0;
+            constraints.gridwidth = 2;
+            constraints.weightx = 1.0;
+            inMultiColumnRow = false;
+        }
+    }
+
+    private void addComponent(Component comp) {
+        constraints.gridx = currentColumn;
+        panel.add(comp, constraints);
+        if (!inMultiColumnRow) {
+            constraints.gridy++;
+        } else {
+            currentColumn++;
+            if (currentColumn >= 2) {
+                endRow();
+            }
+        }
     }
 
     /**
@@ -204,16 +242,20 @@ public class ControlBuilder<T extends PlotGraph<T>> {
 
     public ControlBuilder<T> divider(int height) {
         Component verticalSpacer = Box.createVerticalStrut(height);
-        add(verticalSpacer);
+        addComponent(verticalSpacer);
         return this;
     }
 
     public ControlBuilder<T> headline(String text) {
+        return headline(text, Font.BOLD, 13f);
+    }
+
+    public ControlBuilder<T> headline(String text, int fontType, float fontSize) {
         JLabel headlineLabel = new JLabel(text);
-        headlineLabel.setFont(headlineLabel.getFont().deriveFont(Font.BOLD,
-                13f));
+        headlineLabel.setFont(headlineLabel.getFont().deriveFont(fontType,
+                fontSize));
         headlineLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        add(headlineLabel);
+        addComponent(headlineLabel);
         return this;
     }
 
@@ -230,7 +272,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         legendItem.add(Box.createHorizontalStrut(10)); // exakt 8px Abstand
         legendItem.add(labelComponent);
         legendItem.add(Box.createHorizontalGlue());
-        add(legendItem);
+        addComponent(legendItem);
         return this;
     }
 
@@ -239,14 +281,20 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    public ControlBuilder<T> buttonPrimary(String label, Consumer<T> action) {
+        button(Colors.BLUE, label, action);
+        return this;
+    }
+
+    public ControlBuilder<T> buttonSecondary(String label, Consumer<T> action) {
+        button(Colors.GRAY6, label, action);
+        return this;
+    }
+
     public ControlBuilder<T> button(Color color, String label,
                                     Consumer<T> action) {
         JButton button = new ModernButton(label, color);
-
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        button.setOpaque(true);
-        add(button);
+        addComponent(button);
         button.addActionListener(e -> {
             action.accept(control.getActiveGraph());
             control.application.repaint();
@@ -276,7 +324,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             valueField.setText(value);
         });
         timer.start();
-        add(container);
+        addComponent(container);
         return this;
     }
 
@@ -290,7 +338,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
 
         checkBox.setBackground(Colors.GRAY5);
         checkBox.setFocusPainted(false);
-        add(checkBox);
+        addComponent(checkBox);
         checkBox.addActionListener(e -> {
             boolean newValue = checkBox.isSelected();
             setter.accept(control.getActiveGraph(), newValue);
@@ -322,7 +370,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         JSlider slider = createIntSlider(min, max, initialValue, label);
 
         slider.setBackground(Colors.GRAY5);
-        add(slider);
+        addComponent(slider);
         attachSliderListener(slider, getter, Function.identity(), setter);
         return this;
     }
@@ -388,7 +436,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
                 ControlBuilder::formatDouble
         );
         slider.setLabelTable(labels);
-        add(slider);
+        addComponent(slider);
         attachSliderListener(
                 slider,
                 g -> (int) Math.round(getter.apply(g) * scale),
@@ -419,7 +467,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         combo.setSelectedIndex(0);
         combo.setBorder(BorderFactory.createTitledBorder(new EmptyBorder(0, 0
                 , 0, 0), title));
-        add(combo);
+        addComponent(combo);
         combo.addActionListener(e -> {
             int index = combo.getSelectedIndex();
             if (index >= 0 && index < graphs.size()) {
