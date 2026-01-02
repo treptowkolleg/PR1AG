@@ -65,13 +65,11 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     private final PlotGraphList<T> graphs;
     private final T activeGraph;
     private final Map<String, JTextField> outputs = new HashMap<>();
-    private final Map<String, Function<T, String>> outputGetters =
-            new HashMap<>();
+    private final Map<String, Function<T, String>> outputGetters = new HashMap<>();
     private final List<JSlider> sliders = new ArrayList<>();
     private final List<Function<T, Integer>> getters = new ArrayList<>();
     private final List<JCheckBox> checkBoxes = new ArrayList<>();
-    private final List<Function<T, Boolean>> checkBoxGetters =
-            new ArrayList<>();
+    private final List<Function<T, Boolean>> checkBoxGetters = new ArrayList<>();
     private final JPanel panel = new JPanel(new GridBagLayout());
     private final GridBagConstraints constraints = new GridBagConstraints();
     private int currentColumn = 0;
@@ -101,41 +99,6 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         constraints.gridx = 0;
         constraints.gridy = 0;
         panel.setBackground(Colors.GRAY5);
-    }
-
-    public ControlBuilder<T> addDoubleColumn(String label) {
-        return headline(label, Font.BOLD, 11f).addDoubleColumn();
-    }
-
-    public ControlBuilder<T> addDoubleColumn() {
-        this.inMultiColumnRow = true;
-        this.currentColumn = 0;
-        constraints.weightx = .5;
-        constraints.gridwidth = 1;
-        return this;
-    }
-
-    private void endRow() {
-        if (inMultiColumnRow) {
-            constraints.gridy++;
-            currentColumn = 0;
-            constraints.gridwidth = 2;
-            constraints.weightx = 1.0;
-            inMultiColumnRow = false;
-        }
-    }
-
-    private void addComponent(Component comp) {
-        constraints.gridx = currentColumn;
-        panel.add(comp, constraints);
-        if (!inMultiColumnRow) {
-            constraints.gridy++;
-        } else {
-            currentColumn++;
-            if (currentColumn >= 2) {
-                endRow();
-            }
-        }
     }
 
     /**
@@ -227,6 +190,18 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return String.format("%.2f", value);
     }
 
+    public ControlBuilder<T> addDoubleColumn(String label) {
+        return headline(label, Font.BOLD, 11f).addDoubleColumn();
+    }
+
+    public ControlBuilder<T> addDoubleColumn() {
+        this.inMultiColumnRow = true;
+        this.currentColumn = 0;
+        constraints.weightx = .5;
+        constraints.gridwidth = 1;
+        return this;
+    }
+
     /**
      * Returns the constructed control panel containing all added UI components.
      *
@@ -250,7 +225,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return headline(text, Font.BOLD, 13f);
     }
 
-    public ControlBuilder<T> headline(String text, int fontType, float fontSize) {
+    public ControlBuilder<T> headline(String text, int fontType,
+                                      float fontSize) {
         JLabel headlineLabel = new JLabel(text);
         headlineLabel.setFont(headlineLabel.getFont().deriveFont(fontType,
                 fontSize));
@@ -263,13 +239,12 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         JPanel legendItem = new JPanel();
         JComponent colorBox = new LegendItem(color);
         JLabel labelComponent = new JLabel(label);
-        labelComponent.setFont(labelComponent.getFont().deriveFont(Font.PLAIN
-                , 12f));
 
+        labelComponent.setFont(labelComponent.getFont().deriveFont(Font.PLAIN, 12f));
         legendItem.setLayout(new BoxLayout(legendItem, BoxLayout.X_AXIS));
         legendItem.setOpaque(false);
         legendItem.add(colorBox);
-        legendItem.add(Box.createHorizontalStrut(10)); // exakt 8px Abstand
+        legendItem.add(Box.createHorizontalStrut(10));
         legendItem.add(labelComponent);
         legendItem.add(Box.createHorizontalGlue());
         addComponent(legendItem);
@@ -291,9 +266,15 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    public ControlBuilder<T> buttonSuccess(String label, Consumer<T> action) {
+        button(Colors.DARKER_GREEN, label, action);
+        return this;
+    }
+
     public ControlBuilder<T> button(Color color, String label,
                                     Consumer<T> action) {
         JButton button = new ModernButton(label, color);
+
         addComponent(button);
         button.addActionListener(e -> {
             action.accept(control.getActiveGraph());
@@ -302,22 +283,22 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
-    public ControlBuilder<T> outputTimed(String label, String key, Function<T
-            , String> getter, int delayMs) {
+    public ControlBuilder<T> outputTimed(String label, String key,
+                                         Function<T, String> getter,
+                                         int delayMs) {
         JTextField valueField = new JTextField("0.0 s");
+        JPanel container = new JPanel(new BorderLayout());
+
         valueField.setBorder(BorderFactory.createCompoundBorder(
                 new RoundedLineBorder(Colors.GRAY3, 1.2f, 12),
                 BorderFactory.createEmptyBorder(8, 8, 8, 8)
         ));
         valueField.setEditable(false);
         valueField.setFocusable(false);
-        JPanel container = new JPanel(new BorderLayout());
-
         container.setBackground(Colors.GRAY5);
         container.setBorder(new ModernLabeledBorder(label));
         container.add(valueField, BorderLayout.CENTER);
         outputs.put(key, valueField);
-
         Timer timer = new Timer(delayMs, e -> {
             T active = control.getActiveGraph();
             String value = getter.apply(active);
@@ -341,6 +322,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         addComponent(checkBox);
         checkBox.addActionListener(e -> {
             boolean newValue = checkBox.isSelected();
+
             setter.accept(control.getActiveGraph(), newValue);
             control.application.repaint();
         });
@@ -416,14 +398,12 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         slider.setPaintLabels(true);
         slider.setMajorTickSpacing(tickSpacing);
         slider.setBorder(new ModernLabeledBorder(label, true));
-
         double tickStart =
                 Math.floor(min / (tickSpacing / scale)) * (tickSpacing / scale);
 
         for (double v = tickStart; v <= max + 1e-9; v += tickSpacing / scale) {
             if (v >= min - 1e-9) {
-                labels.put((int) Math.round(v * scale),
-                        new JLabel(formatDouble(v)));
+                labels.put((int) Math.round(v * scale), new JLabel(formatDouble(v)));
             }
         }
         if (min <= 0 && max >= 0) {
@@ -465,8 +445,8 @@ public class ControlBuilder<T extends PlotGraph<T>> {
 
         combo.setBackground(Colors.GRAY5);
         combo.setSelectedIndex(0);
-        combo.setBorder(BorderFactory.createTitledBorder(new EmptyBorder(0, 0
-                , 0, 0), title));
+        combo.setBorder(BorderFactory.createTitledBorder(new EmptyBorder(0, 0,
+                0, 0), title));
         addComponent(combo);
         combo.addActionListener(e -> {
             int index = combo.getSelectedIndex();
@@ -481,6 +461,37 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    private void endRow() {
+        if (inMultiColumnRow) {
+            constraints.gridy++;
+            currentColumn = 0;
+            constraints.gridwidth = 2;
+            constraints.weightx = 1.0;
+            inMultiColumnRow = false;
+        }
+    }
+
+    private void addComponent(Component comp) {
+        constraints.gridx = currentColumn;
+        panel.add(comp, constraints);
+        if (!inMultiColumnRow) {
+            constraints.gridy++;
+        } else {
+            currentColumn++;
+            if (currentColumn >= 2) {
+                endRow();
+            }
+        }
+    }
+
+    private void updateOutput(String key, String value) {
+        JTextField field = outputs.get(key);
+
+        if (field != null) {
+            field.setText(value);
+        }
+    }
+
     /**
      * Attaches a change listener to a slider that updates the active graph
      * and triggers a repaint.
@@ -489,7 +500,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      * @param intGetter function to extract integer state from a graph (for
      *                  sync)
      * @param mapper    function to convert slider integer value to parameter
-     *                 type
+     *                  type
      * @param setter    function to apply the new value to the graph
      * @param <V>       the parameter type (Integer or Double)
      */
@@ -509,21 +520,16 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         });
     }
 
-    public void updateOutput(String key, String value) {
-        JTextField field = outputs.get(key);
-        if (field != null) {
-            field.setText(value);
-        }
-    }
-
     private void syncOutputsToActiveGraph() {
         T active = control.getActiveGraph();
 
         for (String key : outputs.keySet()) {
             Function<T, String> getter = outputGetters.get(key);
+
             if (getter != null) {
                 String value = getter.apply(active);
                 JTextField field = outputs.get(key);
+
                 if (field != null) {
                     field.setText(value);
                 }
@@ -537,8 +543,10 @@ public class ControlBuilder<T extends PlotGraph<T>> {
      */
     private void syncCheckBoxesToActiveGraph() {
         T active = control.getActiveGraph();
+
         for (int i = 0; i < checkBoxes.size(); i++) {
             boolean modelValue = checkBoxGetters.get(i).apply(active);
+
             checkBoxes.get(i).setSelected(modelValue);
         }
     }
@@ -594,16 +602,5 @@ public class ControlBuilder<T extends PlotGraph<T>> {
                 String::valueOf);
         slider.setLabelTable(labels);
         return slider;
-    }
-
-    /**
-     * Adds a component to the internal control panel using the current layout
-     * constraints and increments the grid Y position.
-     *
-     * @param component the UI component to add
-     */
-    private void add(Component component) {
-        panel.add(component, constraints);
-        constraints.gridy++;
     }
 }

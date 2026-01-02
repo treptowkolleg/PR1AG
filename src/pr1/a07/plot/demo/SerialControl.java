@@ -25,7 +25,7 @@ public class SerialControl extends PlotControl<SerialGraph> {
                 .buttonSecondary("Stop", SerialGraph::stop)
                 .buttonSecondary("Zurücksetzen", SerialGraph::reset)
                 .headline("Messsteuerung")
-                .button(Colors.DARK_GREEN, "Starte Messung", SerialGraph::sendStartCommand)
+                .buttonSuccess("Starte Messung", SerialGraph::sendStartCommand)
                 .checkbox("Messung bei 0 V stoppen", SerialGraph::isAutoStop, SerialGraph::setAutoStop)
                 .addDoubleColumn()
                 .outputTimed("Entladezeit", "t", SerialGraph::getStoppedTimeFormatted, 100)
