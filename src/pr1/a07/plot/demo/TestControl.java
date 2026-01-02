@@ -18,6 +18,7 @@ public class TestControl extends PlotControl<TestGraph> {
     public JPanel configureControls(ControlBuilder<TestGraph> build) {
         return build
                 .selector("Plot-Auswahl", "Plot")
+                .addDoubleColumn("Koordinaten")
                 .slider("X-Wert", -400, 400, TestGraph::getX, TestGraph::setX)
                 .slider("Y-Wert", -200, 200, TestGraph::getY, TestGraph::setY)
                 .getPanel();

@@ -20,6 +20,7 @@ public class SerialControl extends PlotControl<SerialGraph> {
     public JPanel configureControls(ControlBuilder<SerialGraph> build) {
         return build
                 .headline("Plot-Steuerung")
+                .selector(null, "Port")
                 .addDoubleColumn()
                 .buttonPrimary("Start", SerialGraph::start)
                 .buttonSecondary("Stop", SerialGraph::stop)

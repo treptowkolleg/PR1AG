@@ -9,7 +9,7 @@ public class SerialSet extends PlotSet<SerialGraph> {
     private final SerialGraph serialGraph;
 
     public SerialSet() {
-        serialGraph = new SerialGraph(Colors.DARKER_GREEN, "Spannung");
+        serialGraph = new SerialGraph(Colors.DARKER_GREEN, "COM3");
         setGrid(new MathGrid("t in s", "U in V"));
         addGraph(serialGraph);
         setTitle("Schwellenspannung von Dioden");
