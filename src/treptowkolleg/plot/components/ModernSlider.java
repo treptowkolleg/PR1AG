@@ -26,6 +26,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+/**
+ * A custom-styled slider component that replaces the default Swing appearance with
+ * a modern, minimalist design using the application's color scheme.
+ *
+ * <p>The slider features a thin, rounded track in white and a circular thumb in
+ * the application's primary blue color. It is non-opaque and non-focusable by default,
+ * making it suitable for compact, visually integrated control panels within the
+ * {@code treptowkolleg.plot} framework.
+ *
+ * <p>Rendering is handled by an internal {@code ModernSliderUI} that extends
+ * {@link BasicSliderUI} to provide custom painting logic while preserving
+ * standard slider behavior and accessibility.
+ */
 public class ModernSlider  extends JSlider {
     public ModernSlider(int min, int max, int value) {
         super(min, max, value);

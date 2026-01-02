@@ -24,6 +24,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+/**
+ * A small, visually styled panel that represents a single color entry in a plot legend.
+ * It renders a rounded rectangle filled with a specified color and outlined with a
+ * slightly darker border, providing clear visual association between a data series
+ * and its graphical representation.
+ *
+ * <p>This component is non-opaque and fixed at 18×18 pixels to ensure consistent
+ * alignment within legend layouts. It is designed to be paired with a descriptive
+ * label (e.g., in a horizontal Box layout) to form a complete legend entry.
+ */
 public class LegendItem extends JPanel {
     private final Color fillColor;
     private final Color borderColor;
@@ -32,7 +42,6 @@ public class LegendItem extends JPanel {
     public LegendItem(Color color) {
         this.fillColor = color;
         this.borderColor = color.darker();
-
         setOpaque(false);
         setPreferredSize(new Dimension(18, 18));
         setMinimumSize(new Dimension(18, 18));

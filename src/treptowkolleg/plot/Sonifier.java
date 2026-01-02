@@ -28,6 +28,22 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 
+/**
+ * A utility class that converts numeric data sequences into audible sound representations
+ * (sonification) and supports real-time playback or WAV file export.
+ *
+ * <p>This class maps input values (e.g., voltage measurements or signal differences)
+ * to audible frequencies using linear interpolation between a minimum and maximum pitch.
+ * The resulting audio is rendered as 16-bit mono PCM at 44.1 kHz and can be played
+ * through the system's default audio output or saved as a standard WAV file.
+ *
+ * <p>All public methods are static and thread-safe for concurrent read-only use.
+ * Input validation ensures graceful handling of null or empty data.
+ *
+ * <p>This class is part of the {@code treptowkolleg.plot} framework and is typically
+ * used to provide auditory feedback for scientific measurements, such as diode
+ * characterization curves in physics education.
+ */
 public class Sonifier {
 
     /**

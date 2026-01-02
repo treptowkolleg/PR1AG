@@ -22,6 +22,18 @@ import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import java.awt.Font;
 
+/**
+ * A visually enhanced checkbox component that integrates with the application's
+ * custom design system. It replaces the default Swing checkbox appearance with
+ * a modern, flat-style icon and uses the framework's color and typography scheme.
+ *
+ * <p>The checkbox is non-opaque, uses a clean sans-serif font, and provides
+ * consistent spacing and visual feedback. It relies on {@link ModernCheckBoxIcon}
+ * for rendering both selected and unselected states.
+ *
+ * <p>This component is intended for use in control panels and settings dialogs
+ * within the {@code treptowkolleg.plot} framework.
+ */
 public class ModernCheckBox extends JCheckBox {
 
     public ModernCheckBox() {

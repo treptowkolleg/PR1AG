@@ -2,6 +2,20 @@ package treptowkolleg.plot;
 
 import java.awt.Color;
 
+/**
+ * A centralized collection of predefined, application-specific {@link Color} constants
+ * for consistent and semantic visual styling across the plot framework.
+ *
+ * <p>Colors are grouped by hue and semantic intent (e.g., alert colors like {@link #RED},
+ * success indicators like {@link #GREEN}, and neutral UI grays like {@link #GRAY5}).
+ * All colors are defined using RGB values and are immutable by convention.
+ *
+ * <p>This class is designed to be used statically, e.g.:
+ * <pre>{@code
+ * g.setColor(Colors.BLUE);
+ * label.setForeground(Colors.DARKER_GREEN);
+ * }</pre>
+ */
 public abstract class Colors {
     public static Color RED = new Color(255, 56, 60);
     public static Color ORANGE = new Color(255, 141, 40);

@@ -4,6 +4,14 @@ import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.util.Objects;
 
+/**
+ * A centralized registry of application icons, providing static paths and a utility method
+ * to load images from embedded resources. All icons are expected to reside in the
+ * {@code /icons/} directory of the classpath and are accessed via their resource paths.
+ *
+ * <p>The {@link #get(String)} method safely loads an image and throws a {@link NullPointerException}
+ * if the specified icon path does not correspond to an existing resource.
+ */
 public abstract class Icon {
     public static String CHEVRON_RIGHT = "/icons/icons8-doppelt-rechts-16.png";
     public static String CHEVRON_LEFT = "/icons/icons8-doppelt-links-16.png";

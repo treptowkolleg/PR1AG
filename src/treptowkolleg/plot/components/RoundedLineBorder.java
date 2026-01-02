@@ -25,6 +25,19 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 
+/**
+ * A custom Swing border that renders a rounded rectangle outline with configurable
+ * stroke thickness and corner curvature. This border is fully anti-aliased and
+ * designed for modern, visually smooth UI elements.
+ *
+ * <p>The border insets are automatically calculated based on the line thickness
+ * and arc dimensions to ensure proper spacing between the border and contained
+ * components. It extends {@link AbstractBorder} and integrates seamlessly with
+ * standard Swing layout managers.
+ *
+ * <p>Typical use cases include framing input fields, panels, or buttons in a
+ * cohesive visual language within the {@code treptowkolleg.plot} framework.
+ */
 public class RoundedLineBorder extends AbstractBorder {
     private final Color color;
     private final double thickness;

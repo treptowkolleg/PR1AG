@@ -28,6 +28,17 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 
+/**
+ * A custom Swing border that displays a title label above or alongside an optional rounded rectangle outline.
+ * Designed to provide a modern, clean visual grouping for UI components such as control panels or option sections.
+ *
+ * <p>The border supports two modes: with or without a visible outline. When enabled, a subtle rounded rectangle
+ * is drawn using the application's neutral color palette. The title is rendered in a bold, sans-serif font
+ * at a configurable offset, ensuring visual hierarchy and readability.
+ *
+ * <p>This class is fully compatible with Swing layout managers via its {@link #getBorderInsets(Component)}
+ * implementation, which accounts for both the title height and the optional border stroke.
+ */
 public class ModernLabeledBorder implements Border {
     private final String title;
     private final Font font;

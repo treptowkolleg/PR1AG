@@ -25,6 +25,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * A utility class for reading numeric data from a serial port (e.g., an Arduino)
+ * and appending it to a shared list in real time. Designed for use in live data
+ * acquisition scenarios such as voltage measurements or sensor logging.
+ *
+ * <p>This class automatically detects the first available serial port on startup,
+ * configures it for 9600 baud, 8N1 communication, and provides thread-safe
+ * data ingestion. It implements {@link AutoCloseable} to support safe resource
+ * cleanup and registers a JVM shutdown hook to ensure the serial port is closed
+ * gracefully on application exit.
+ *
+ * <p>Usage is stateful: call {@link #startReading(ArrayList)} once to begin
+ * streaming data, and optionally send a trigger command via {@link #sendStartCommand()}.
+ * The class is not thread-safe for concurrent initialization but is safe for
+ * concurrent reading and UI updates due to internal synchronization.
+ *
+ * <p>Requires the {@code jSerialComm} library (MIT licensed). If no serial port
+ * is available, the instance remains inert and all operations become no-ops.
+ */
 public class SerialReader implements AutoCloseable {
     protected final SerialPort port;
     private final Thread readerThread;

@@ -189,10 +189,27 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return String.format("%.2f", value);
     }
 
+    /**
+     * Adds a new double-column section with a bold headline label.
+     * This is a convenience method that first creates a bold headline and then
+     * starts a two-column layout for subsequent controls (e.g., sliders, buttons).
+     * The headline uses font size 11 and bold weight.
+     *
+     * @param label the text to display as the section header
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> addDoubleColumn(String label) {
         return headline(label, Font.BOLD, 11f).addDoubleColumn();
     }
 
+    /**
+     * Begins a new two-column layout row within the control panel.
+     * Subsequent calls to component-adding methods (e.g., {@code slider()}, {@code button()})
+     * will place elements side by side in two equal-width columns until the row is filled.
+     * This method resets internal layout state to prepare for column-based placement.
+     *
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> addDoubleColumn() {
         this.inMultiColumnRow = true;
         this.currentColumn = 0;
@@ -210,20 +227,50 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return panel;
     }
 
+    /**
+     * Adds a vertical spacer (divider) with a default height of 10 pixels to visually
+     * separate sections in the control panel.
+     *
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> divider() {
         return divider(10);
     }
 
+    /**
+     * Adds a vertical spacer (divider) with the specified height in pixels to create
+     * visual separation between UI elements or groups.
+     *
+     * @param height the height of the vertical spacer in pixels; must be non-negative
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> divider(int height) {
         Component verticalSpacer = Box.createVerticalStrut(height);
         addComponent(verticalSpacer);
         return this;
     }
 
+    /**
+     * Adds a bold headline label with the default font size of 14 points.
+     * The text is left-aligned and prefixed with a leading space for visual padding.
+     *
+     * @param text the headline text to display; must not be null
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> headline(String text) {
         return headline(text, Font.BOLD, 14f);
     }
 
+    /**
+     * Adds a customizable headline label with the specified font style and size.
+     * The text is left-aligned and automatically prefixed with a leading space
+     * for consistent visual spacing within the control panel.
+     *
+     * @param text the headline text to display; must not be null
+     * @param fontType the font style (e.g., {@link Font#PLAIN}, {@link Font#BOLD})
+     * @param fontSize the font size in points (e.g., 12.0f, 14.0f)
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> headline(String text, int fontType,
                                       float fontSize) {
         JLabel headlineLabel = new JLabel(" " + text);
@@ -234,6 +281,15 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    /**
+     * Adds a legend entry consisting of a colored indicator and a descriptive label.
+     * The legend item is laid out horizontally with consistent spacing and integrates
+     * seamlessly into the control panel's visual style.
+     *
+     * @param color the color to display in the legend swatch
+     * @param label the descriptive text shown next to the color indicator
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> legend(Color color, String label) {
         JPanel legendItem = new JPanel();
         JComponent colorBox = new LegendItem(color);
@@ -250,26 +306,71 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    /**
+     * Adds a standard-styled button with a neutral gray background and the given label.
+     * When clicked, the provided action is executed with the currently active graph
+     * from the associated control as input.
+     *
+     * @param label the button's display text
+     * @param action the action to perform when the button is clicked; receives the active graph
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> button(String label, Consumer<T> action) {
         button(Colors.GRAY2, label, action);
         return this;
     }
 
+    /**
+     * Adds a primary-accent button styled in blue, indicating a main or default action.
+     * The button triggers the given action with the currently active graph upon click.
+     *
+     * @param label the button's display text
+     * @param action the action to perform when the button is clicked; receives the active graph
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> buttonPrimary(String label, Consumer<T> action) {
         button(Colors.BLUE, label, action);
         return this;
     }
 
+    /**
+     * Adds a secondary-styled button with a light neutral background, suitable for
+     * auxiliary or less prominent actions. Executes the provided action with the
+     * current graph on click.
+     *
+     * @param label the button's display text
+     * @param action the action to perform when the button is clicked; receives the active graph
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> buttonSecondary(String label, Consumer<T> action) {
         button(Colors.GRAY6, label, action);
         return this;
     }
 
+    /**
+     * Adds a success-styled button in dark green, typically used for confirmations,
+     * completions, or positive actions (e.g., "Save", "Play"). The action is called
+     * with the currently active graph when the button is pressed.
+     *
+     * @param label the button's display text
+     * @param action the action to perform when the button is clicked; receives the active graph
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> buttonSuccess(String label, Consumer<T> action) {
         button(Colors.DARKER_GREEN, label, action);
         return this;
     }
 
+    /**
+     * Adds a custom-styled button with the specified background color and label.
+     * When clicked, the action is executed using the currently active graph from
+     * the control, and the application window is repainted to reflect any changes.
+     *
+     * @param color the background color of the button
+     * @param label the button's display text
+     * @param action the action to perform on click; receives the active graph
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> button(Color color, String label,
                                     Consumer<T> action) {
         JButton button = new ModernButton(label, color);
@@ -282,6 +383,20 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    /**
+     * Adds a read-only output field that automatically updates its displayed value at regular intervals.
+     * The value is computed by applying the provided getter function to the currently active graph.
+     * A labeled container with a rounded border is created to present the field in a consistent UI style.
+     *
+     * <p>A Swing {@link Timer} is started internally with the specified delay to refresh the display.
+     * The field is non-editable and visually styled to match the application's design language.
+     *
+     * @param label the descriptive label shown above the output field
+     * @param key a unique identifier used to reference this output field externally (e.g., for updates)
+     * @param getter a function that extracts a string representation from the active graph
+     * @param delayMs the update interval in milliseconds (e.g., 500 for twice per second)
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> outputTimed(String label, String key,
                                          Function<T, String> getter,
                                          int delayMs) {
@@ -308,6 +423,20 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         return this;
     }
 
+    /**
+     * Adds a checkbox that reflects and controls a boolean property of the active graph.
+     * The initial state is determined by the getter, and changes are written back via the setter.
+     * The checkbox is styled with the application's modern UI components and integrates into
+     * the control panel's layout.
+     *
+     * <p>When the user toggles the checkbox, the setter is invoked with the new value,
+     * and the application window is repainted to reflect any visual changes.
+     *
+     * @param label the text displayed next to the checkbox
+     * @param getter a function that retrieves the current boolean state from a graph
+     * @param setter a consumer that applies a new boolean value to a graph
+     * @return this builder instance for method chaining
+     */
     public ControlBuilder<T> checkbox(
             String label,
             Function<T, Boolean> getter,
@@ -491,18 +620,6 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         }
     }
 
-    /**
-     * Attaches a change listener to a slider that updates the active graph
-     * and triggers a repaint.
-     *
-     * @param slider    the slider to attach the listener to
-     * @param intGetter function to extract integer state from a graph (for
-     *                  sync)
-     * @param mapper    function to convert slider integer value to parameter
-     *                  type
-     * @param setter    function to apply the new value to the graph
-     * @param <V>       the parameter type (Integer or Double)
-     */
     private <V> void attachSliderListener(
             JSlider slider,
             Function<T, Integer> intGetter,
@@ -536,10 +653,6 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         }
     }
 
-    /**
-     * Synchronizes all checkboxes to reflect the current state of the active
-     * graph.
-     */
     private void syncCheckBoxesToActiveGraph() {
         T active = control.getActiveGraph();
 
@@ -550,10 +663,6 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         }
     }
 
-    /**
-     * Synchronizes all sliders to reflect the current state of the active
-     * graph.
-     */
     private void syncSlidersToActiveGraph() {
         T active = control.getActiveGraph();
 
@@ -562,17 +671,6 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         }
     }
 
-    /**
-     * Creates and configures a JSlider for integer values with automatic,
-     * human-readable ticks and labels.
-     *
-     * @param min   the minimum value (inclusive)
-     * @param max   the maximum value (inclusive)
-     * @param value the initial slider value
-     * @param title the border title for the slider
-     * @return a fully configured JSlider
-     * @throws IllegalArgumentException if min >= max
-     */
     private JSlider createIntSlider(int min, int max, int value, String title) {
         if (min >= max) {
             throw new IllegalArgumentException("min must be less than max");

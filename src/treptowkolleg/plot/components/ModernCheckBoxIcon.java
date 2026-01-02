@@ -25,6 +25,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+/**
+ * A custom icon implementation for a modern, flat-style checkbox used in the
+ * {@link ModernCheckBox} component. It renders a rounded square with a subtle
+ * border, and displays a clean checkmark when selected.
+ *
+ * <p>The icon uses the application's color palette: a white fill and black
+ * checkmark when selected, and a neutral gray border in both states.
+ * All rendering is anti-aliased for visual smoothness.
+ *
+ * <p>This class implements the {@link javax.swing.Icon} interface and is
+ * intended to be used exclusively with {@code ModernCheckBox} to ensure
+ * consistent UI appearance across the plot framework.
+ */
 public class ModernCheckBoxIcon implements Icon {
     private final boolean selected;
     private final int size = 18;
