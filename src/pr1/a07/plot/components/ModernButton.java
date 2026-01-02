@@ -114,7 +114,7 @@ public class ModernButton extends JButton {
      * standard Swing painting to allow full custom rendering.
      */
     protected void init() {
-        setFont(new Font("SF Pro Text, Helvetica Neue, Arial", Font.BOLD, 14));
+        setFont(new Font("SF Pro Text, Helvetica Neue, Arial", Font.BOLD, 13));
         setForeground(Color.WHITE);
         setFocusPainted(false);
         setBorderPainted(false);

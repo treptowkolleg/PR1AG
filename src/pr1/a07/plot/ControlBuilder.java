@@ -222,12 +222,12 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     }
 
     public ControlBuilder<T> headline(String text) {
-        return headline(text, Font.BOLD, 13f);
+        return headline(text, Font.BOLD, 14f);
     }
 
     public ControlBuilder<T> headline(String text, int fontType,
                                       float fontSize) {
-        JLabel headlineLabel = new JLabel(text);
+        JLabel headlineLabel = new JLabel(" " + text);
         headlineLabel.setFont(headlineLabel.getFont().deriveFont(fontType,
                 fontSize));
         headlineLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
