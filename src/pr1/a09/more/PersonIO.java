@@ -28,9 +28,12 @@ public class PersonIO extends IOApplication {
         PrintDecorator decorator = getConsolePrintDecorator();
 
         for (Map.Entry<String, ObjectFactory<?>> entry : PEOPLE.entrySet()) {
-            decorator.printHeadline(entry.getKey());
+            String title = entry.getKey();
+            ObjectFactory<?> factory = entry.getValue();
+
+            decorator.printHeadline(title);
             withFileScanner("people.txt", scanner -> {
-                Parser.listOf(scanner, entry.getValue()).forEach(this::println);
+                Parser.listOf(scanner, factory).forEach(this::println);
             });
         }
     }
