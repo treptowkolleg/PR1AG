@@ -87,8 +87,7 @@ public class Parser {
     private static <T> ArrayList<T> parseLines(
             Stream<String> input,
             Predicate<String[]> validator,
-            Function<String[], T> mapper
-    ) {
+            Function<String[], T> mapper) {
         return input.map(String::trim)
                 .filter(StreamUtil.IS_NOT_EMPTY)
                 .filter(StreamUtil.IS_NO_LINE_COMMENT)
