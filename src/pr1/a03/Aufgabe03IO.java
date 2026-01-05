@@ -16,7 +16,7 @@
  */
 package pr1.a03;
 
-import pr1.helper.core.StopWatch;
+import treptowkolleg.edu.tools.StopWatch;
 import schimkat.berlin.lernhilfe2025ws.io.ConsolePrinter;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileWriter;
 

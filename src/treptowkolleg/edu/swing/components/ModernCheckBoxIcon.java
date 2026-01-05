@@ -1,0 +1,83 @@
+/*
+ * Copyright (C) 2025 Benjamin Wagner
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>.
+ */
+package treptowkolleg.edu.swing.components;
+
+import treptowkolleg.edu.swing.graphics.Colors;
+
+import javax.swing.Icon;
+import java.awt.BasicStroke;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+/**
+ * A custom icon implementation for a modern, flat-style checkbox used in the
+ * {@link ModernCheckBox} component. It renders a rounded square with a subtle
+ * border, and displays a clean checkmark when selected.
+ *
+ * <p>The icon uses the application's color palette: a white fill and black
+ * checkmark when selected, and a neutral gray border in both states.
+ * All rendering is anti-aliased for visual smoothness.
+ *
+ * <p>This class implements the {@link javax.swing.Icon} interface and is
+ * intended to be used exclusively with {@code ModernCheckBox} to ensure
+ * consistent UI appearance across the plot framework.
+ */
+public class ModernCheckBoxIcon implements Icon {
+    private final boolean selected;
+    private final int size = 18;
+    private final int arc = 4;
+
+    public ModernCheckBoxIcon(boolean selected) {
+        this.selected = selected;
+    }
+
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2d = (Graphics2D) g.create();
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+        if (selected) {
+            g2d.setColor(Colors.WHITE);
+            g2d.fillRoundRect(x, y, size, size, arc, arc);
+        }
+
+        g2d.setColor(Colors.GRAY3);
+        g2d.setStroke(new BasicStroke(1.2f));
+        g2d.drawRoundRect(x, y, size - 1, size - 1, arc, arc);
+        if (selected) {
+            g2d.setStroke(new BasicStroke(1.8f));
+            g2d.setColor(Colors.BLACK);
+            int[] xPoints = {x + 5, x + 8, x + 13};
+            int[] yPoints = {y + 9, y + 12, y + 7};
+            g2d.drawPolyline(xPoints, yPoints, 3);
+        }
+        g2d.dispose();
+    }
+
+    @Override
+    public int getIconWidth() {
+        return size;
+    }
+
+    @Override
+    public int getIconHeight() {
+        return size;
+    }
+}

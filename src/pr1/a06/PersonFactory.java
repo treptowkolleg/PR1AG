@@ -1,6 +1,6 @@
 package pr1.a06;
 
-import pr1.helper.extension.WesternReplacementRule;
+import treptowkolleg.edu.extension.natlang.WesternReplacementRule;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

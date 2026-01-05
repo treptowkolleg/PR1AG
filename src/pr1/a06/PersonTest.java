@@ -1,9 +1,9 @@
 package pr1.a06;
 
-import pr1.helper.core.IOApplication;
-import pr1.helper.extension.PrintDecorator;
-import pr1.helper.extension.StringTransformer;
-import pr1.helper.extension.WesternReplacementRule;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
+import treptowkolleg.edu.extension.strings.StringTransformer;
+import treptowkolleg.edu.extension.natlang.WesternReplacementRule;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;

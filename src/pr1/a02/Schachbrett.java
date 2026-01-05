@@ -16,10 +16,10 @@
  */
 package pr1.a02;
 
-import pr1.helper.core.FileWriter;
-import pr1.helper.extension.PrintDecorator;
-import pr1.helper.core.FileTarget;
-import pr1.helper.extension.Range;
+import treptowkolleg.edu.text.FileWriter;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
+import treptowkolleg.edu.text.FileTarget;
+import treptowkolleg.edu.extension.math.Range;
 
 import java.io.PrintWriter;
 

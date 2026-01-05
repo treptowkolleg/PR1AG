@@ -17,9 +17,9 @@
 
 package pr1.a07;
 
-import pr1.helper.core.Drawable;
-import pr1.helper.core.GraphicsApplication;
-import treptowkolleg.plot.PlotApplication;
+import treptowkolleg.edu.swing.graphics.Drawable;
+import treptowkolleg.edu.swing.graphics.GraphicsApplication;
+import treptowkolleg.edu.swing.plot.PlotApplication;
 
 import javax.swing.SwingUtilities;
 import java.awt.Color;

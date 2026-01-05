@@ -1,7 +1,7 @@
 package pr1.a09;
 
-import pr1.helper.core.IOApplication;
-import pr1.helper.extension.BetterRandom;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.math.BetterRandom;
 
 import java.io.IOException;
 import java.io.PrintWriter;

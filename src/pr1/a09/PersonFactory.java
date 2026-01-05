@@ -3,7 +3,7 @@ package pr1.a09;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static pr1.helper.extension.Validator.isInteger;
+import static treptowkolleg.edu.extension.math.Validator.isInteger;
 
 public class PersonFactory implements ObjectFactory<Person> {
 

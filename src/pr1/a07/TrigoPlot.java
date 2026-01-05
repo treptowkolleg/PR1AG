@@ -1,8 +1,8 @@
 package pr1.a07;
 
-import pr1.helper.core.ControlPanel;
-import pr1.helper.core.Controllable;
-import pr1.helper.core.Drawable;
+import treptowkolleg.edu.swing.graphics.ControlPanel;
+import treptowkolleg.edu.swing.graphics.Controllable;
+import treptowkolleg.edu.swing.graphics.Drawable;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

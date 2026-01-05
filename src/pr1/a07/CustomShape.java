@@ -1,6 +1,6 @@
 package pr1.a07;
 
-import pr1.helper.core.ControlPanel;
+import treptowkolleg.edu.swing.graphics.ControlPanel;
 
 import java.awt.Color;
 

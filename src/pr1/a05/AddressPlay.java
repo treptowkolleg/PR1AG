@@ -4,11 +4,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import pr1.helper.core.IOApplication;
-import pr1.helper.core.Delimiter;
-import pr1.helper.extension.BetterRandom;
-import pr1.helper.extension.PrintDecorator;
-import pr1.helper.extension.Range;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.strings.Delimiter;
+import treptowkolleg.edu.extension.math.BetterRandom;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
+import treptowkolleg.edu.extension.math.Range;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.Adresse;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.AdresseList;

@@ -18,8 +18,8 @@ package pr1.a03;
 
 import java.io.PrintWriter;
 
-import pr1.helper.entity.MixedNumber;
-import pr1.helper.repository.MixedNumberList;
+import treptowkolleg.edu.extension.math.MixedNumber;
+import treptowkolleg.edu.extension.math.MixedNumberList;
 
 public class SomeFormats {
     public static final MixedNumberList numberList = new MixedNumberList();

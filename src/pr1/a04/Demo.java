@@ -1,8 +1,8 @@
 package pr1.a04;
 
-import pr1.helper.core.IOApplication;
-import pr1.helper.core.Delimiter;
-import pr1.helper.core.MatchPattern;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.strings.Delimiter;
+import treptowkolleg.edu.extension.strings.MatchPattern;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;

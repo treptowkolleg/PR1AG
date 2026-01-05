@@ -1,9 +1,9 @@
 package pr1.a07.plot.demo;
 
-import treptowkolleg.plot.GridPosition;
-import treptowkolleg.plot.PlotApplication;
-import treptowkolleg.plot.PlotControl;
-import treptowkolleg.plot.PlotSet;
+import treptowkolleg.edu.swing.plot.GridPosition;
+import treptowkolleg.edu.swing.plot.PlotApplication;
+import treptowkolleg.edu.swing.plot.PlotControl;
+import treptowkolleg.edu.swing.plot.PlotSet;
 
 public class TrigonometrieSet extends PlotSet<TrigonometrieGraph> {
 

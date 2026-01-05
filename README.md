@@ -20,13 +20,14 @@ Um bequem auf nützliche Helfer zugreifen zu können, erben wir von ``AbstractAp
 ````java
 package pr1.a04;
 
-import pr1.helper.core.IOApplication;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.text.IOApplication;
 
-public class Demo extends IOApplication {
-    public static void main(String[] args) {
-        // neue Instanz dieser Klasse erzeugen.
-        new Demo();
-    }
+public class Demo extends treptowkolleg.edu.text.IOApplication {
+  public static void main(String[] args) {
+    // neue Instanz dieser Klasse erzeugen.
+    new Demo();
+  }
 }
 ````
 
@@ -36,18 +37,18 @@ dass wir die Methode ``public void run()`` implementieren. Das tun wir also:
 ````java
 package pr1.a04;
 
-import pr1.helper.core.IOApplication;
+import treptowkolleg.edu.text.IOApplication;
 
 public class Demo extends IOApplication {
-    public static void main(String[] args) {
-        // neue Instanz dieser Klasse erzeugen.
-        new Demo();
-    }
+  public static void main(String[] args) {
+    // neue Instanz dieser Klasse erzeugen.
+    new Demo();
+  }
 
-    @override
-    public void run() {
-        // hier erfolgen unsere Anweisungen.
-    }
+  @override
+  public void run() {
+    // hier erfolgen unsere Anweisungen.
+  }
 }
 ````
 
@@ -127,17 +128,17 @@ Diese Klasse hat den vollqualifizierten Namen ``pr1.a04.Demo``. Die neue Datei l
 ``./data/a04/demo.txt``.
 
 ````java
-import pr1.helper.core.FileTarget;
+import treptowkolleg.edu.text.FileTarget;
 
 // ...
 
 public void run() {
-    // erzeugt die Datei ./data/a04/demo.txt
-    createFileWriter();
-    // erzeugt die Datei ./data/a04/my_file.html
-    createFileWriter("my_file.html");
-    // erzeugt die Datei './a04/my_file.txt' im Benutzerordner (je nach Betriebssystem)
-    createFileWriter(FileTarget.USER_DIR, "my_file.txt");
+  // erzeugt die Datei ./data/a04/demo.txt
+  createFileWriter();
+  // erzeugt die Datei ./data/a04/my_file.html
+  createFileWriter("my_file.html");
+  // erzeugt die Datei './a04/my_file.txt' im Benutzerordner (je nach Betriebssystem)
+  createFileWriter(FileTarget.USER_DIR, "my_file.txt");
 }
 ````
 
@@ -177,8 +178,8 @@ Wir haben folgenden Dateiinhalt:
 ````
 
 ```java
-import pr1.helper.core.Delimiter;
-import pr1.helper.core.MatchPattern;
+import treptowkolleg.edu.extension.strings.Delimiter;
+import treptowkolleg.edu.extension.strings.MatchPattern;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -186,33 +187,33 @@ import java.util.stream.Stream;
 // ...
 
 public void run() {
-    // liest die Datei ./data/a04/demo.txt
-    withFileScanner(scanner -> {
-        // Als Token-Trenner Leerzeichen und Komma erlauben
-        scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern());
-        while (scanner.hasNext()) {
-            if (scanner.hasNextInt()) {
-                // auf der Konsole ausgeben (oder mit printfToFile() in Datei schreiben)
-                printf("Zahl %d gefunden.%n", scanner.nextInt());
-            } else {
-                scanner.next();
-            }
-        }
-    });
+  // liest die Datei ./data/a04/demo.txt
+  withFileScanner(scanner -> {
+    // Als Token-Trenner Leerzeichen und Komma erlauben
+    scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern());
+    while (scanner.hasNext()) {
+      if (scanner.hasNextInt()) {
+        // auf der Konsole ausgeben (oder mit printfToFile() in Datei schreiben)
+        printf("Zahl %d gefunden.%n", scanner.nextInt());
+      } else {
+        scanner.next();
+      }
+    }
+  });
 
-    // oder alternativ:
-    withFileScanner(scanner -> {
-        Stream<String> stream = scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens();
-        Stream<String> filteredStream = stream.filter(s -> s.matches(MatchPattern.INTEGER.getRegex()));
-        IntStream intStream = filteredStream.mapToInt(Integer::parseInt);
-        intStream.forEach(i -> printf("Zahl %d gefunden.%n", i));
-    });
-    
-    // und kürzer:
-    withFileScanner(scanner -> scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens()
-            .filter(s -> s.matches(MatchPattern.INTEGER.getRegex())).mapToInt(Integer::parseInt).forEach(
-                    element -> printf("Zahl %d gefunden.%n", element))
-    );
+  // oder alternativ:
+  withFileScanner(scanner -> {
+    Stream<String> stream = scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens();
+    Stream<String> filteredStream = stream.filter(s -> s.matches(MatchPattern.INTEGER.getRegex()));
+    IntStream intStream = filteredStream.mapToInt(Integer::parseInt);
+    intStream.forEach(i -> printf("Zahl %d gefunden.%n", i));
+  });
+
+  // und kürzer:
+  withFileScanner(scanner -> scanner.useDelimiter(Delimiter.WHITESPACE_OR_COMMA.getPattern()).tokens()
+          .filter(s -> s.matches(MatchPattern.INTEGER.getRegex())).mapToInt(Integer::parseInt).forEach(
+                  element -> printf("Zahl %d gefunden.%n", element))
+  );
 }
 
 /* ergibt die Ausgabe

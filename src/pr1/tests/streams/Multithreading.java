@@ -1,7 +1,7 @@
 package pr1.tests.streams;
 
-import pr1.helper.core.IOApplication;
-import pr1.helper.core.StopWatch;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.tools.StopWatch;
 
 import java.io.File;
 import java.io.IOException;

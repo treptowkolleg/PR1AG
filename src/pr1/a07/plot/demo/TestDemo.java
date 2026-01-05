@@ -1,6 +1,6 @@
 package pr1.a07.plot.demo;
 
-import treptowkolleg.plot.PlotApplication;
+import treptowkolleg.edu.swing.plot.PlotApplication;
 
 public class TestDemo {
 

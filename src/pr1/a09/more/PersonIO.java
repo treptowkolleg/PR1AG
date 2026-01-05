@@ -4,8 +4,8 @@ import pr1.a09.HandwerkerFactory;
 import pr1.a09.ObjectFactory;
 import pr1.a09.PersonFactory;
 import pr1.a09.StudentFactory;
-import pr1.helper.core.IOApplication;
-import pr1.helper.extension.PrintDecorator;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
 
 import java.io.IOException;
 import java.util.Map;

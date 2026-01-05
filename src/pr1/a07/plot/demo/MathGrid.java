@@ -1,8 +1,8 @@
 package pr1.a07.plot.demo;
 
-import treptowkolleg.plot.Colors;
-import treptowkolleg.plot.PlotApplication;
-import treptowkolleg.plot.PlotGrid;
+import treptowkolleg.edu.swing.graphics.Colors;
+import treptowkolleg.edu.swing.plot.PlotApplication;
+import treptowkolleg.edu.swing.plot.PlotGrid;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

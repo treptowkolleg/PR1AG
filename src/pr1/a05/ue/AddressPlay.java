@@ -1,10 +1,10 @@
 package pr1.a05.ue;
 
-import pr1.helper.core.IOApplication;
-import pr1.helper.extension.BetterRandom;
-import pr1.helper.extension.PrintDecorator;
-import pr1.helper.extension.Range;
-import pr1.helper.extension.StringTransformer;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.math.BetterRandom;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
+import treptowkolleg.edu.extension.math.Range;
+import treptowkolleg.edu.extension.strings.StringTransformer;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.*;
 

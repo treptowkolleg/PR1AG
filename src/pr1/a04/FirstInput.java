@@ -4,12 +4,12 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 import pr1.a03.SomeFormats;
-import pr1.helper.core.IOApplication;
-import pr1.helper.core.Delimiter;
-import pr1.helper.core.MatchPattern;
-import pr1.helper.extension.Sum;
-import pr1.helper.extension.Counter;
-import pr1.helper.extension.PrintDecorator;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.strings.Delimiter;
+import treptowkolleg.edu.extension.strings.MatchPattern;
+import treptowkolleg.edu.extension.math.Sum;
+import treptowkolleg.edu.extension.math.Counter;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
 
 public class FirstInput extends IOApplication {
 

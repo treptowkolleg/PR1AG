@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"Alle Packages","u":"allpackages-index.html","k":"18"},{"l":"treptowkolleg.plot"},{"l":"treptowkolleg.plot.components"}];updateSearchResults();

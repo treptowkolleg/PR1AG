@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static pr1.a09.PersonFactory.createPerson;
-import static pr1.helper.extension.Validator.isDouble;
-import static pr1.helper.extension.Validator.isInteger;
+import static treptowkolleg.edu.extension.math.Validator.isDouble;
+import static treptowkolleg.edu.extension.math.Validator.isInteger;
 
 public class HandwerkerFactory implements ObjectFactory<Handwerker> {
 

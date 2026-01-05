@@ -1,7 +1,7 @@
 package pr1.a05.vb;
 
-import pr1.helper.core.IOApplication;
-import pr1.helper.extension.PrintDecorator;
+import treptowkolleg.edu.text.IOApplication;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.Adresse;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.AdresseList;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.Person;

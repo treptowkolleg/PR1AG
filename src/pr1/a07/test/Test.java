@@ -1,6 +1,6 @@
 package pr1.a07.test;
 
-import pr1.helper.core.GraphicsApplication;
+import treptowkolleg.edu.swing.graphics.GraphicsApplication;
 
 import java.util.List;
 

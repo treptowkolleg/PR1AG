@@ -1,7 +1,7 @@
 package pr1.a07.plot.demo;
 
 import pr1.a07.CMath;
-import treptowkolleg.plot.PlotGraph;
+import treptowkolleg.edu.swing.plot.PlotGraph;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

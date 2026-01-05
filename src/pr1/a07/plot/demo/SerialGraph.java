@@ -1,11 +1,11 @@
 package pr1.a07.plot.demo;
 
-import treptowkolleg.plot.Colors;
-import treptowkolleg.plot.PlotGraph;
-import treptowkolleg.plot.SerialReader;
-import treptowkolleg.plot.Sonifier;
-import treptowkolleg.plot.Stroke;
-import pr1.helper.core.StopWatch;
+import treptowkolleg.edu.swing.graphics.Colors;
+import treptowkolleg.edu.swing.plot.PlotGraph;
+import treptowkolleg.edu.swing.plot.SerialReader;
+import treptowkolleg.edu.swing.plot.Sonifier;
+import treptowkolleg.edu.swing.graphics.Stroke;
+import treptowkolleg.edu.tools.StopWatch;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

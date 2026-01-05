@@ -16,7 +16,7 @@
  */
 package pr1.a01;
 
-import pr1.helper.extension.Range;
+import treptowkolleg.edu.extension.math.Range;
 
 import java.io.PrintWriter;
 
