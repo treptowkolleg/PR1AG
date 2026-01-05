@@ -1,9 +1,9 @@
 package pr1.a06;
 
-import treptowkolleg.edu.text.IOApplication;
-import treptowkolleg.edu.extension.strings.PrintDecorator;
-import treptowkolleg.edu.extension.strings.StringTransformer;
+import treptowkolleg.edu.extension.natlang.LanguageTransformer;
 import treptowkolleg.edu.extension.natlang.WesternReplacementRule;
+import treptowkolleg.edu.extension.strings.PrintDecorator;
+import treptowkolleg.edu.text.IOApplication;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ public class PersonTest extends IOApplication {
     public static void printPersonsSlugified(PrintWriter out,
                                              ArrayList<Person> persons) {
         persons.forEach(p -> out.printf("%s %s %s%n",
-                StringTransformer.slugify(p.getFirstName(),
+                LanguageTransformer.slugify(p.getFirstName(),
                         WesternReplacementRule.class),
-                StringTransformer.slugify(p.getLastName(),
+                LanguageTransformer.slugify(p.getLastName(),
                         WesternReplacementRule.class),
                 p.getBirthYear()));
     }
@@ -83,9 +83,9 @@ public class PersonTest extends IOApplication {
                     .filter(parts -> parts.length == 3)
                     // Stream<Person>
                     .map(parts -> new Person(
-                            StringTransformer.humanize(parts[0],
+                            LanguageTransformer.humanize(parts[0],
                                     WesternReplacementRule.class),
-                            StringTransformer.humanize(parts[1],
+                            LanguageTransformer.humanize(parts[1],
                                     WesternReplacementRule.class),
                             Integer.parseInt(parts[2])
                     ))

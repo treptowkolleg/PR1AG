@@ -4,7 +4,7 @@ import treptowkolleg.edu.text.IOApplication;
 import treptowkolleg.edu.extension.math.BetterRandom;
 import treptowkolleg.edu.extension.strings.PrintDecorator;
 import treptowkolleg.edu.extension.math.Range;
-import treptowkolleg.edu.extension.strings.StringTransformer;
+import treptowkolleg.edu.extension.natlang.LanguageTransformer;
 import schimkat.berlin.lernhilfe2025ws.io.FunnyFirstFileReader;
 import schimkat.berlin.lernhilfe2025ws.objectPlay.*;
 
@@ -74,8 +74,8 @@ public class AddressPlay extends IOApplication {
 
     public static Adresse createAdresse(String[] parts) {
         return new Adresse(Integer.parseInt(parts[0]),
-                StringTransformer.normalize(parts[1]),
-                StringTransformer.normalize(parts[2]),
+                LanguageTransformer.normalize(parts[1]),
+                LanguageTransformer.normalize(parts[2]),
                 Integer.parseInt(parts[3]));
     }
 

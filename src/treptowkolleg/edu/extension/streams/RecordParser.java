@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package treptowkolleg.edu.extension.strings;
+package treptowkolleg.edu.extension.streams;
 
 import pr1.a09.ObjectFactory;
 
@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * validation and transformation logic provided by an {@link ObjectFactory}, and returns a list
  * of successfully parsed objects. Lines are treated as records separated by line breaks.
  */
-public class Parser {
+public class RecordParser {
 
     /**
      * Parses all lines from the given {@link Scanner} into a list of objects of type {@code T}.

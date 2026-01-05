@@ -1,10 +1,10 @@
-package treptowkolleg.edu.extension.strings;
+package treptowkolleg.edu.extension.natlang;
 
-import treptowkolleg.edu.extension.natlang.ReplacementRuleInterface;
+import treptowkolleg.edu.extension.strings.Delimiter;
 
 import java.io.Serializable;
 
-public class StringTransformer {
+public class LanguageTransformer {
 
     public static String slugify(Object obj, Class<?
             extends ReplacementRuleInterface> languageInterface) {

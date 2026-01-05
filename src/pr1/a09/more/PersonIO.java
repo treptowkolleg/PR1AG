@@ -4,7 +4,7 @@ import pr1.a09.HandwerkerFactory;
 import pr1.a09.ObjectFactory;
 import pr1.a09.PersonFactory;
 import pr1.a09.StudentFactory;
-import treptowkolleg.edu.extension.strings.Parser;
+import treptowkolleg.edu.extension.streams.RecordParser;
 import treptowkolleg.edu.extension.strings.PrintDecorator;
 import treptowkolleg.edu.text.IOApplication;
 
@@ -34,7 +34,7 @@ public class PersonIO extends IOApplication {
 
             decorator.printHeadline(title);
             withFileScanner("people.txt", scanner -> {
-                Parser.listOf(scanner, factory).forEach(this::println);
+                RecordParser.listOf(scanner, factory).forEach(this::println);
             });
         }
     }
