@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package pr1.a09.more;
+package treptowkolleg.edu.extension.strings;
 
 import pr1.a09.ObjectFactory;
 
@@ -31,8 +31,6 @@ import java.util.stream.Stream;
  * This parser reads line-based input (e.g., from CSV-like formats), processes each line through
  * validation and transformation logic provided by an {@link ObjectFactory}, and returns a list
  * of successfully parsed objects. Lines are treated as records separated by line breaks.
- * <p>
- * <strong>Note:</strong> This class is intended for internal use and should be moved to the helper package.
  */
 public class Parser {
 

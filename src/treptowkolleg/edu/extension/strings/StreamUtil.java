@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package pr1.a09.more;
+package treptowkolleg.edu.extension.strings;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
