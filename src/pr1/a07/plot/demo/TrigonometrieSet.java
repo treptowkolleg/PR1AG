@@ -1,6 +1,5 @@
 package pr1.a07.plot.demo;
 
-import treptowkolleg.edu.swing.plot.GridPosition;
 import treptowkolleg.edu.swing.plot.PlotApplication;
 import treptowkolleg.edu.swing.plot.PlotControl;
 import treptowkolleg.edu.swing.plot.PlotSet;
@@ -8,7 +7,7 @@ import treptowkolleg.edu.swing.plot.PlotSet;
 public class TrigonometrieSet extends PlotSet<TrigonometrieGraph> {
 
     public TrigonometrieSet() {
-        setTitle("Trigonometrie-Funktionen");
+        setTitle("Trigonometrische Funktionen");
         setGrid(new TrigonometrieGrid());
         addGraph(GraphFactory.sinus());
         addGraph(GraphFactory.cosinus());
@@ -22,8 +21,7 @@ public class TrigonometrieSet extends PlotSet<TrigonometrieGraph> {
     }
 
     @Override
-    public void preSetup(PlotApplication frame) {
-        setGridPosition(GridPosition.CENTER, frame.getDrawablePanel());
-        setZoomY(2);
+    public void preSetup(PlotApplication app) {
+        app.setZoom(1, 2);
     }
 }

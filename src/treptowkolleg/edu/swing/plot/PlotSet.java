@@ -75,39 +75,6 @@ public abstract class PlotSet<T extends PlotGraph<T>> {
     }
 
     /**
-     * Sets the position of the coordinate grid relative to the drawing panel.
-     * This method delegates to the contained {@link PlotGrid} instance.
-     *
-     * @param gridPosition the desired grid position of ({@link GridPosition})
-     * @param frame the drawing panel used to compute layout dimensions
-     */
-    public void setGridPosition(GridPosition gridPosition, JPanel frame) {
-        grid.setGridPosition(gridPosition, frame);
-    }
-
-    /**
-     * Sets the horizontal zoom factor for the plot grid.
-     * Values greater than 1.0 zoom in; values between 0 and 1 zoom out.
-     * This method delegates to the contained {@link PlotGrid} instance.
-     *
-     * @param amount the zoom factor to apply on the x-axis
-     */
-    public void setZoomX(double amount) {
-        grid.setZoomX(amount);
-    }
-
-    /**
-     * Sets the vertical zoom factor for the plot grid.
-     * Values greater than 1.0 zoom in; values between 0 and 1 zoom out.
-     * This method delegates to the contained {@link PlotGrid} instance.
-     *
-     * @param amount the zoom factor to apply on the y-axis
-     */
-    public void setZoomY(double amount) {
-        grid.setZoomY(amount);
-    }
-
-    /**
      * Adds a plot graph to this set.
      *
      * @param graph the graph to add; must be of type T
@@ -160,9 +127,9 @@ public abstract class PlotSet<T extends PlotGraph<T>> {
      * Subclasses may override this method to configure grid position,
      * zoom levels, or other visual properties specific to this set.
      *
-     * @param frame the PlotApplication instance that is switching to this set
+     * @param app the PlotApplication instance that is switching to this set
      */
-    public void preSetup(PlotApplication frame) {
+    public void preSetup(PlotApplication app) {
 
     }
 
@@ -171,11 +138,10 @@ public abstract class PlotSet<T extends PlotGraph<T>> {
      * Restores default grid settings (centered grid position and unit zoom).
      * Subclasses may override this method if a different cleanup behavior is desired.
      *
-     * @param frame the PlotApplication instance that is leaving this set
+     * @param app the PlotApplication instance that is leaving this set
      */
-    public void postSetup(PlotApplication frame) {
-        setGridPosition(GridPosition.CENTER, frame.getDrawablePanel());
-        setZoomX(1.0);
-        setZoomY(1.0);
+    public void postSetup(PlotApplication app) {
+        app.setGridPosition(GridPosition.CENTER);
+        app.setZoom(1, 1);
     }
 }

@@ -15,7 +15,7 @@ public class MusterSet extends PlotSet<MusterGraph> {
     }
 
     @Override
-    public void preSetup(PlotApplication frame) {
-        setGridPosition(GridPosition.NORTH_WEST, frame.getDrawablePanel());
+    public void preSetup(PlotApplication app) {
+        app.setGridPosition(GridPosition.NORTH_WEST);
     }
 }

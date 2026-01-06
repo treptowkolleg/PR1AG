@@ -18,7 +18,6 @@ package treptowkolleg.edu.swing.plot;
 
 import treptowkolleg.edu.swing.graphics.Colors;
 
-import javax.swing.JPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -55,80 +54,6 @@ public class PlotGrid extends DrawableObject {
      */
     public PlotGrid(int gap) {
         this.gap = gap;
-    }
-
-    /**
-     * Sets the position of the coordinate grid relative to the drawing panel by adjusting
-     * the global offset values ({@link PlotApplication#X_DELTA} and {@link PlotApplication#Y_DELTA}).
-     * The grid is positioned based on one of the predefined {@link GridPosition} constants,
-     * taking into account the panel dimensions and a fixed padding to avoid clipping at the edges.
-     *
-     * @param gridPosition the desired alignment of the grid (e.g., CENTER, NORTH_EAST, etc.)
-     * @param frame the drawing panel used to determine available width and height
-     */
-    public void setGridPosition(GridPosition gridPosition, JPanel frame) {
-        double panelHeight = frame.getHeight();
-        double panelWidth = frame.getWidth();
-        int padding = 50;
-
-        switch (gridPosition) {
-            case NORTH:
-                PlotApplication.X_DELTA = 0;
-                PlotApplication.Y_DELTA = -panelHeight / 2 + padding;
-                break;
-            case SOUTH:
-                PlotApplication.X_DELTA = 0;
-                PlotApplication.Y_DELTA = panelHeight / 2 - padding;
-                break;
-            case WEST:
-                PlotApplication.X_DELTA = -panelWidth / 2 + padding;
-                PlotApplication.Y_DELTA = 0;
-                break;
-            case EAST:
-                PlotApplication.X_DELTA = panelWidth / 2 - padding;
-                PlotApplication.Y_DELTA = 0;
-                break;
-            case NORTH_WEST:
-                PlotApplication.X_DELTA = -panelWidth / 2 + padding;
-                PlotApplication.Y_DELTA = -panelHeight / 2 + padding;
-                break;
-            case NORTH_EAST:
-                PlotApplication.X_DELTA = panelWidth / 2 - padding;
-                PlotApplication.Y_DELTA = -panelHeight / 2 + padding;
-                break;
-            case SOUTH_WEST:
-                PlotApplication.X_DELTA = -panelWidth / 2 + padding;
-                PlotApplication.Y_DELTA = panelHeight / 2 - padding;
-                break;
-            case SOUTH_EAST:
-                PlotApplication.X_DELTA = panelWidth / 2 - padding;
-                PlotApplication.Y_DELTA = panelHeight / 2 - padding;
-                break;
-            default:
-                PlotApplication.X_DELTA = 0;
-                PlotApplication.Y_DELTA = 0;
-                break;
-        }
-    }
-
-    /**
-     * Sets the horizontal zoom scale factor for the entire application.
-     * The input value is normalized to ensure it remains within a reasonable range.
-     *
-     * @param amount the desired zoom factor (e.g., 1.0 = normal, 2.0 = 2x zoom in)
-     */
-    public void setZoomX(double amount) {
-        PlotApplication.X_SCALE = prepareScale(amount);
-    }
-
-    /**
-     * Sets the vertical zoom scale factor for the entire application.
-     * The input value is normalized to ensure it remains within a reasonable range.
-     *
-     * @param amount the desired zoom factor (e.g., 1.0 = normal, 2.0 = 2x zoom in)
-     */
-    public void setZoomY(double amount) {
-        PlotApplication.Y_SCALE = prepareScale(amount);
     }
 
     /**
@@ -174,18 +99,4 @@ public class PlotGrid extends DrawableObject {
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
         g.drawString("0", centerX + 5, centerY + 10);
     }
-
-    private double prepareScale(double amount) {
-        double min = PlotApplication.MIN_SCALE;
-        double max = PlotApplication.MAX_SCALE;
-
-        if (amount < min) {
-            amount = min;
-        }
-        if (amount > max) {
-            amount = max;
-        }
-        return amount;
-    }
-
 }

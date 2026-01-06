@@ -28,9 +28,8 @@ public class SerialSet extends PlotSet<SerialGraph> {
     }
 
     @Override
-    public void preSetup(PlotApplication frame) {
-        setGridPosition(GridPosition.SOUTH_EAST, frame.getDrawablePanel());
-        setZoomX(.1);
-        setZoomY(1.5);
+    public void preSetup(PlotApplication app) {
+        app.setGridPosition(GridPosition.SOUTH_EAST);
+        app.setZoom(.2, 1.5);
     }
 }
