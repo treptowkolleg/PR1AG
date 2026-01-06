@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MusterGraph extends PlotGraph<MusterGraph> {
-    private final double xMin;
-    private final double xMax;
+    private double xMin;
+    private double xMax;
     private final double step;
     private final List<Rectangle> rects;
 
@@ -21,6 +21,22 @@ public class MusterGraph extends PlotGraph<MusterGraph> {
         this.xMax = xMax;
         this.step = step;
         this.rects = new ArrayList<>();
+    }
+
+    public double getxMin() {
+        return xMin;
+    }
+
+    public void setxMin(double xMin) {
+        this.xMin = xMin;
+    }
+
+    public double getxMax() {
+        return xMax;
+    }
+
+    public void setxMax(double xMax) {
+        this.xMax = xMax;
     }
 
     @Override
@@ -37,6 +53,7 @@ public class MusterGraph extends PlotGraph<MusterGraph> {
 
             if (rectWidth > 0 && rectHeight > 0) {
                 Rectangle rect = new Rectangle(px, py, rectWidth, rectHeight);
+
                 rects.add(rect);
             }
         }
