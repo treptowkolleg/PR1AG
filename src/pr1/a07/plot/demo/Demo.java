@@ -2,7 +2,7 @@ package pr1.a07.plot.demo;
 
 import treptowkolleg.edu.swing.plot.PlotApplication;
 
-public class TestDemo {
+public class Demo {
 
     public static void main(String[] args) {
         PlotApplication app = new PlotApplication("Demo-Plotter", 1280, 720);
