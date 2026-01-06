@@ -72,6 +72,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     private final List<Function<T, Boolean>> checkBoxGetters = new ArrayList<>();
     private final JPanel panel = new JPanel(new GridBagLayout());
     private final GridBagConstraints constraints = new GridBagConstraints();
+    private int maxColumns = 1;
     private int currentColumn = 0;
     private boolean inMultiColumnRow = false;
 
@@ -95,7 +96,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 5, 5, 5);
         constraints.weightx = 1.0;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 3;
         constraints.gridx = 0;
         constraints.gridy = 0;
         panel.setBackground(Colors.GRAY5);
@@ -214,8 +215,18 @@ public class ControlBuilder<T extends PlotGraph<T>> {
     public ControlBuilder<T> addDoubleColumn() {
         this.inMultiColumnRow = true;
         this.currentColumn = 0;
-        constraints.weightx = .5;
+        constraints.weightx = 1;
         constraints.gridwidth = 1;
+        maxColumns = 2;
+        return this;
+    }
+
+    public ControlBuilder<T> addTripleColumn() {
+        this.inMultiColumnRow = true;
+        this.currentColumn = 0;
+        constraints.weightx = 1;
+        constraints.gridwidth = 1;
+        maxColumns = 3;
         return this;
     }
 
@@ -594,8 +605,9 @@ public class ControlBuilder<T extends PlotGraph<T>> {
         if (inMultiColumnRow) {
             constraints.gridy++;
             currentColumn = 0;
-            constraints.gridwidth = 2;
+            constraints.gridwidth = 3;
             constraints.weightx = 1.0;
+            maxColumns = 1;
             inMultiColumnRow = false;
         }
     }
@@ -607,7 +619,7 @@ public class ControlBuilder<T extends PlotGraph<T>> {
             constraints.gridy++;
         } else {
             currentColumn++;
-            if (currentColumn >= 2) {
+            if (currentColumn >= maxColumns) {
                 endRow();
             }
         }
