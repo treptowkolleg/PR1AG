@@ -3,7 +3,7 @@ package pr1.a10;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-public class ShapeFilter implements PointFilter {
+public abstract class ShapeFilter implements PointFilter {
     private final Shape shape;
 
     public ShapeFilter(Shape shape) {
