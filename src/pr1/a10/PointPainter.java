@@ -31,8 +31,8 @@ public class PointPainter {
                 new VisiblePoints(Color.GRAY, a, "A (Obermenge)"),
                 new VisiblePoints(Color.MAGENTA, b, "B ⊂ A"),
                 new VisiblePoints(Color.GREEN, c, "C ⊂ A"),
-                new VisiblePoints(Color.ORANGE, d, "D = B ∪ C)"),
-                new VisiblePoints(Color.YELLOW, e, "E = B ∩ C)")
+                new VisiblePoints(Color.ORANGE, d, "D = B ∪ C"),
+                new VisiblePoints(Color.YELLOW, e, "E = B ∩ C")
         );
         painter.add(new BackgroundShape(Color.DARK_GRAY));
         painter.showDrawing();
