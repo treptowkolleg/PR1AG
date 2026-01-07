@@ -7,7 +7,8 @@ public class SquareFilter implements PointFilter {
 
     @Override
     public boolean accept(Ellipse2D.Double e) {
-        Rectangle2D.Double shape = new Rectangle2D.Double(400, 500, 300, 300);
+        // Koordinaten sind leicht angepasst, damit vollständig sichtbar.
+        Rectangle2D.Double shape = new Rectangle2D.Double(400, 200, 300, 300);
 
         return shape.intersects(e.getBounds2D());
     }
