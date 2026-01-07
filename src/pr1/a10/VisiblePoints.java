@@ -25,10 +25,6 @@ public class VisiblePoints implements Drawable {
         this.label = label;
     }
 
-    public String getLabel() {
-        return label;
-    }
-
     @Override
     public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics.create();
