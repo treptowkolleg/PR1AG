@@ -28,7 +28,7 @@ public class PointPainter {
         d.addAll(c);
         e.retainAll(c);
         drawables = Arrays.asList(
-                new VisiblePoints(Color.LIGHT_GRAY, a, "A (Alle Punkte)"),
+                new VisiblePoints(Color.LIGHT_GRAY, a),
                 new VisiblePoints(Color.MAGENTA, b, "B (Kreisfilter)"),
                 new VisiblePoints(Color.GREEN, c, "C (Quadratfilter)"),
                 new VisiblePoints(Color.ORANGE, d, "D (Vereinigung aus B und C)"),
