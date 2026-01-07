@@ -54,7 +54,7 @@ public class DataProvider {
                     list.addAll(scanner.tokens().map(String::trim)
                             .filter(Validator::isInteger)
                             .map(Integer::parseInt)
-                            .collect(Collectors.toCollection(ArrayList::new)));
+                            .toList());
                 });
             }
         };
