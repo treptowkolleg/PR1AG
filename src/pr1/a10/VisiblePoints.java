@@ -15,7 +15,7 @@ public class VisiblePoints implements Drawable {
     private final String label;
 
     public VisiblePoints(Color color, Set<Ellipse2D.Double> points) {
-        this(color, points, "unbenannt");
+        this(color, points, null);
     }
 
     public VisiblePoints(Color color, Set<Ellipse2D.Double> points,
@@ -38,6 +38,9 @@ public class VisiblePoints implements Drawable {
     }
 
     private void drawLabel(Graphics2D g2d) {
+        if (null == label) {
+            return;
+        }
         int panelHeight = g2d.getClipBounds().height;
         int textLength = g2d.getFontMetrics().stringWidth(label);
 
