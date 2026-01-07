@@ -16,23 +16,23 @@ public class PointPainter {
     public static void main(String[] args) {
         FunnyFirstPainter painter = new FunnyFirstPainter();
         String filename = "myIntegers.txt";
-        DataProvider.writeIntNumberFile(filename, 75000);
+        DataProvider.writeIntNumberFile(filename, 150_000);
         List<Integer> integers = DataProvider.integerListFrom(filename);
         List<Drawable> drawables;
-        Set<Ellipse2D.Double> mengeA = Convert.mapIntsToEllipses(integers);
-        Set<Ellipse2D.Double> mengeB = Convert.filtered(mengeA, new CircleFilter());
-        Set<Ellipse2D.Double> mengeC = Convert.filtered(mengeA, new SquareFilter());
-        Set<Ellipse2D.Double> mengeD = new HashSet<>(mengeB);
-        Set<Ellipse2D.Double> mengeE = new HashSet<>(mengeB);
+        Set<Ellipse2D.Double> a = Convert.mapIntsToEllipses(integers);
+        Set<Ellipse2D.Double> b = Convert.filtered(a, new CircleFilter());
+        Set<Ellipse2D.Double> c = Convert.filtered(a, new SquareFilter());
+        Set<Ellipse2D.Double> d = new HashSet<>(b);
+        Set<Ellipse2D.Double> e = new HashSet<>(b);
 
-        mengeD.addAll(mengeC);
-        mengeE.retainAll(mengeC);
+        d.addAll(c);
+        e.retainAll(c);
         drawables = Arrays.asList(
-                new VisiblePoints(Color.LIGHT_GRAY, mengeA),
-                new VisiblePoints(Color.MAGENTA, mengeB),
-                new VisiblePoints(Color.GREEN, mengeC),
-                new VisiblePoints(Color.ORANGE, mengeD),
-                new VisiblePoints(Color.YELLOW, mengeE)
+                new VisiblePoints(Color.LIGHT_GRAY, a, "A (Alle Punkte)"),
+                new VisiblePoints(Color.MAGENTA, b, "B (Kreisfilter)"),
+                new VisiblePoints(Color.GREEN, c, "C (Quadratfilter)"),
+                new VisiblePoints(Color.ORANGE, d, "D (Vereinigung aus B und C)"),
+                new VisiblePoints(Color.YELLOW, e, "E (Schnittmenge aus B und C)")
         );
         painter.add(new BackgroundShape(Color.DARK_GRAY));
         painter.showDrawing();
@@ -43,11 +43,10 @@ public class PointPainter {
 
     private static void drawSequence(FunnyFirstPainter painter,
                                      List<Drawable> drawables) {
-        for (Drawable d : drawables) {
-            painter.add(d);
-            painter.showDrawingAfterWaiting(2000);
-            painter.remove(d);
+        for (Drawable drawable : drawables) {
+            painter.add(drawable);
+            painter.showDrawingAfterWaiting(3_000);
+            painter.remove(drawable);
         }
     }
-
 }

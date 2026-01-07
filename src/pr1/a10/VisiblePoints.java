@@ -12,19 +12,38 @@ import java.util.Set;
 public class VisiblePoints implements Drawable {
     private final Color color;
     private final Set<Ellipse2D.Double> points;
+    private final String label;
 
     public VisiblePoints(Color color, Set<Ellipse2D.Double> points) {
+        this(color, points, "unbenannt");
+    }
+
+    public VisiblePoints(Color color, Set<Ellipse2D.Double> points,
+                         String label) {
         this.color = color;
         this.points = points;
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     @Override
     public void draw(Graphics graphics) {
-        Graphics2D g2d = (Graphics2D) graphics.create();
+        Graphics2D g2 = (Graphics2D) graphics.create();
+        int panelHeight = g2.getClipBounds().height;
+        int textLength = g2.getFontMetrics().stringWidth(String.valueOf(label));
 
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(color);
-        points.forEach(g2d::fill);
-        g2d.dispose();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(color);
+        points.forEach(g2::fill);
+
+        g2.setColor(Color.GRAY);
+        g2.fillRect(0, panelHeight - 42, textLength + 40, 25);
+        g2.setColor(Color.WHITE);
+        g2.drawString(label, 25, panelHeight - 25);
+        g2.dispose();
     }
 }
