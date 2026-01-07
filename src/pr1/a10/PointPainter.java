@@ -14,11 +14,12 @@ import java.util.Set;
 public class PointPainter {
 
     public static void main(String[] args) {
-        DataProvider.writeIntNumberFile("myIntegers.txt", 75000);
-        List<Integer> points = DataProvider.integerListFrom("myIntegers.txt");
-        List<Drawable> drawables;
         FunnyFirstPainter painter = new FunnyFirstPainter();
-        Set<Ellipse2D.Double> mengeA = Convert.mapIntsToEllipses(points);
+        String filename = "myIntegers.txt";
+        DataProvider.writeIntNumberFile(filename, 75000);
+        List<Integer> integers = DataProvider.integerListFrom(filename);
+        List<Drawable> drawables;
+        Set<Ellipse2D.Double> mengeA = Convert.mapIntsToEllipses(integers);
         Set<Ellipse2D.Double> mengeB = Convert.filtered(mengeA, new CircleFilter());
         Set<Ellipse2D.Double> mengeC = Convert.filtered(mengeA, new SquareFilter());
         Set<Ellipse2D.Double> mengeD = new HashSet<>(mengeB);

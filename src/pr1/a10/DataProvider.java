@@ -51,7 +51,7 @@ public class DataProvider {
             @Override
             public void run() {
                 withFileScanner(filename, scanner -> {
-                    list.addAll(scanner.tokens().parallel().map(String::trim)
+                    list.addAll(scanner.tokens().map(String::trim)
                             .filter(Validator::isInteger)
                             .map(Integer::parseInt)
                             .collect(Collectors.toCollection(ArrayList::new)));
