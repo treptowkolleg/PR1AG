@@ -1,4 +1,4 @@
-package treptowkolleg.edu.extension.math;
+package treptowkolleg.edu.extension.streams;
 
 public class Validator {
 
