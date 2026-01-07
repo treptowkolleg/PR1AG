@@ -32,17 +32,23 @@ public class VisiblePoints implements Drawable {
     @Override
     public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics.create();
-        int panelHeight = g2d.getClipBounds().height;
-        int textLength = g2d.getFontMetrics().stringWidth(label);
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(color);
         points.forEach(g2d::fill);
+        drawLabel(g2d);
+        g2d.dispose();
+    }
+
+    private void drawLabel(Graphics2D g2d) {
+        int panelHeight = g2d.getClipBounds().height;
+        int textLength = g2d.getFontMetrics().stringWidth(label);
+
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, panelHeight - 42, textLength + 40, 25);
         g2d.setColor(Color.WHITE);
         g2d.drawString(label, 25, panelHeight - 25);
-        g2d.dispose();
+        g2d.setColor(color);
     }
 }
