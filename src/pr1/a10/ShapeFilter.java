@@ -6,7 +6,7 @@ import java.awt.geom.Ellipse2D;
 /**
  * Wie zu Beginn in Aufgabe 10 subtil erwähnt, implementiert
  * {@link Ellipse2D.Double} das Interface {@link Shape}. Gleiches gilt
- * natürlich auch für alle anderen primitiven Formen unter awt.
+ * natürlich auch für alle anderen primitiven Formen unter {@link java.awt.geom}.
  * <p>
  * Daher kann diese Oberklasse die Prüfung durch Generalisierung für alle
  * spezialisierten FormFilter zentral implementieren (DRY).
