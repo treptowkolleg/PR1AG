@@ -14,25 +14,25 @@ import java.util.Set;
 public class PointPainter {
 
     public static void main(String[] args) {
-        FunnyFirstPainter painter = new FunnyFirstPainter();
         String filename = "myIntegers.txt";
-        DataProvider.writeIntNumberFile(filename, 150_000);
-        List<Integer> integers = DataProvider.integerListFrom(filename);
+        DataProvider.writeIntNumberFile(filename, 75_000);
         List<Drawable> drawables;
+        List<Integer> integers = DataProvider.integerListFrom(filename);
         Set<Ellipse2D.Double> a = Convert.mapIntsToEllipses(integers);
         Set<Ellipse2D.Double> b = Convert.filtered(a, new CircleFilter());
         Set<Ellipse2D.Double> c = Convert.filtered(a, new SquareFilter());
         Set<Ellipse2D.Double> d = new HashSet<>(b);
         Set<Ellipse2D.Double> e = new HashSet<>(b);
+        FunnyFirstPainter painter = new FunnyFirstPainter();
 
         d.addAll(c);
         e.retainAll(c);
         drawables = Arrays.asList(
-                new VisiblePoints(Color.GRAY, a, "A (Alle Punkte)"),
-                new VisiblePoints(Color.MAGENTA, b, "B (CircleFilter)"),
-                new VisiblePoints(Color.GREEN, c, "C (SquareFilter)"),
-                new VisiblePoints(Color.ORANGE, d, "D (Vereinigung aus B und C)"),
-                new VisiblePoints(Color.YELLOW, e, "E (Schnittmenge aus B und C)")
+                new VisiblePoints(Color.GRAY, a, "A (Obermenge)"),
+                new VisiblePoints(Color.MAGENTA, b, "B ⊂ A"),
+                new VisiblePoints(Color.GREEN, c, "C ⊂ A"),
+                new VisiblePoints(Color.ORANGE, d, "D = B ∪ C)"),
+                new VisiblePoints(Color.YELLOW, e, "E = B ∩ C)")
         );
         painter.add(new BackgroundShape(Color.DARK_GRAY));
         painter.showDrawing();

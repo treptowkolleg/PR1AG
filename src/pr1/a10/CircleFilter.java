@@ -6,9 +6,13 @@ public class CircleFilter implements PointFilter {
 
     @Override
     public boolean accept(Ellipse2D.Double e) {
-        // Koordinaten sind leicht angepasst, damit vollständig sichtbar.
-        Ellipse2D.Double shape = new Ellipse2D.Double(200, 50, 400, 400);
+        Ellipse2D.Double shape = new Ellipse2D.Double(100, 200, 400, 400);
+        double px = e.x + e.width / 2.0;
+        double py = e.y + e.height / 2.0;
 
-        return shape.intersects(e.getBounds2D());
+        // falls Berühren ausreicht
+        // return shape.intersects(e.getBounds2D());
+        // tatsächlich innerhalb (am Mittelpunkt)
+        return shape.contains(px, py);
     }
 }

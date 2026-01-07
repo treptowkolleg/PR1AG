@@ -7,9 +7,13 @@ public class SquareFilter implements PointFilter {
 
     @Override
     public boolean accept(Ellipse2D.Double e) {
-        // Koordinaten sind leicht angepasst, damit vollständig sichtbar.
-        Rectangle2D.Double shape = new Rectangle2D.Double(400, 200, 300, 300);
+        Rectangle2D.Double shape = new Rectangle2D.Double(250, 350, 300, 300);
+        double px = e.x + e.width / 2.0;
+        double py = e.y + e.height / 2.0;
 
-        return shape.intersects(e.getBounds2D());
+        // falls Berühren ausreicht
+        // return shape.intersects(e.getBounds2D());
+        // tatsächlich innerhalb (am Mittelpunkt)
+        return shape.contains(px, py);
     }
 }

@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+import java.util.HashSet;
 import java.util.Set;
 
 public class VisiblePoints implements Drawable {
@@ -22,14 +23,14 @@ public class VisiblePoints implements Drawable {
     public VisiblePoints(Color color, Set<Ellipse2D.Double> points,
                          String label) {
         this.color = color;
-        this.points = points;
+        this.points = new HashSet<>(points);
         this.label = label;
     }
 
     @Override
     public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics.create();
-        g2d.setFont(new Font("SF Pro Text, Helvetica Neue, Arial", Font.PLAIN, 16));
+        g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
