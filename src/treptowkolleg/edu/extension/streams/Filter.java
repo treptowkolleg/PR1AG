@@ -1,6 +1,6 @@
 package treptowkolleg.edu.extension.streams;
 
-public class Validator {
+public class Filter {
 
     public static boolean isInteger(String s) {
         if (s == null || s.isEmpty()) {

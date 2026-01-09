@@ -1,12 +1,11 @@
 package pr1.a10;
 
 import treptowkolleg.edu.extension.math.BetterRandom;
-import treptowkolleg.edu.extension.streams.Validator;
+import treptowkolleg.edu.extension.streams.Filter;
 import treptowkolleg.edu.text.IOApplication;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DataProvider {
 
@@ -15,7 +14,7 @@ public class DataProvider {
      * ungerade, wird der Wert um eins erhöht. Deshalb Zahlenpaare, um
      * Punkt-Koordinaten erhalten zu können.
      *
-     * @param filename Name der Datei
+     * @param filename    Name der Datei
      * @param numberCount Menge der Zahlen
      */
     public static void writeIntNumberFile(String filename, int numberCount) {
@@ -52,7 +51,7 @@ public class DataProvider {
             public void run() {
                 withFileScanner(filename, scanner -> {
                     list.addAll(scanner.tokens().map(String::trim)
-                            .filter(Validator::isInteger)
+                            .filter(Filter::isInteger)
                             .map(Integer::parseInt)
                             .toList());
                 });

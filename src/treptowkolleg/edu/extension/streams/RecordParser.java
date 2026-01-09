@@ -17,6 +17,7 @@
 package treptowkolleg.edu.extension.streams;
 
 import pr1.a09.ObjectFactory;
+import treptowkolleg.edu.extension.strings.Delimiter;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -86,7 +87,7 @@ public class RecordParser {
             Stream<String> input,
             Predicate<String[]> validator,
             Function<String[], T> mapper) {
-        return input.map(String::trim)
+        return input.map(StreamUtil.TRIM)
                 .filter(StreamUtil.IS_NOT_EMPTY)
                 .filter(StreamUtil.IS_NO_LINE_COMMENT)
                 .map(StreamUtil.REMOVE_INLINE_COMMENTS)

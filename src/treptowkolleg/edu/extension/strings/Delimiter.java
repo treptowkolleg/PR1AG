@@ -19,19 +19,20 @@ package treptowkolleg.edu.extension.strings;
 import java.util.regex.Pattern;
 
 public enum Delimiter {
-    WHITESPACE			("\\s+"),
-    COMMA				(","),
-    WHITESPACE_OR_COMMA	("[\\s,]+"),
-    SEMICOLON			(";"),
-    PIPE				("\\|"),
-    TAB					("\\t"),
-    COLON				(":"),
-    DASH				("-"),
-    SLASH				("/"),
-    DOT					("\\."),
-    QUOTE				("\""),
-    LINEBREAK			("\\r?\\n");
-	
+    COLON               (":"),
+    COMMA               (","),
+    DASH                ("-"),
+    DOT                 ("\\."),
+    END_OF_RECORD       ("\\R"),
+    LINEBREAK           ("\\r?\\n"),
+    PIPE                ("\\|"),
+    QUOTE               ("\""),
+    SEMICOLON           (";"),
+    SLASH               ("/"),
+    TAB                 ("\\t"),
+    WHITESPACE          ("\\s+"),
+    WHITESPACE_OR_COMMA ("[\\s,]+");
+
     private final String regex;
     private final Pattern pattern;
 
