@@ -3,6 +3,7 @@ package pr1.a07.plot.demo;
 import treptowkolleg.edu.swing.graphics.Colors;
 import treptowkolleg.edu.swing.plot.Context;
 import treptowkolleg.edu.swing.plot.Draw;
+import treptowkolleg.edu.swing.plot.PlotApplication;
 import treptowkolleg.edu.swing.plot.PlotGraph;
 import treptowkolleg.edu.swing.plot.SerialReader;
 import treptowkolleg.edu.swing.plot.Sonifier;
@@ -187,9 +188,17 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
 
     @Draw(when = Context.IS_DEV)
     private void drawDebugOverlay(Graphics2D g) {
-        g.setColor(Color.RED);
-        g.drawString("Values: " + recordedValues.size(), 10, 20);
-        g.drawString("Running: " + reader.isRunning(), 10, 40);
+        g.setColor(Colors.GRAY5);
+        g.fillRect(10, 0, 200, 170);
+        g.setColor(Colors.RED);
+        g.drawString("Values: " + recordedValues.size(), 20, 20);
+        g.drawString("Voltage: " + thresholdVoltage, 20, 40);
+        g.drawString("Diode: " + usedDiode, 20, 60);
+        g.drawString("Running: " + reader.isRunning(), 20, 80);
+        g.drawString("X-Delta: " + PlotApplication.X_DELTA, 20, 100);
+        g.drawString("Y-Delta: " + PlotApplication.Y_DELTA, 20, 120);
+        g.drawString("X-Scale: " + PlotApplication.X_SCALE, 20, 140);
+        g.drawString("Y-Scale: " + PlotApplication.Y_SCALE, 20, 160);
     }
 
     private void setDiode(double measuredU) {
