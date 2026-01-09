@@ -1,6 +1,7 @@
 package pr1.a07.plot.demo;
 
 import pr1.a07.CMath;
+import treptowkolleg.edu.swing.plot.Draw;
 import treptowkolleg.edu.swing.plot.PlotGraph;
 
 import java.awt.Color;
@@ -37,6 +38,12 @@ public class MusterGraph extends PlotGraph<MusterGraph> {
 
     public void setxMax(double xMax) {
         this.xMax = xMax;
+    }
+
+    @Draw(when = "DEV")
+    public void drawTest(Graphics2D g2d) {
+        g2d.setColor(Color.BLUE);
+        g2d.drawRect(100, 100, panelWidth - 200, panelHeight - 200);
     }
 
     @Override

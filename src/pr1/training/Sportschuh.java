@@ -1,7 +1,6 @@
 package pr1.training;
 
 public class Sportschuh extends Schuh {
-
     @ToStringInclude(prefix = "für")
     private final String sportart;
 

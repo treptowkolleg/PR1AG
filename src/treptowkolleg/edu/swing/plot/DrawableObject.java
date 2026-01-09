@@ -22,6 +22,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -78,6 +81,17 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
      * @param g the graphics context used for rendering
      */
     public void draw(Graphics g) {
+        List<Method> drawMethods = Arrays.stream(this.getClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(Draw.class))
+                .peek(method -> method.setAccessible(true))
+                .filter(method -> {
+                    String condition = method.getAnnotation(Draw.class).when();
+                    return condition.isEmpty() || evaluateCondition(condition);
+                })
+                .sorted(Comparator.comparingInt(
+                        method -> method.getAnnotation(Draw.class).order()
+                )).toList();
+
         g2d = (Graphics2D) g.create();
         originalTransform = g2d.getTransform();
         panelWidth = g.getClipBounds().width;
@@ -88,6 +102,21 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         configureGraphics2D(g2d);
+        for (Method method : drawMethods) {
+            try {
+                Graphics2D g2 = (Graphics2D) g.create();
+                method.invoke(this, g2);
+                g2.dispose();
+            } catch (Exception e) {
+                System.err.println("Fehler bei " + method.getName());
+            }
+        }
+    }
+
+    private boolean evaluateCondition(String condition) {
+        if ("PROD".equals(condition)) return !PlotApplication.DEBUG_MODE;
+        if ("DEV".equals(condition)) return PlotApplication.DEBUG_MODE;
+        return true;
     }
 
     /**
