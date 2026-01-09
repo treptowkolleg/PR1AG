@@ -130,7 +130,6 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
     }
 
     private boolean evaluateCondition(Context condition) {
-        if (Context.IS_PROD.equals(condition)) return !PlotApplication.DEV_MODE;
         if (Context.IS_DEV.equals(condition)) return PlotApplication.DEV_MODE;
         return true;
     }
