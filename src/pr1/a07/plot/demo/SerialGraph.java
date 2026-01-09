@@ -1,6 +1,8 @@
 package pr1.a07.plot.demo;
 
 import treptowkolleg.edu.swing.graphics.Colors;
+import treptowkolleg.edu.swing.plot.Context;
+import treptowkolleg.edu.swing.plot.Draw;
 import treptowkolleg.edu.swing.plot.PlotGraph;
 import treptowkolleg.edu.swing.plot.SerialReader;
 import treptowkolleg.edu.swing.plot.Sonifier;
@@ -181,6 +183,13 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
             }
             drawDifferenceCurve(g, localValues);
         }
+    }
+
+    @Draw(when = Context.IS_DEV)
+    private void drawDebugOverlay(Graphics2D g) {
+        g.setColor(Color.RED);
+        g.drawString("Values: " + recordedValues.size(), 10, 20);
+        g.drawString("Running: " + reader.isRunning(), 10, 40);
     }
 
     private void setDiode(double measuredU) {

@@ -1,6 +1,8 @@
 package pr1.a07.plot.demo;
 
 import pr1.a07.CMath;
+import treptowkolleg.edu.swing.graphics.Colors;
+import treptowkolleg.edu.swing.plot.Context;
 import treptowkolleg.edu.swing.plot.Draw;
 import treptowkolleg.edu.swing.plot.PlotGraph;
 
@@ -40,15 +42,8 @@ public class MusterGraph extends PlotGraph<MusterGraph> {
         this.xMax = xMax;
     }
 
-    @Draw(when = "DEV")
-    public void drawTest(Graphics2D g2d) {
-        g2d.setColor(Color.BLUE);
-        g2d.drawRect(100, 100, panelWidth - 200, panelHeight - 200);
-    }
-
     @Override
-    public void configureGraphics2D(Graphics2D g) {
-        g.setColor(color);
+    protected void configureData() {
         rects.clear();
         for (double x = xMin; x <= xMax; x += step) {
             double b = CMath.b(x);
@@ -64,6 +59,17 @@ public class MusterGraph extends PlotGraph<MusterGraph> {
                 rects.add(rect);
             }
         }
+    }
+
+    @Draw(when = Context.IS_DEV)
+    private void drawTest(Graphics2D g) {
+        g.setColor(Colors.BROWN);
+        g.drawRect(100, 100, panelWidth - 200, panelHeight - 200);
+    }
+
+    @Draw(order = 1)
+    private void rectangles(Graphics2D g) {
+        g.setColor(color);
         rects.forEach(g::fill);
     }
 }

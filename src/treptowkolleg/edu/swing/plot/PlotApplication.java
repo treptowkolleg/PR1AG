@@ -53,7 +53,7 @@ import static treptowkolleg.edu.extension.math.CMath.scaleFactor;
 public class PlotApplication extends JFrame {
     public static final double MIN_SCALE = .2;
     public static final double MAX_SCALE = 6;
-    public static boolean DEBUG_MODE = false;
+    public static boolean DEV_MODE = false;
     public static double X_DELTA = 0;
     public static double Y_DELTA = 0;
     public static double X_SCALE = 1;

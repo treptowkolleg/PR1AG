@@ -1,5 +1,7 @@
 package pr1.a08;
 
+import treptowkolleg.edu.swing.plot.Draw;
+
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -16,19 +18,7 @@ public class WinterLandschaft extends Landschaft {
         leavesColor = Colors.GRAY;
     }
 
-    @Override
-    public void configureGraphics2D(Graphics2D g) {
-        g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
-                java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-        drawBackground(g);
-        drawForeground(g);
-        drawHorizon(g);
-        drawHills(g);
-        drawSnowman(g);
-        drawTrees(g);
-        drawSnow(g);
-    }
-
+    @Draw(order = 15)
     protected void drawSnowman(Graphics2D g) {
         g.setColor(Colors.GRAY5);
         Ellipse2D head = new Ellipse2D.Double(100, panelHeight - 130, 40, 40);
@@ -43,6 +33,7 @@ public class WinterLandschaft extends Landschaft {
         g.fill(at2.createTransformedShape(at.createTransformedShape(feet)));
     }
 
+    @Draw
     protected void drawSnow(Graphics2D g) {
         int flakeCount = Math.max(SNOW_FLAKES, panelWidth / 3);
 

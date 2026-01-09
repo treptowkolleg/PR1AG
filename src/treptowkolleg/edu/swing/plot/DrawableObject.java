@@ -23,7 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -71,6 +71,9 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
     private AffineTransform originalTransform;
     private Graphics2D g2d;
 
+    protected void configureData() {
+    }
+
     /**
      * Renders this object by first extracting the current drawing area
      * dimensions
@@ -81,23 +84,36 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
      * @param g the graphics context used for rendering
      */
     public void draw(Graphics g) {
-        List<Method> drawMethods = Arrays.stream(this.getClass().getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(Draw.class))
-                .peek(method -> method.setAccessible(true))
-                .filter(method -> {
-                    String condition = method.getAnnotation(Draw.class).when();
-                    return condition.isEmpty() || evaluateCondition(condition);
-                })
-                .sorted(Comparator.comparingInt(
-                        method -> method.getAnnotation(Draw.class).order()
-                )).toList();
-
+        List<Method> drawMethods = new ArrayList<>();
+        Class<?> clazz = this.getClass();
+        while (clazz != null && clazz != Object.class) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (!method.isAnnotationPresent(Draw.class)) {
+                    continue;
+                }
+                if (method.getParameterCount() != 1 ||
+                        !method.getParameterTypes()[0].equals(Graphics2D.class)) {
+                    continue;
+                }
+                Context condition = method.getAnnotation(Draw.class).when();
+                if (!evaluateCondition(condition)) {
+                    continue;
+                }
+                method.setAccessible(true);
+                drawMethods.add(method);
+            }
+            clazz = clazz.getSuperclass();
+        }
+        drawMethods.sort(Comparator.comparingInt(
+                method -> method.getAnnotation(Draw.class).order()
+        ));
         g2d = (Graphics2D) g.create();
         originalTransform = g2d.getTransform();
         panelWidth = g.getClipBounds().width;
         panelHeight = g.getClipBounds().height;
         centerX = (int) (PlotApplication.X_DELTA + (double) panelWidth / 2);
         centerY = (int) (PlotApplication.Y_DELTA + (double) panelHeight / 2);
+        configureData();
         configureGraphics(g);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -113,9 +129,9 @@ public abstract class DrawableObject implements Drawable, CustomDrawable {
         }
     }
 
-    private boolean evaluateCondition(String condition) {
-        if ("PROD".equals(condition)) return !PlotApplication.DEBUG_MODE;
-        if ("DEV".equals(condition)) return PlotApplication.DEBUG_MODE;
+    private boolean evaluateCondition(Context condition) {
+        if (Context.IS_PROD.equals(condition)) return !PlotApplication.DEV_MODE;
+        if (Context.IS_DEV.equals(condition)) return PlotApplication.DEV_MODE;
         return true;
     }
 

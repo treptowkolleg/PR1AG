@@ -1,5 +1,7 @@
 package pr1.a08;
 
+import treptowkolleg.edu.swing.plot.Draw;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -42,37 +44,7 @@ public class Landschaft extends EinfacheLandschaft {
         this.treeNumber = treeNumber;
     }
 
-    public int getHillNumber() {
-        return hillNumber;
-    }
-
-    public int getTreeNumber() {
-        return treeNumber;
-    }
-
-    public Color getLeavesColor() {
-        return leavesColor;
-    }
-
-    public void setLeavesColor(Color leavesColor) {
-        this.leavesColor = leavesColor;
-    }
-
-    public Color getTreeColor() {
-        return treeColor;
-    }
-
-    @Override
-    public void configureGraphics2D(Graphics2D g) {
-        g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
-                java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-        drawBackground(g);
-        drawForeground(g);
-        drawHorizon(g);
-        drawHills(g);
-        drawTrees(g);
-    }
-
+    @Draw(order = 10)
     protected void drawHills(Graphics2D g) {
         int horizontalPadding = 40;
         int usableWidth = panelWidth - 2 * horizontalPadding;
@@ -107,6 +79,7 @@ public class Landschaft extends EinfacheLandschaft {
         }
     }
 
+    @Draw(order = 20)
     protected void drawTrees(Graphics2D g) {
         final int TREE_WIDTH = 45;
         final int TREE_HEIGHT = 85;

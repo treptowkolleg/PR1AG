@@ -1,5 +1,6 @@
 package pr1.a08;
 
+import treptowkolleg.edu.swing.plot.Draw;
 import treptowkolleg.edu.swing.plot.PlotGraph;
 
 import java.awt.BasicStroke;
@@ -29,35 +30,19 @@ public class EinfacheLandschaft extends PlotGraph<EinfacheLandschaft> {
         this.horizonColor = horizonColor;
     }
 
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public Color getForegroundColor() {
-        return foregroundColor;
-    }
-
-    public Color getHorizonColor() {
-        return horizonColor;
-    }
-
-    @Override
-    public void configureGraphics2D(Graphics2D g) {
-        drawBackground(g);
-        drawForeground(g);
-        drawHorizon(g);
-    }
-
+    @Draw(order = 0)
     protected void drawBackground(Graphics2D g) {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, panelWidth, panelHeight);
     }
 
+    @Draw(order = 1)
     protected void drawForeground(Graphics2D g) {
         g.setColor(foregroundColor);
         g.fillRect(0, centerY, panelWidth, panelHeight - centerY);
     }
 
+    @Draw(order = 2)
     protected void drawHorizon(Graphics2D g) {
         g.setColor(horizonColor);
         g.setStroke(mdStroke);
