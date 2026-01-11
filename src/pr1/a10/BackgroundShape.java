@@ -17,7 +17,7 @@ public class BackgroundShape implements Drawable {
     @Override
     public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics.create();
-        Rectangle rectangle = graphics.getClipBounds();
+        Rectangle rectangle = g2d.getClipBounds();
 
         g2d.setColor(color);
         g2d.fill(rectangle);
