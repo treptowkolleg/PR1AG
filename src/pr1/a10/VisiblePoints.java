@@ -30,8 +30,8 @@ public class VisiblePoints implements Drawable {
     @Override
     public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics.create();
-        g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
 
+        g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setColor(color);

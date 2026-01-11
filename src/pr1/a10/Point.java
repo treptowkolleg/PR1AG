@@ -3,9 +3,8 @@ package pr1.a10;
 import java.awt.geom.Ellipse2D;
 import java.util.Objects;
 
-// dürfte ab Java16 auch record sein (anstatt class)
 public final class Point {
-    public final int x, y;
+    private final int x, y;
 
     public Point(int x, int y) {
         this.x = x;

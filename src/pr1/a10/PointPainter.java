@@ -43,10 +43,10 @@ public class PointPainter {
 
     private static void drawSequence(FunnyFirstPainter painter,
                                      List<Drawable> drawables) {
-        for (Drawable drawable : drawables) {
+        drawables.forEach(drawable -> {
             painter.add(drawable);
             painter.showDrawingAfterWaiting(3_000);
             painter.remove(drawable);
-        }
+        });
     }
 }
