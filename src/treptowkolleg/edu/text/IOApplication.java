@@ -18,9 +18,14 @@ package treptowkolleg.edu.text;
 
 import treptowkolleg.edu.extension.strings.PrintDecorator;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -548,5 +553,5 @@ public abstract class IOApplication {
      * Abstract entry point method that must be implemented by subclasses.
      * It is automatically called by the constructor after initialization.
      */
-    public abstract void run() throws IOException;
+    public abstract void run() throws Exception;
 }
