@@ -18,7 +18,9 @@ public class QueenSolve extends IOApplication {
         if (gameBoard.isSolved()) {
             stopWatch.stop();
             gameBoard.printSolution(getConsolePrintWriter());
-            printf("Lösung gefunden in %d Schritten und %.2f Sekunden%n", gameBoard.getCount(), stopWatch.getElapsedSeconds());
+            printf("Lösung gefunden in %d Schritten und %.2f Sekunden%n",
+                    gameBoard.getCount(),
+                    stopWatch.getElapsedSeconds());
             println("Damen:");
             for (Queen queen : gameBoard.getSolution()) {
                 printf("%s%n", gameBoard.getQueenPositionFrom(queen));
