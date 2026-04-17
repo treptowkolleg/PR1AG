@@ -26,19 +26,19 @@ public class MusterGraph extends PlotGraph<MusterGraph> {
         this.rects = new ArrayList<>();
     }
 
-    public double getxMin() {
+    public double getXMin() {
         return xMin;
     }
 
-    public void setxMin(double xMin) {
+    public void setXMin(double xMin) {
         this.xMin = xMin;
     }
 
-    public double getxMax() {
+    public double getXMax() {
         return xMax;
     }
 
-    public void setxMax(double xMax) {
+    public void setXMax(double xMax) {
         this.xMax = xMax;
     }
 

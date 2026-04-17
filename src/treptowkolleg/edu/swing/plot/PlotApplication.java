@@ -140,6 +140,9 @@ public class PlotApplication extends JFrame {
         add(panel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.NORTH);
         configureWindowProperties(title, width, height);
+        if (PlotApplication.DEV_MODE) {
+            System.out.println("DEV mode activated");
+        }
     }
 
     /**

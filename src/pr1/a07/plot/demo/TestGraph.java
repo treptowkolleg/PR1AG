@@ -1,5 +1,6 @@
 package pr1.a07.plot.demo;
 
+import treptowkolleg.edu.swing.plot.Draw;
 import treptowkolleg.edu.swing.plot.PlotGraph;
 
 import java.awt.Color;
@@ -38,8 +39,8 @@ public class TestGraph extends PlotGraph<TestGraph> {
         this.y = y;
     }
 
-    @Override
-    public void configureGraphics2D(Graphics2D g) {
+    @Draw
+    private void myMethod(Graphics2D g) {
         g.setColor(color);
         g.drawRect(centerX - 50 + x, centerY - 50 - y, 100, 100);
     }

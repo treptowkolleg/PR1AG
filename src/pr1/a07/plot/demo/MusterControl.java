@@ -17,8 +17,8 @@ public class MusterControl extends PlotControl<MusterGraph> {
     public JPanel configureControls(ControlBuilder<MusterGraph> build) {
         return build
                 .addDoubleColumn()
-                .sliderDouble("Start", -100, 0, 50, MusterGraph::getxMin, MusterGraph::setxMin)
-                .sliderDouble("Ende", 0, 300, 50, MusterGraph::getxMax, MusterGraph::setxMax)
+                .sliderDouble("Start", -100, 0, 50, MusterGraph::getXMin, MusterGraph::setXMin)
+                .sliderDouble("Ende", 0, 300, 50, MusterGraph::getXMax, MusterGraph::setXMax)
                 .getPanel();
     }
 }
