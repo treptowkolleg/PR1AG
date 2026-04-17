@@ -77,7 +77,7 @@ public class SerialGraph extends PlotGraph<SerialGraph> {
     }
 
     public void playDiodeCurveSonified() {
-        if (diffValues.isEmpty() | audioIsPlaying) {
+        if (diffValues.isEmpty() || audioIsPlaying) {
             return;
         }
         Thread t = new Thread(() -> {
